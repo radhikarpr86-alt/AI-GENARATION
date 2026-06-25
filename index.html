@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>AI Code Builder Pro v5.5</title>
+  <title>AI Code Builder Pro v6.0</title>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;font:inherit}
     body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}
@@ -43,26 +43,58 @@
     .toast-container{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;max-width:90%}
     .toast{background:var(--bg2);color:var(--text);padding:12px 20px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;border-left:4px solid var(--accent);opacity:0;transform:translateY(20px);transition:.2s}.toast.show{opacity:1;transform:translateY(0)}.toast-success{border-left-color:var(--success)}.toast-error{border-left-color:var(--danger)}.toast-warning{border-left-color:var(--warning)}
     .whatsapp-banner{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;padding:12px 16px;border-radius:8px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-    .snippet-card{background:var(--bg2);padding:12px;border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:.2s}.snippet-card:hover{border-color:var(--accent)}
-    .knowledge-item{background:var(--bg2);padding:12px;border-radius:6px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .snippet-card,.knowledge-item{background:var(--bg2);padding:12px;border-radius:6px;border:1px solid var(--border);margin-bottom:8px}
+    .snippet-card:hover{border-color:var(--accent)}
     @media(max-width:768px){.grid-2{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 <div class="toast-container" id="toastContainer"></div>
-<div class="container" id="app">
+
+<!-- ========== LANDING PAGE ========== -->
+<div class="container" id="landingPage">
   <header>
-    <h1 style="font-size:1.5rem">🤖 AI Code Builder Pro v5.5</h1>
+    <h1 style="font-size:1.5rem">🤖 AI Code Builder Pro</h1>
+    <button class="btn btn-primary btn-sm" onclick="showLoginModal()">Login</button>
+  </header>
+  <div class="hero" style="text-align:center;padding:40px 20px;background:var(--bg2);border-radius:16px;margin-bottom:24px;">
+    <div style="font-size:3rem">🧠</div>
+    <h2 style="font-size:2rem;margin:16px 0;">Bangun Kode Impianmu</h2>
+    <p style="color:var(--text2);max-width:600px;margin:0 auto 24px;">AI cerdas bantu kamu generate, rekayasa, dan belajar HTML, CSS, JavaScript. Dilengkapi penyimpanan pengetahuan pribadi.</p>
+    <button class="btn btn-primary btn-lg" onclick="showLoginModal()">Mulai Sekarang</button>
+  </div>
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="feature-card" style="background:var(--bg2);padding:24px;border-radius:12px;text-align:center;">
+      <div style="font-size:2rem">⚡</div><h3>Generate Instan</h3><p style="color:var(--text2)">Dari deskripsi langsung jadi kode.</p>
+    </div>
+    <div class="feature-card" style="background:var(--bg2);padding:24px;border-radius:12px;text-align:center;">
+      <div style="font-size:2rem">🔧</div><h3>Rekayasa Kode</h3><p style="color:var(--text2)">Perbaiki & sempurnakan kode lama.</p>
+    </div>
+    <div class="feature-card" style="background:var(--bg2);padding:24px;border-radius:12px;text-align:center;">
+      <div style="font-size:2rem">📚</div><h3>Pengetahuan Pribadi</h3><p style="color:var(--text2)">Upload & simpan ilmu codingmu.</p>
+    </div>
+    <div class="feature-card" style="background:var(--bg2);padding:24px;border-radius:12px;text-align:center;">
+      <div style="font-size:2rem">🔒</div><h3>Multi‑User & Premium</h3><p style="color:var(--text2)">Akun terpisah, aktivasi mudah.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== DASHBOARD (HIDDEN) ========== -->
+<div class="container hidden" id="dashboardPage">
+  <header>
+    <h1 style="font-size:1.5rem">🤖 AI Code Builder Pro</h1>
     <div class="flex gap-sm flex-wrap">
       <button class="btn btn-sm" onclick="toggleTheme()">🌓</button>
-      <button class="btn btn-sm" id="loginButton" onclick="showLoginModal()">Login</button>
       <button class="btn btn-sm btn-primary hidden" id="profileButton" onclick="showProfileModal()">Profil</button>
       <button class="btn btn-sm btn-warning hidden" id="adminButton" onclick="showSuperAdminPanel()">Admin</button>
       <span id="userBadge" class="hidden" style="background:var(--bg3);padding:4px 10px;border-radius:20px;font-size:0.85rem;"></span>
       <button class="btn btn-sm btn-danger hidden" id="logoutButton" onclick="handleLogout()">Logout</button>
     </div>
   </header>
-
+  <div class="whatsapp-banner" onclick="openWhatsApp()">
+    <div>💬 <strong>Bantuan & Aktivasi:</strong> <span id="whatsappNumber">+6281220285226</span></div>
+    <div>Chat WA 👉</div>
+  </div>
   <div class="tabs">
     <div class="tab active" onclick="switchTab('chat')">💬 Chat AI</div>
     <div class="tab" onclick="switchTab('generate')">✨ Generate</div>
@@ -70,114 +102,74 @@
     <div class="tab" onclick="switchTab('snippets')">📚 Snippets</div>
     <div class="tab" onclick="switchTab('knowledge')">📖 Pengetahuan</div>
   </div>
-
-  <div class="whatsapp-banner" onclick="openWhatsApp()">
-    <div>💬 <strong>Bantuan & Aktivasi:</strong> <span id="whatsappNumber">+6281220285226</span></div>
-    <div>Chat WhatsApp 👉</div>
-  </div>
-
-  <!-- TAB CHAT -->
+  <!-- Tab Chat -->
   <div id="tab-chat">
     <div class="flex-between mb-2"><strong>Riwayat Obrolan</strong><button class="btn btn-sm btn-danger" onclick="clearChatHistory()">Clear All</button></div>
     <div class="chat-box" id="chatMessages"></div>
     <div class="flex"><input type="text" id="chatInput" placeholder="Tanyakan..."><button class="btn btn-primary" onclick="sendChatMessage()">Kirim</button></div>
   </div>
-
-  <!-- TAB GENERATE -->
+  <!-- Tab Generate -->
   <div id="tab-generate" class="hidden">
     <div class="grid-2">
-      <div>
-        <label>Deskripsi kode:</label><textarea id="codePrompt" rows="6" placeholder="Contoh..."></textarea>
-        <select id="codeType" class="mt-2"><option value="full">HTML+CSS+JS</option><option value="html">HTML</option><option value="css">CSS</option><option value="js">JS</option></select>
-        <button class="btn btn-primary w-full mt-2" onclick="generateCode()">⚡ Generate</button>
-      </div>
-      <div>
-        <div class="flex-between mb-2"><strong>Hasil</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyCode()">Copy</button><button class="btn btn-sm btn-success" onclick="downloadCode()">⬇</button><button class="btn btn-sm btn-warning" onclick="applyToPreview()">👁</button></div></div>
-        <div class="code-output" id="codeOutput"></div>
-      </div>
+      <div><label>Deskripsi kode:</label><textarea id="codePrompt" rows="6" placeholder="Contoh..."></textarea><select id="codeType" class="mt-2"><option value="full">HTML+CSS+JS</option><option value="html">HTML</option><option value="css">CSS</option><option value="js">JS</option></select><button class="btn btn-primary w-full mt-2" onclick="generateCode()">⚡ Generate</button></div>
+      <div><div class="flex-between mb-2"><strong>Hasil</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyCode()">Copy</button><button class="btn btn-sm btn-success" onclick="downloadCode()">⬇</button><button class="btn btn-sm btn-warning" onclick="applyToPreview()">👁</button></div></div><div class="code-output" id="codeOutput"></div></div>
     </div>
     <iframe id="previewFrame" class="mt-3"></iframe>
   </div>
-
-  <!-- TAB REKAYASA -->
+  <!-- Tab Rekayasa -->
   <div id="tab-rekayasa" class="hidden">
     <div class="grid-2">
-      <div>
-        <label>Kode yang ingin direkayasa:</label><textarea id="rekayasaInputCode" rows="10" placeholder="Tempel kode..."></textarea>
-        <label class="mt-2">Instruksi:</label><textarea id="rekayasaInstruction" rows="3" placeholder="Contoh..."></textarea>
-        <button class="btn btn-primary w-full mt-2" onclick="rekayasaCode()">🔧 Rekayasa</button>
-      </div>
-      <div>
-        <div class="flex-between mb-2"><strong>Hasil</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyRekayasaCode()">Copy</button><button class="btn btn-sm btn-success" onclick="downloadRekayasaCode()">⬇</button><button class="btn btn-sm btn-warning" onclick="previewRekayasaCode()">👁</button></div></div>
-        <div class="code-output" id="rekayasaOutput"></div>
-      </div>
+      <div><label>Kode yang ingin direkayasa:</label><textarea id="rekayasaInputCode" rows="10" placeholder="Tempel kode..."></textarea><label class="mt-2">Instruksi:</label><textarea id="rekayasaInstruction" rows="3" placeholder="Contoh..."></textarea><button class="btn btn-primary w-full mt-2" onclick="rekayasaCode()">🔧 Rekayasa</button></div>
+      <div><div class="flex-between mb-2"><strong>Hasil</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyRekayasaCode()">Copy</button><button class="btn btn-sm btn-success" onclick="downloadRekayasaCode()">⬇</button><button class="btn btn-sm btn-warning" onclick="previewRekayasaCode()">👁</button></div></div><div class="code-output" id="rekayasaOutput"></div></div>
     </div>
     <iframe id="rekayasaPreviewFrame" class="mt-3"></iframe>
   </div>
-
-  <!-- TAB SNIPPETS -->
+  <!-- Tab Snippets -->
   <div id="tab-snippets" class="hidden">
     <div class="flex-between mb-2"><h3>📚 Snippets</h3><button class="btn btn-sm btn-primary" onclick="addCustomSnippet()">+ Tambah</button></div>
     <div class="grid-2" id="snippetsList"></div>
   </div>
-
-  <!-- TAB PENGETAHUAN -->
+  <!-- Tab Pengetahuan -->
   <div id="tab-knowledge" class="hidden">
-    <div class="flex-between mb-2">
-      <h3>📖 Pengetahuan Saya</h3>
-      <div class="flex gap-sm">
-        <button class="btn btn-sm btn-primary" onclick="openUploadModal()">+ Upload</button>
-        <button class="btn btn-sm btn-danger" onclick="clearAllKnowledge()">Hapus Semua</button>
-      </div>
-    </div>
+    <div class="flex-between mb-2"><h3>📖 Pengetahuan Saya</h3><div class="flex gap-sm"><button class="btn btn-sm btn-primary" onclick="openUploadModal()">+ Upload</button><button class="btn btn-sm btn-danger" onclick="clearAllKnowledge()">Hapus Semua</button></div></div>
     <div id="knowledgeList"></div>
   </div>
-
-  <div class="flex gap-sm mt-3 flex-wrap">
-    <button class="btn btn-accent" onclick="openUploadModal()">📤 Upload Pengetahuan</button>
-    <button class="btn btn-warning hidden" id="activationButton" onclick="showActivationModal()">🔑 Upgrade Premium</button>
-  </div>
+  <button class="btn btn-warning w-full mt-3 hidden" id="activationButton" onclick="showActivationModal()">🔑 Upgrade Premium</button>
 </div>
 
-<!-- MODAL UPLOAD PENGETAHUAN -->
+<!-- ========== MODALS ========== -->
+<!-- Upload Pengetahuan -->
 <div class="modal-overlay" id="uploadModal"><div class="modal-content">
-  <h3>📤 Tambah Pengetahuan</h3>
-  <input type="file" id="knowledgeFile" accept=".html,.css,.js,.txt" multiple class="mb-2"/>
-  <textarea id="knowledgeText" rows="6" placeholder="Atau tulis langsung..."></textarea>
+  <h3>📤 Tambah Pengetahuan</h3><input type="file" id="knowledgeFile" accept=".html,.css,.js,.txt" multiple class="mb-2"/><textarea id="knowledgeText" rows="6" placeholder="Atau tulis langsung..."></textarea>
   <div class="flex gap-sm mt-2"><button class="btn btn-primary" onclick="uploadKnowledge()">Simpan</button><button class="btn btn-sm" onclick="closeModal('uploadModal')">Batal</button></div>
 </div></div>
 
-<!-- MODAL EDIT PENGETAHUAN -->
+<!-- Edit Pengetahuan -->
 <div class="modal-overlay" id="editKnowledgeModal"><div class="modal-content">
-  <h3>✏️ Edit Pengetahuan</h3>
-  <input type="hidden" id="editKnowledgeIndex">
-  <input type="text" id="editKnowledgeFilename" placeholder="Nama file" class="mb-2">
-  <textarea id="editKnowledgeContent" rows="10" placeholder="Isi pengetahuan"></textarea>
+  <h3>✏️ Edit Pengetahuan</h3><input type="hidden" id="editKnowledgeIndex"><input type="text" id="editKnowledgeFilename" placeholder="Nama file" class="mb-2"><textarea id="editKnowledgeContent" rows="10" placeholder="Isi pengetahuan"></textarea>
   <div class="flex gap-sm mt-2"><button class="btn btn-primary" onclick="saveEditKnowledge()">Simpan</button><button class="btn btn-sm" onclick="closeModal('editKnowledgeModal')">Batal</button></div>
 </div></div>
 
-<!-- MODAL LOGIN -->
+<!-- Login -->
 <div class="modal-overlay" id="loginModal"><div class="modal-content" style="max-width:420px">
   <h3>Login</h3><input type="text" id="loginUsername" placeholder="Username/Email" class="mb-2"><input type="password" id="loginPassword" placeholder="Password" class="mb-2">
-  <button class="btn btn-success w-full" onclick="handleLogin()">Masuk</button>
-  <div id="loginError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div>
+  <button class="btn btn-success w-full" onclick="handleLogin()">Masuk</button><div id="loginError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div>
   <p class="text-sm mt-2"><span class="link-text" onclick="closeModal('loginModal');showRegisterModal()">Daftar</span> | <span class="link-text" onclick="closeModal('loginModal');showForgotPasswordModal()">Lupa Password?</span></p>
 </div></div>
 
-<!-- MODAL REGISTER -->
+<!-- Register -->
 <div class="modal-overlay" id="registerModal"><div class="modal-content" style="max-width:420px">
   <h3>Daftar</h3><input type="text" id="registerNama" placeholder="Nama Lengkap" class="mb-2"><input type="email" id="registerEmail" placeholder="Email" class="mb-2"><input type="text" id="registerHp" placeholder="No HP" class="mb-2"><input type="text" id="registerUsername" placeholder="Username" class="mb-2"><input type="password" id="registerPassword" placeholder="Password" class="mb-2"><input type="password" id="registerPasswordConfirm" placeholder="Konfirmasi" class="mb-2">
-  <button class="btn btn-primary w-full" onclick="handleRegister()">Daftar</button>
-  <div id="registerError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div><div id="registerSuccess" style="color:var(--success);font-size:.8rem;margin-top:4px;"></div>
+  <button class="btn btn-primary w-full" onclick="handleRegister()">Daftar</button><div id="registerError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div><div id="registerSuccess" style="color:var(--success);font-size:.8rem;margin-top:4px;"></div>
 </div></div>
 
-<!-- MODAL FORGOT PASSWORD -->
+<!-- Forgot Password -->
 <div class="modal-overlay" id="forgotPasswordModal"><div class="modal-content" style="max-width:420px">
   <h3>Lupa Password</h3><input type="text" id="forgotNama" placeholder="Nama" class="mb-2"><input type="email" id="forgotEmail" placeholder="Email" class="mb-2"><input type="text" id="forgotHp" placeholder="No HP" class="mb-2">
   <button class="btn btn-warning w-full" onclick="handleForgotPassword()">Reset via WA</button>
 </div></div>
 
-<!-- MODAL PROFILE -->
+<!-- Profil -->
 <div class="modal-overlay" id="profileModal"><div class="modal-content" style="max-width:450px">
   <h3>Profil Saya</h3>
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><div id="profileAvatar" style="width:60px;height:60px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem">U</div><div><h4 id="profileNameDisplay"></h4><p id="profileRoleDisplay" style="color:var(--text2)"></p></div></div>
@@ -187,34 +179,43 @@
   <div id="profileError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div><div id="profileSuccess" style="color:var(--success);font-size:.8rem;margin-top:4px;"></div>
 </div></div>
 
-<!-- MODAL AKTIVASI -->
+<!-- Aktivasi -->
 <div class="modal-overlay" id="activationModal"><div class="modal-content" style="max-width:420px">
   <h3>Aktivasi Premium</h3><input type="text" id="activationCodeInput" placeholder="Kode" class="mb-2">
   <button class="btn btn-primary w-full" onclick="activatePremiumFromModal()">Aktifkan</button>
   <div id="activationError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div><div id="activationSuccess" style="color:var(--success);font-size:.8rem;margin-top:4px;"></div>
 </div></div>
 
-<!-- MODAL SUPER ADMIN -->
+<!-- Super Admin -->
 <div class="modal-overlay" id="superAdminModal"><div class="modal-content" style="max-width:700px">
   <h3>Panel Super Admin</h3>
   <div class="flex gap-sm mb-3">
     <button class="btn btn-sm btn-outline active" onclick="switchAdminTab('codes')">Kode</button>
     <button class="btn btn-sm btn-outline" onclick="switchAdminTab('users')">User</button>
+    <button class="btn btn-sm btn-outline" onclick="switchAdminTab('packages')">Paket</button>
     <button class="btn btn-sm btn-outline" onclick="switchAdminTab('settings')">Setelan</button>
   </div>
   <div id="adminTabContent"></div>
+  <button class="btn btn-sm mt-3" onclick="closeModal('superAdminModal')">Kembali ke Aplikasi</button>
 </div></div>
+
+<!-- Edit Paket -->
+<div class="modal-overlay" id="editPackageModal"><div class="modal-content" style="max-width:420px">
+  <h3>Edit Paket</h3><input type="hidden" id="editPackageId"><input type="text" id="editPackageName" placeholder="Nama" class="mb-2"><input type="number" id="editPackagePrice" placeholder="Harga" class="mb-2"><input type="number" id="editPackageDays" placeholder="Durasi (hari)" class="mb-2"><input type="text" id="editPackageLabel" placeholder="Label" class="mb-2">
+  <div class="flex gap-sm mt-2"><button class="btn btn-primary" onclick="savePackageChanges()">Simpan</button><button class="btn btn-sm" onclick="closeModal('editPackageModal')">Batal</button></div>
+</div></div>
+
 </body>
 <script>
-// ===== ENCRYPT & DATA DEFAULT =====
+// ===== ENCRYPT & DATA =====
 function encodePassword(pw){return btoa(pw)}
-function decodePassword(hash){return atob(hash)}
+function decodePassword(h){return atob(h)}
 const SUPER_ADMIN = {
   id:'sa',username:'superadmin',password:encodePassword('admin123'),nama:'Super Admin',
   email:'admin@aistudio.com',hp:'081220285226',role:'superadmin',premium:true,premiumExpiry:null,locked:false
 };
 const DEFAULT_WHATSAPP = '081220285226';
-const DEFAULT_PACKAGES = [
+let packages = JSON.parse(localStorage.getItem('ai_packages')) || [
   {id:'premium1',name:'Premium Bulanan',price:50000,days:30,label:'1 Bulan'},
   {id:'premium3',name:'Premium 3 Bulan',price:120000,days:90,label:'3 Bulan'}
 ];
@@ -234,6 +235,8 @@ function getValidCodes(){return getStore('codes',{})}
 function saveValidCodes(c){setStore('codes',c)}
 function getKnowledge(){return getStore('knowledge',[])}
 function saveKnowledge(k){setStore('knowledge',k)}
+function getPackages(){return packages}
+function savePackages(p){packages=p;localStorage.setItem('ai_packages',JSON.stringify(p))}
 
 // ===== WHATSAPP =====
 function formatWA(raw){let n=raw.replace(/[^0-9]/g,'');if(n.startsWith('0'))n='62'+n.substring(1);if(!n.startsWith('62'))n='62'+n;return '+'+n}
@@ -259,39 +262,37 @@ function toggleTheme(){
 }
 (function(){if(localStorage.getItem('ai_theme')==='light')document.body.classList.add('light-theme')})();
 
-// ===== UI =====
+// ===== AUTH UI =====
 function updateUI(){
   const s=getSession();
-  document.getElementById('loginButton').classList.toggle('hidden',!!s);
-  document.getElementById('profileButton').classList.toggle('hidden',!s);
-  document.getElementById('adminButton').classList.toggle('hidden',!s||s.role!=='superadmin');
-  document.getElementById('logoutButton').classList.toggle('hidden',!s);
-  const badge=document.getElementById('userBadge');
-  if(s){badge.classList.remove('hidden');badge.textContent=s.nama}else{badge.classList.add('hidden')}
-  document.getElementById('activationButton').classList.toggle('hidden',!s||s.premium||s.role==='superadmin');
+  document.getElementById('landingPage').classList.toggle('hidden',!!s);
+  document.getElementById('dashboardPage').classList.toggle('hidden',!s);
+  if(!s) return;
+  document.getElementById('profileButton').classList.remove('hidden');
+  document.getElementById('adminButton').classList.toggle('hidden',s.role!=='superadmin');
+  document.getElementById('logoutButton').classList.remove('hidden');
+  const badge=document.getElementById('userBadge');badge.classList.remove('hidden');badge.textContent=s.nama;
+  document.getElementById('activationButton').classList.toggle('hidden',s.premium||s.role==='superadmin');
 }
-
-// ===== AUTH =====
 function showLoginModal(){openModal('loginModal')}
 function showRegisterModal(){openModal('registerModal')}
 function showForgotPasswordModal(){openModal('forgotPasswordModal')}
 function showProfileModal(){openModal('profileModal');loadProfile()}
 function showActivationModal(){openModal('activationModal')}
 
+// ===== LOGIN =====
 function handleLogin(){
   const u=document.getElementById('loginUsername').value.trim(),p=document.getElementById('loginPassword').value;
   const err=document.getElementById('loginError');err.textContent='';
   if(!u||!p){err.textContent='Isi semua field!';return}
   if(u===SUPER_ADMIN.username&&p===decodePassword(SUPER_ADMIN.password)){
-    saveSession(SUPER_ADMIN);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();
-    showToast('Login Super Admin','success');return;
+    saveSession(SUPER_ADMIN);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();showToast('Login Super Admin','success');return;
   }
   const users=getAllUsers();
   const user=users.find(x=>(x.username===u||x.email===u)&&p===decodePassword(x.password));
   if(!user){err.textContent='Username/password salah!';return}
   if(user.locked){err.textContent='Akun terkunci!';return}
-  saveSession(user);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();
-  showToast('Login berhasil','success');
+  saveSession(user);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();showToast('Login berhasil','success');
 }
 function handleRegister(){
   const n=document.getElementById('registerNama').value.trim(),e=document.getElementById('registerEmail').value.trim(),
@@ -309,7 +310,7 @@ function handleRegister(){
   users.push(nu);saveAllUsers(users);
   suc.textContent='Pendaftaran berhasil! Silakan login.';setTimeout(()=>{closeModal('registerModal');showLoginModal()},2000);
 }
-function handleLogout(){clearSession();updateUI();document.getElementById('chatMessages').innerHTML='';showToast('Logout','info')}
+function handleLogout(){clearSession();updateUI();showToast('Logout','info')}
 
 // ===== PREMIUM =====
 function activatePremiumFromModal(){
@@ -321,7 +322,7 @@ function activatePremiumFromModal(){
   const codes=getValidCodes();const cd=codes[code];
   if(!cd||cd.used){err.textContent='Kode tidak valid!';return}
   const users=getAllUsers();const idx=users.findIndex(x=>x.id===s.id);
-  const pkg=DEFAULT_PACKAGES.find(p=>p.id===cd.packageId)||DEFAULT_PACKAGES[0];
+  const pkg=getPackages().find(p=>p.id===cd.packageId)||getPackages()[0];
   const exp=new Date(Date.now()+pkg.days*86400000);
   users[idx].premium=true;users[idx].premiumExpiry=exp.toISOString();saveAllUsers(users);
   cd.used=true;cd.usedBy=s.username;cd.usedAt=new Date().toISOString();codes[code]=cd;saveValidCodes(codes);
@@ -350,10 +351,7 @@ function saveProfile(){
 }
 function deleteAccount(){
   const s=getSession();if(!s||s.role==='superadmin')return;
-  if(confirm('Hapus akun? Semua data hilang.')){
-    const users=getAllUsers().filter(x=>x.id!==s.id);saveAllUsers(users);
-    removeStore('chat_'+s.id);clearSession();updateUI();closeModal('profileModal');showToast('Akun dihapus','warning');
-  }
+  if(confirm('Hapus akun?')){const users=getAllUsers().filter(x=>x.id!==s.id);saveAllUsers(users);removeStore('chat_'+s.id);clearSession();updateUI();closeModal('profileModal');showToast('Akun dihapus','warning');}
 }
 
 // ===== SUPER ADMIN =====
@@ -361,10 +359,13 @@ function showSuperAdminPanel(){openModal('superAdminModal');switchAdminTab('code
 function switchAdminTab(tab){
   const c=document.getElementById('adminTabContent');
   if(tab==='codes'){
-    c.innerHTML=`<h4>Buat Kode</h4><input id="adminActUser" placeholder="Username/email" class="mb-2"><select id="adminActPackage" class="mb-2">${DEFAULT_PACKAGES.map(p=>`<option value="${p.id}">${p.name} - Rp ${p.price}</option>`).join('')}</select><button class="btn btn-success w-full" onclick="adminCreateCode()">Buat Kode</button><div id="adminCodeResult"></div><h4 class="mt-3">Kode Aktif</h4><div id="activeCodesList"></div>`;
+    c.innerHTML=`<h4>Buat Kode</h4><input id="adminActUser" placeholder="Username/email" class="mb-2"><select id="adminActPackage" class="mb-2">${getPackages().map(p=>`<option value="${p.id}">${p.name} - Rp ${p.price}</option>`).join('')}</select><button class="btn btn-success w-full" onclick="adminCreateCode()">Buat Kode</button><div id="adminCodeResult"></div><h4 class="mt-3">Kode Aktif</h4><div id="activeCodesList"></div>`;
     renderActiveCodes();
   }else if(tab==='users'){
     c.innerHTML=`<table style="width:100%;border-collapse:collapse">${getAllUsers().map(u=>`<tr><td>${u.nama}</td><td>${u.username}</td><td>${u.premium?'Ya':'Tidak'}</td><td><button class="btn btn-sm btn-warning" onclick="toggleLockUser('${u.id}')">${u.locked?'Buka':'Kunci'}</button><button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')">Hapus</button></td></tr>`).join('')}</table>`;
+  }else if(tab==='packages'){
+    c.innerHTML=`<h4>Daftar Paket</h4><div id="packageList"></div><button class="btn btn-sm btn-primary mt-2" onclick="addNewPackage()">+ Tambah Paket</button>`;
+    renderPackageList();
   }else if(tab==='settings'){
     c.innerHTML=`<input id="adminWA" value="${getWhatsAppNumber()}" class="mb-2"><button class="btn btn-success w-full" onclick="saveAdminWA()">Simpan WA</button><hr class="mt-3 mb-3"><input type="password" id="adminNewPass" placeholder="Password Baru" class="mb-2"><button class="btn btn-warning w-full" onclick="changeAdminPass()">Ganti Password</button><input id="adminNewName" value="${SUPER_ADMIN.nama}" class="mb-2 mt-3"><button class="btn btn-info w-full" onclick="changeAdminName()">Ganti Nama</button><hr class="mt-3 mb-3"><button class="btn btn-danger w-full" onclick="resetAllData()">Reset Semua Data</button>`;
   }
@@ -381,11 +382,42 @@ function renderActiveCodes(){
   document.getElementById('activeCodesList').innerHTML=Object.keys(codes).map(c=>`<div>${c} - ${codes[c].packageId} ${codes[c].used?'<span style="color:red">Terpakai</span>':'<span style="color:green">Aktif</span>'}</div>`).join('')||'Tidak ada';
 }
 function toggleLockUser(id){const users=getAllUsers();const u=users.find(x=>x.id===id);if(u){u.locked=!u.locked;saveAllUsers(users);switchAdminTab('users')}}
-function deleteUser(id){if(confirm('Hapus user?')){const users=getAllUsers().filter(x=>x.id!==id);saveAllUsers(users);switchAdminTab('users')}}
+function deleteUser(id){if(confirm('Hapus user?')){saveAllUsers(getAllUsers().filter(x=>x.id!==id));switchAdminTab('users')}}
+function renderPackageList(){
+  const pkgs=getPackages();
+  document.getElementById('packageList').innerHTML=pkgs.map((p,i)=>`<div class="flex-between"><span>${p.name} - Rp ${p.price} (${p.label})</span><div><button class="btn btn-sm btn-warning" onclick="editPackage('${p.id}')">Edit</button><button class="btn btn-sm btn-danger" onclick="deletePackage('${p.id}')">Hapus</button></div></div>`).join('');
+}
+function addNewPackage(){
+  const id='pkg_'+Date.now();
+  const pkg={id,name:'Paket Baru',price:0,days:30,label:'1 Bulan'};
+  const pkgs=getPackages();pkgs.push(pkg);savePackages(pkgs);
+  renderPackageList();
+}
+function editPackage(id){
+  const pkg=getPackages().find(p=>p.id===id);if(!pkg)return;
+  document.getElementById('editPackageId').value=id;
+  document.getElementById('editPackageName').value=pkg.name;
+  document.getElementById('editPackagePrice').value=pkg.price;
+  document.getElementById('editPackageDays').value=pkg.days;
+  document.getElementById('editPackageLabel').value=pkg.label;
+  openModal('editPackageModal');
+}
+function savePackageChanges(){
+  const id=document.getElementById('editPackageId').value;
+  const name=document.getElementById('editPackageName').value.trim();
+  const price=parseInt(document.getElementById('editPackagePrice').value);
+  const days=parseInt(document.getElementById('editPackageDays').value);
+  const label=document.getElementById('editPackageLabel').value.trim();
+  if(!name||!price||!days||!label)return;
+  const pkgs=getPackages();const pkg=pkgs.find(p=>p.id===id);if(!pkg)return;
+  pkg.name=name;pkg.price=price;pkg.days=days;pkg.label=label;savePackages(pkgs);
+  closeModal('editPackageModal');switchAdminTab('packages');
+}
+function deletePackage(id){if(confirm('Hapus paket?')){const pkgs=getPackages().filter(p=>p.id!==id);savePackages(pkgs);switchAdminTab('packages')}}
 function saveAdminWA(){const v=document.getElementById('adminWA').value.trim();if(v){saveWhatsAppNumber(v);updateWA();showToast('WA disimpan','success')}}
 function changeAdminPass(){const p=document.getElementById('adminNewPass').value.trim();if(p){SUPER_ADMIN.password=encodePassword(p);showToast('Password diubah','success')}}
 function changeAdminName(){const n=document.getElementById('adminNewName').value.trim();if(n){SUPER_ADMIN.nama=n;const s=getSession();if(s&&s.role==='superadmin'){s.nama=n;saveSession(s)}showToast('Nama diubah','success')}}
-function resetAllData(){if(confirm('RESET SEMUA?')){localStorage.clear();saveAllUsers([SUPER_ADMIN]);updateWA();updateUI();closeModal('superAdminModal');showToast('Data direset','warning')}}
+function resetAllData(){if(confirm('RESET SEMUA?')){localStorage.clear();saveAllUsers([SUPER_ADMIN]);savePackages([...DEFAULT_PACKAGES]);updateWA();updateUI();closeModal('superAdminModal');showToast('Data direset','warning')}}
 
 // ===== FORGOT PASSWORD =====
 function handleForgotPassword(){
@@ -404,54 +436,30 @@ function loadChatHistory(){
 function deleteChatMessage(i){const msgs=getChatHistory();msgs.splice(i,1);saveChatHistory(msgs);loadChatHistory()}
 function clearChatHistory(){saveChatHistory([]);loadChatHistory()}
 
-// ===== MANAJEMEN PENGETAHUAN (TAB) =====
+// ===== PENGETAHUAN =====
 function renderKnowledgeList(){
-  const knowledge=getKnowledge(),list=document.getElementById('knowledgeList');
-  list.innerHTML=knowledge.map((k,i)=>`
-    <div class="knowledge-item">
-      <div><strong>${k.filename}</strong><br><small style="color:var(--text2)">${k.content.substring(0,100)}...</small></div>
-      <div class="flex gap-sm">
-        <button class="btn btn-sm btn-warning" onclick="editKnowledge(${i})">Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteKnowledge(${i})">Hapus</button>
-      </div>
-    </div>
-  `).join('')||'<p style="color:var(--text2)">Belum ada pengetahuan.</p>';
+  const k=getKnowledge(),list=document.getElementById('knowledgeList');
+  list.innerHTML=k.map((x,i)=>`<div class="knowledge-item"><div><strong>${x.filename}</strong><br><small>${x.content.substring(0,100)}...</small></div><div class="flex gap-sm"><button class="btn btn-sm btn-warning" onclick="editKnowledge(${i})">Edit</button><button class="btn btn-sm btn-danger" onclick="deleteKnowledge(${i})">Hapus</button></div></div>`).join('')||'<p>Belum ada pengetahuan.</p>';
 }
-function editKnowledge(index){
-  const knowledge=getKnowledge(),item=knowledge[index];
-  document.getElementById('editKnowledgeIndex').value=index;
-  document.getElementById('editKnowledgeFilename').value=item.filename;
-  document.getElementById('editKnowledgeContent').value=item.content;
-  openModal('editKnowledgeModal');
-}
+function editKnowledge(i){const k=getKnowledge()[i];document.getElementById('editKnowledgeIndex').value=i;document.getElementById('editKnowledgeFilename').value=k.filename;document.getElementById('editKnowledgeContent').value=k.content;openModal('editKnowledgeModal')}
 function saveEditKnowledge(){
-  const index=parseInt(document.getElementById('editKnowledgeIndex').value);
-  const knowledge=getKnowledge();
-  knowledge[index].filename=document.getElementById('editKnowledgeFilename').value.trim()||knowledge[index].filename;
-  knowledge[index].content=document.getElementById('editKnowledgeContent').value;
-  saveKnowledge(knowledge);renderKnowledgeList();closeModal('editKnowledgeModal');showToast('Pengetahuan diperbarui','success');
+  const i=parseInt(document.getElementById('editKnowledgeIndex').value),k=getKnowledge();
+  k[i].filename=document.getElementById('editKnowledgeFilename').value.trim()||k[i].filename;
+  k[i].content=document.getElementById('editKnowledgeContent').value;
+  saveKnowledge(k);renderKnowledgeList();closeModal('editKnowledgeModal');showToast('Pengetahuan diperbarui','success');
 }
-function deleteKnowledge(index){
-  if(confirm('Hapus pengetahuan ini?')){const knowledge=getKnowledge();knowledge.splice(index,1);saveKnowledge(knowledge);renderKnowledgeList();showToast('Pengetahuan dihapus','warning')}
-}
-function clearAllKnowledge(){
-  if(confirm('Hapus SEMUA pengetahuan?')){saveKnowledge([]);renderKnowledgeList();showToast('Semua pengetahuan dihapus','warning')}
-}
-
-// ===== UPLOAD PENGETAHUAN =====
+function deleteKnowledge(i){if(confirm('Hapus?')){const k=getKnowledge();k.splice(i,1);saveKnowledge(k);renderKnowledgeList();showToast('Dihapus','warning')}}
+function clearAllKnowledge(){if(confirm('Hapus semua?')){saveKnowledge([]);renderKnowledgeList()}}
 function openUploadModal(){openModal('uploadModal')}
 async function uploadKnowledge(){
   const files=document.getElementById('knowledgeFile').files,text=document.getElementById('knowledgeText').value.trim();
-  const knowledge=getKnowledge();
-  for(const file of files){knowledge.push({filename:file.name,content:await file.text()})}
-  if(text){knowledge.push({filename:'manual_'+Date.now()+'.txt',content:text})}
-  saveKnowledge(knowledge);
-  document.getElementById('knowledgeText').value='';document.getElementById('knowledgeFile').value='';
-  closeModal('uploadModal');showToast('Pengetahuan disimpan','success');
-  renderKnowledgeList();
+  const k=getKnowledge();
+  for(const f of files){k.push({filename:f.name,content:await f.text()})}
+  if(text){k.push({filename:'manual_'+Date.now()+'.txt',content:text})}
+  saveKnowledge(k);renderKnowledgeList();closeModal('uploadModal');showToast('Pengetahuan disimpan','success');
 }
 
-// ===== NAVIGASI TAB =====
+// ===== NAVIGASI =====
 function switchTab(tab){
   ['chat','generate','rekayasa','snippets','knowledge'].forEach(id=>document.getElementById('tab-'+id).classList.add('hidden'));
   document.getElementById('tab-'+tab).classList.remove('hidden');
@@ -463,25 +471,26 @@ function switchTab(tab){
 // ===== INIT =====
 (function(){
   const users=getAllUsers();if(!users.find(u=>u.role==='superadmin'))users.push(SUPER_ADMIN);saveAllUsers(users);
-  updateWA();updateUI();renderSnippets();renderKnowledgeList();
+  updateWA();updateUI();
+  if(getSession()){switchTab('chat');loadChatHistory();renderSnippets();}
 })();
 </script>
 <script>
 // ===== SYSTEM PROMPT =====
-const SYSTEM_PROMPT = `Kamu adalah AI Code Builder Pro, asisten pemrograman web paling lengkap. Kuasai HTML5, CSS3, JS ES6+, Web API, best practice. Berikan kode valid, semantik, responsif. Jika merekayasa, perbaiki sesuai instruksi.`;
+const SYSTEM_PROMPT = `Kamu AI Code Builder Pro, kuasai HTML5, CSS3, JS ES6+, Web API, best practice. Beri kode valid, semantik, responsif.`;
 
 async function callAI(prompt, useInternet=true){
-  const knowledge=getKnowledge();let full=SYSTEM_PROMPT;
-  if(knowledge.length) full+='\n\nPengetahuan user:\n'+knowledge.map(k=>`[${k.filename}]:\n${k.content}`).join('\n\n');
+  const k=getKnowledge();let full=SYSTEM_PROMPT;
+  if(k.length) full+='\n\nPengetahuan user:\n'+k.map(x=>`[${x.filename}]:\n${x.content}`).join('\n\n');
   full+='\n\nUser: '+prompt+'\nAI:';
   const apis=[
     {url:'https://api.akuari.my.id/ai/gpt4?prompt='+encodeURIComponent(full),parse:d=>d.result||d.respon},
     {url:'https://api.akuari.my.id/ai/gpt3?prompt='+encodeURIComponent(full),parse:d=>d.result||d.respon},
     {url:'https://api.akuari.my.id/ai/gpt?prompt='+encodeURIComponent(full),parse:d=>d.result||d.respon}
   ];
-  for(const api of apis){try{const r=await fetch(api.url);const d=await r.json();const reply=api.parse(d);if(reply)return reply}catch(e){}}
+  for(const a of apis){try{const r=await fetch(a.url);const d=await r.json();const reply=a.parse(d);if(reply)return reply}catch(e){}}
   if(useInternet){try{const r=await fetch('https://api.duckduckgo.com/?q='+encodeURIComponent(prompt)+'&format=json');const d=await r.json();if(d.AbstractText)return d.AbstractText}catch(e){}}
-  return 'Maaf, AI tidak tersedia saat ini.';
+  return 'Maaf, AI tidak tersedia.';
 }
 
 // ===== CHAT =====
@@ -496,7 +505,7 @@ async function sendChatMessage(){
 // ===== GENERATE =====
 async function generateCode(){
   const prompt=document.getElementById('codePrompt').value.trim(),type=document.getElementById('codeType').value;
-  if(!prompt)return showToast('Masukkan deskripsi kode!','error');
+  if(!prompt)return showToast('Masukkan deskripsi!','error');
   let p='';if(type==='full')p='Buat HTML+CSS+JS lengkap: '+prompt;else if(type==='html')p='Buat HTML: '+prompt;else if(type==='css')p='Buat CSS: '+prompt;else p='Buat JavaScript: '+prompt;
   document.getElementById('codeOutput').textContent='Memproses...';
   const res=await callAI(p);document.getElementById('codeOutput').textContent=res;
@@ -529,23 +538,11 @@ function renderSnippets(){
   document.getElementById('snippetsList').innerHTML = snippets.map((s,i) => `
     <div class="snippet-card" onclick="loadSnippet(${i})">
       <strong>${s.title}</strong>
-      <pre style="font-size:0.75rem; max-height:100px; overflow:auto; margin-top:4px;">${escapeHTML(s.code.substring(0,150))}...</pre>
+      <pre style="font-size:0.75rem; max-height:100px; overflow:auto; margin-top:4px;">${s.code.substring(0,150)}...</pre>
     </div>
   `).join('');
 }
-function escapeHTML(str){return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m])}
-function loadSnippet(i){
-  const s=snippets[i];
-  document.getElementById('rekayasaInputCode').value=s.code;
-  document.getElementById('rekayasaInstruction').value='Sempurnakan: '+s.title;
-  switchTab('rekayasa');
-}
-function addCustomSnippet(){
-  const t=prompt('Judul:');if(!t)return;
-  const c=prompt('Kode:');if(!c)return;
-  snippets.push({title:t,code:c});
-  localStorage.setItem('ai_snippets',JSON.stringify(snippets));
-  renderSnippets();
-}
+function loadSnippet(i){const s=snippets[i];document.getElementById('rekayasaInputCode').value=s.code;document.getElementById('rekayasaInstruction').value='Sempurnakan: '+s.title;switchTab('rekayasa')}
+function addCustomSnippet(){const t=prompt('Judul:');if(!t)return;const c=prompt('Kode:');if(!c)return;snippets.push({title:t,code:c});localStorage.setItem('ai_snippets',JSON.stringify(snippets));renderSnippets()}
 </script>
 </html>
