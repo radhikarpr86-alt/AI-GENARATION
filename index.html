@@ -3,91 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>AI Code Builder Pro v5.0</title>
+  <title>AI Code Builder Pro v5.5</title>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;font:inherit}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}
     :root{
-      --bg:#0d1117;--bg-secondary:#161b22;--bg-tertiary:#21262d;--border:#30363d;
-      --accent:#58a6ff;--accent-secondary:#1f6feb;--success:#3fb950;--danger:#f85149;--warning:#d2991d;
-      --text:#c9d1d9;--text-secondary:#8b949e;
+      --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;
+      --accent:#9b59b6;--accent2:#8e44ad;--success:#2ecc71;--danger:#e74c3c;--warning:#f1c40f;--info:#3498db;
+      --text:#c9d1d9;--text2:#8b949e;
     }
     body.light-theme{
-      --bg:#ffffff;--bg-secondary:#f6f8fa;--bg-tertiary:#eaeef2;--border:#d0d7de;
-      --text:#24292f;--text-secondary:#57606a;
+      --bg:#ffffff;--bg2:#f6f8fa;--bg3:#eaeef2;--border:#d0d7de;--text:#24292f;--text2:#57606a;
     }
     .hidden{display:none!important}
     .flex{display:flex;align-items:center;gap:8px}.flex-between{justify-content:space-between}.flex-wrap{flex-wrap:wrap}.w-full{width:100%}
-    .btn{padding:8px 16px;border-radius:6px;font-weight:600;cursor:pointer;border:none;background:var(--bg-tertiary);color:var(--text);transition:0.2s}.btn:hover{opacity:0.8}
-    .btn-accent{background:var(--accent-secondary);color:#fff}.btn-success{background:var(--success);color:#fff}.btn-danger{background:var(--danger);color:#fff}.btn-warning{background:var(--warning);color:#000}.btn-sm{padding:4px 10px;font-size:0.85rem}
-    textarea,input,select{width:100%;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:monospace;resize:vertical}
+    .btn{padding:8px 16px;border-radius:6px;font-weight:600;cursor:pointer;border:none;background:var(--bg3);color:var(--text);transition:.2s;font-size:.9rem;font-family:inherit}
+    .btn:hover{opacity:.8}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-accent{background:var(--accent2);color:#fff}
+    .btn-success{background:var(--success);color:#fff}
+    .btn-danger{background:var(--danger);color:#fff}
+    .btn-warning{background:var(--warning);color:#000}
+    .btn-info{background:var(--info);color:#fff}
+    .btn-sm{padding:4px 10px;font-size:.8rem}
+    textarea,input,select{width:100%;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:monospace;resize:vertical}
     .code-output{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;min-height:200px;white-space:pre-wrap;font-family:monospace;overflow:auto;max-height:400px}
     iframe{border:1px solid var(--border);border-radius:6px;width:100%;height:300px;background:#fff}
-    .chat-box{max-height:350px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;padding:12px;background:var(--bg-secondary);margin-bottom:12px}
+    .chat-box{max-height:350px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;padding:12px;background:var(--bg2);margin-bottom:12px}
     .chat-msg{margin-bottom:8px;position:relative}.user-msg{text-align:right;color:var(--accent)}.ai-msg{text-align:left}
     .delete-msg{position:absolute;top:0;right:0;background:var(--danger);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:none}
     .chat-msg:hover .delete-msg{display:block}
     .container{max-width:1100px;margin:0 auto;padding:16px}
     header{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:20px;flex-wrap:wrap;gap:8px}
     .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-    .tab{padding:6px 16px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--bg-secondary);color:var(--text)}.tab.active{background:var(--accent-secondary);color:#fff;border-color:var(--accent-secondary)}
+    .tab{padding:6px 16px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:var(--bg2);color:var(--text)}.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:1000}
-    .modal-content{background:var(--bg-secondary);padding:24px;border-radius:12px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto}
+    .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:1000}
+    .modal-content{background:var(--bg2);padding:24px;border-radius:12px;max-width:500px;width:90%;max-height:85vh;overflow-y:auto;border:1px solid var(--border)}
     .toast-container{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;max-width:90%}
-    .toast{background:var(--bg-secondary);color:var(--text);padding:12px 20px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;border-left:4px solid var(--accent);opacity:0;transform:translateY(20px);transition:0.2s}.toast.show{opacity:1;transform:translateY(0)}
+    .toast{background:var(--bg2);color:var(--text);padding:12px 20px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;border-left:4px solid var(--accent);opacity:0;transform:translateY(20px);transition:.2s}.toast.show{opacity:1;transform:translateY(0)}.toast-success{border-left-color:var(--success)}.toast-error{border-left-color:var(--danger)}.toast-warning{border-left-color:var(--warning)}
+    .whatsapp-banner{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;padding:12px 16px;border-radius:8px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .snippet-card{background:var(--bg2);padding:12px;border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:.2s}.snippet-card:hover{border-color:var(--accent)}
+    .knowledge-item{background:var(--bg2);padding:12px;border-radius:6px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
     @media(max-width:768px){.grid-2{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-
+<div class="toast-container" id="toastContainer"></div>
 <div class="container" id="app">
-  <!-- HEADER -->
   <header>
-    <h1 style="font-size:1.5rem">🤖 AI Code Builder Pro v5.0</h1>
+    <h1 style="font-size:1.5rem">🤖 AI Code Builder Pro v5.5</h1>
     <div class="flex gap-sm flex-wrap">
-      <button class="btn btn-sm" onclick="toggleTheme()">🌓 Tema</button>
+      <button class="btn btn-sm" onclick="toggleTheme()">🌓</button>
       <button class="btn btn-sm" id="loginButton" onclick="showLoginModal()">Login</button>
-      <button class="btn btn-sm btn-accent hidden" id="profileButton" onclick="showProfileModal()">Profil</button>
+      <button class="btn btn-sm btn-primary hidden" id="profileButton" onclick="showProfileModal()">Profil</button>
       <button class="btn btn-sm btn-warning hidden" id="adminButton" onclick="showSuperAdminPanel()">Admin</button>
-      <span id="userBadge" class="hidden" style="background:var(--bg-tertiary);padding:4px 10px;border-radius:20px;font-size:0.85rem;"></span>
+      <span id="userBadge" class="hidden" style="background:var(--bg3);padding:4px 10px;border-radius:20px;font-size:0.85rem;"></span>
       <button class="btn btn-sm btn-danger hidden" id="logoutButton" onclick="handleLogout()">Logout</button>
     </div>
   </header>
 
-  <!-- TABS -->
   <div class="tabs">
     <div class="tab active" onclick="switchTab('chat')">💬 Chat AI</div>
     <div class="tab" onclick="switchTab('generate')">✨ Generate</div>
     <div class="tab" onclick="switchTab('rekayasa')">🔧 Rekayasa</div>
     <div class="tab" onclick="switchTab('snippets')">📚 Snippets</div>
+    <div class="tab" onclick="switchTab('knowledge')">📖 Pengetahuan</div>
+  </div>
+
+  <div class="whatsapp-banner" onclick="openWhatsApp()">
+    <div>💬 <strong>Bantuan & Aktivasi:</strong> <span id="whatsappNumber">+6281220285226</span></div>
+    <div>Chat WhatsApp 👉</div>
   </div>
 
   <!-- TAB CHAT -->
   <div id="tab-chat">
-    <div class="flex-between mb-2">
-      <strong>Riwayat Obrolan</strong>
-      <button class="btn btn-sm btn-danger" onclick="clearChatHistory()">Clear All</button>
-    </div>
+    <div class="flex-between mb-2"><strong>Riwayat Obrolan</strong><button class="btn btn-sm btn-danger" onclick="clearChatHistory()">Clear All</button></div>
     <div class="chat-box" id="chatMessages"></div>
-    <div class="flex">
-      <input type="text" id="chatInput" placeholder="Tanyakan apa saja... AI belajar dari kode yang diupload." />
-      <button class="btn btn-accent" onclick="sendChatMessage()">Kirim</button>
-    </div>
+    <div class="flex"><input type="text" id="chatInput" placeholder="Tanyakan..."><button class="btn btn-primary" onclick="sendChatMessage()">Kirim</button></div>
   </div>
 
   <!-- TAB GENERATE -->
   <div id="tab-generate" class="hidden">
     <div class="grid-2">
       <div>
-        <label class="text-sm">Deskripsikan kode yang ingin dibuat:</label>
-        <textarea id="codePrompt" rows="6" placeholder="Contoh: Buat halaman login responsif..."></textarea>
-        <select id="codeType" class="mt-2"><option value="full">HTML+CSS+JS</option><option value="html">HTML</option><option value="css">CSS</option><option value="js">JavaScript</option></select>
-        <button class="btn btn-accent w-full mt-2" onclick="generateCode()">⚡ Generate</button>
+        <label>Deskripsi kode:</label><textarea id="codePrompt" rows="6" placeholder="Contoh..."></textarea>
+        <select id="codeType" class="mt-2"><option value="full">HTML+CSS+JS</option><option value="html">HTML</option><option value="css">CSS</option><option value="js">JS</option></select>
+        <button class="btn btn-primary w-full mt-2" onclick="generateCode()">⚡ Generate</button>
       </div>
       <div>
         <div class="flex-between mb-2"><strong>Hasil</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyCode()">Copy</button><button class="btn btn-sm btn-success" onclick="downloadCode()">⬇</button><button class="btn btn-sm btn-warning" onclick="applyToPreview()">👁</button></div></div>
-        <div class="code-output" id="codeOutput">// Kode muncul di sini</div>
+        <div class="code-output" id="codeOutput"></div>
       </div>
     </div>
     <iframe id="previewFrame" class="mt-3"></iframe>
@@ -97,15 +103,13 @@
   <div id="tab-rekayasa" class="hidden">
     <div class="grid-2">
       <div>
-        <label class="text-sm">Tempel kode yang ingin direkayasa:</label>
-        <textarea id="rekayasaInputCode" rows="10" placeholder="Tempel kode..."></textarea>
-        <label class="text-sm mt-2">Instruksi perbaikan:</label>
-        <textarea id="rekayasaInstruction" rows="3" placeholder="Contoh: Buat lebih responsif..."></textarea>
-        <button class="btn btn-accent w-full mt-2" onclick="rekayasaCode()">🔧 Rekayasa</button>
+        <label>Kode yang ingin direkayasa:</label><textarea id="rekayasaInputCode" rows="10" placeholder="Tempel kode..."></textarea>
+        <label class="mt-2">Instruksi:</label><textarea id="rekayasaInstruction" rows="3" placeholder="Contoh..."></textarea>
+        <button class="btn btn-primary w-full mt-2" onclick="rekayasaCode()">🔧 Rekayasa</button>
       </div>
       <div>
         <div class="flex-between mb-2"><strong>Hasil</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyRekayasaCode()">Copy</button><button class="btn btn-sm btn-success" onclick="downloadRekayasaCode()">⬇</button><button class="btn btn-sm btn-warning" onclick="previewRekayasaCode()">👁</button></div></div>
-        <div class="code-output" id="rekayasaOutput">// Hasil rekayasa</div>
+        <div class="code-output" id="rekayasaOutput"></div>
       </div>
     </div>
     <iframe id="rekayasaPreviewFrame" class="mt-3"></iframe>
@@ -113,11 +117,22 @@
 
   <!-- TAB SNIPPETS -->
   <div id="tab-snippets" class="hidden">
-    <div class="flex-between mb-2"><h3>📚 Snippets</h3><button class="btn btn-sm btn-accent" onclick="addCustomSnippet()">+ Tambah</button></div>
+    <div class="flex-between mb-2"><h3>📚 Snippets</h3><button class="btn btn-sm btn-primary" onclick="addCustomSnippet()">+ Tambah</button></div>
     <div class="grid-2" id="snippetsList"></div>
   </div>
 
-  <!-- BUTTON UPLOAD PENGETAHUAN & AKTIVASI -->
+  <!-- TAB PENGETAHUAN -->
+  <div id="tab-knowledge" class="hidden">
+    <div class="flex-between mb-2">
+      <h3>📖 Pengetahuan Saya</h3>
+      <div class="flex gap-sm">
+        <button class="btn btn-sm btn-primary" onclick="openUploadModal()">+ Upload</button>
+        <button class="btn btn-sm btn-danger" onclick="clearAllKnowledge()">Hapus Semua</button>
+      </div>
+    </div>
+    <div id="knowledgeList"></div>
+  </div>
+
   <div class="flex gap-sm mt-3 flex-wrap">
     <button class="btn btn-accent" onclick="openUploadModal()">📤 Upload Pengetahuan</button>
     <button class="btn btn-warning hidden" id="activationButton" onclick="showActivationModal()">🔑 Upgrade Premium</button>
@@ -125,90 +140,111 @@
 </div>
 
 <!-- MODAL UPLOAD PENGETAHUAN -->
-<div class="modal-overlay" id="uploadModal">
-  <div class="modal-content">
-    <h3>📤 Upload Pengetahuan</h3>
-    <p class="text-sm" style="color:var(--text-secondary)">Upload file atau tulis langsung.</p>
-    <input type="file" id="knowledgeFile" accept=".html,.css,.js,.txt" multiple class="mb-2"/>
-    <textarea id="knowledgeText" rows="6" placeholder="Atau tulis langsung teks/kode di sini..."></textarea>
-    <div class="flex gap-sm mt-2">
-      <button class="btn btn-accent" onclick="uploadKnowledge()">Simpan</button>
-      <button class="btn btn-sm" onclick="closeUploadModal()">Batal</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="uploadModal"><div class="modal-content">
+  <h3>📤 Tambah Pengetahuan</h3>
+  <input type="file" id="knowledgeFile" accept=".html,.css,.js,.txt" multiple class="mb-2"/>
+  <textarea id="knowledgeText" rows="6" placeholder="Atau tulis langsung..."></textarea>
+  <div class="flex gap-sm mt-2"><button class="btn btn-primary" onclick="uploadKnowledge()">Simpan</button><button class="btn btn-sm" onclick="closeModal('uploadModal')">Batal</button></div>
+</div></div>
+
+<!-- MODAL EDIT PENGETAHUAN -->
+<div class="modal-overlay" id="editKnowledgeModal"><div class="modal-content">
+  <h3>✏️ Edit Pengetahuan</h3>
+  <input type="hidden" id="editKnowledgeIndex">
+  <input type="text" id="editKnowledgeFilename" placeholder="Nama file" class="mb-2">
+  <textarea id="editKnowledgeContent" rows="10" placeholder="Isi pengetahuan"></textarea>
+  <div class="flex gap-sm mt-2"><button class="btn btn-primary" onclick="saveEditKnowledge()">Simpan</button><button class="btn btn-sm" onclick="closeModal('editKnowledgeModal')">Batal</button></div>
+</div></div>
 
 <!-- MODAL LOGIN -->
-<div class="modal-overlay" id="loginModal"><div class="modal-content">
-  <h3>Login</h3><input type="text" id="loginUsername" placeholder="Username" class="mb-2"><input type="password" id="loginPassword" placeholder="Password" class="mb-2">
-  <button class="btn btn-accent w-full" onclick="handleLogin()">Masuk</button>
+<div class="modal-overlay" id="loginModal"><div class="modal-content" style="max-width:420px">
+  <h3>Login</h3><input type="text" id="loginUsername" placeholder="Username/Email" class="mb-2"><input type="password" id="loginPassword" placeholder="Password" class="mb-2">
+  <button class="btn btn-success w-full" onclick="handleLogin()">Masuk</button>
+  <div id="loginError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div>
   <p class="text-sm mt-2"><span class="link-text" onclick="closeModal('loginModal');showRegisterModal()">Daftar</span> | <span class="link-text" onclick="closeModal('loginModal');showForgotPasswordModal()">Lupa Password?</span></p>
 </div></div>
 
 <!-- MODAL REGISTER -->
-<div class="modal-overlay" id="registerModal"><div class="modal-content">
-  <h3>Daftar</h3><input type="text" id="registerNama" placeholder="Nama" class="mb-2"><input type="email" id="registerEmail" placeholder="Email" class="mb-2"><input type="text" id="registerHp" placeholder="No HP (08xxx)" class="mb-2"><input type="text" id="registerUsername" placeholder="Username" class="mb-2"><input type="password" id="registerPassword" placeholder="Password" class="mb-2"><input type="password" id="registerPasswordConfirm" placeholder="Konfirmasi" class="mb-2">
-  <button class="btn btn-accent w-full" onclick="handleRegister()">Daftar</button>
+<div class="modal-overlay" id="registerModal"><div class="modal-content" style="max-width:420px">
+  <h3>Daftar</h3><input type="text" id="registerNama" placeholder="Nama Lengkap" class="mb-2"><input type="email" id="registerEmail" placeholder="Email" class="mb-2"><input type="text" id="registerHp" placeholder="No HP" class="mb-2"><input type="text" id="registerUsername" placeholder="Username" class="mb-2"><input type="password" id="registerPassword" placeholder="Password" class="mb-2"><input type="password" id="registerPasswordConfirm" placeholder="Konfirmasi" class="mb-2">
+  <button class="btn btn-primary w-full" onclick="handleRegister()">Daftar</button>
+  <div id="registerError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div><div id="registerSuccess" style="color:var(--success);font-size:.8rem;margin-top:4px;"></div>
 </div></div>
 
 <!-- MODAL FORGOT PASSWORD -->
-<div class="modal-overlay" id="forgotPasswordModal"><div class="modal-content">
+<div class="modal-overlay" id="forgotPasswordModal"><div class="modal-content" style="max-width:420px">
   <h3>Lupa Password</h3><input type="text" id="forgotNama" placeholder="Nama" class="mb-2"><input type="email" id="forgotEmail" placeholder="Email" class="mb-2"><input type="text" id="forgotHp" placeholder="No HP" class="mb-2">
-  <button class="btn btn-warning w-full" onclick="handleForgotPassword()">Reset via WhatsApp</button>
+  <button class="btn btn-warning w-full" onclick="handleForgotPassword()">Reset via WA</button>
 </div></div>
 
 <!-- MODAL PROFILE -->
-<div class="modal-overlay" id="profileModal"><div class="modal-content">
-  <h3>Profil</h3><input type="text" id="editProfileNama" placeholder="Nama" class="mb-2"><input type="email" id="editProfileEmail" placeholder="Email" class="mb-2"><input type="text" id="editProfileHp" placeholder="No HP" class="mb-2">
-  <button class="btn btn-accent w-full" onclick="saveProfile()">Simpan</button>
-  <button class="btn btn-danger w-full mt-2" id="deleteAccountButton" onclick="deleteAccount()">Hapus Akun</button>
+<div class="modal-overlay" id="profileModal"><div class="modal-content" style="max-width:450px">
+  <h3>Profil Saya</h3>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><div id="profileAvatar" style="width:60px;height:60px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem">U</div><div><h4 id="profileNameDisplay"></h4><p id="profileRoleDisplay" style="color:var(--text2)"></p></div></div>
+  <input type="text" id="editProfileNama" placeholder="Nama" class="mb-2"><input type="email" id="editProfileEmail" placeholder="Email" class="mb-2"><input type="text" id="editProfileHp" placeholder="No HP" class="mb-2">
+  <button class="btn btn-success w-full" onclick="saveProfile()">Simpan</button>
+  <button class="btn btn-danger w-full mt-2" id="deleteAccountButton" onclick="deleteAccount()">🗑 Hapus Akun</button>
+  <div id="profileError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div><div id="profileSuccess" style="color:var(--success);font-size:.8rem;margin-top:4px;"></div>
 </div></div>
 
 <!-- MODAL AKTIVASI -->
-<div class="modal-overlay" id="activationModal"><div class="modal-content">
+<div class="modal-overlay" id="activationModal"><div class="modal-content" style="max-width:420px">
   <h3>Aktivasi Premium</h3><input type="text" id="activationCodeInput" placeholder="Kode" class="mb-2">
-  <button class="btn btn-accent w-full" onclick="activatePremiumFromModal()">Aktifkan</button>
+  <button class="btn btn-primary w-full" onclick="activatePremiumFromModal()">Aktifkan</button>
+  <div id="activationError" style="color:var(--danger);font-size:.8rem;margin-top:4px;"></div><div id="activationSuccess" style="color:var(--success);font-size:.8rem;margin-top:4px;"></div>
 </div></div>
 
-<!-- MODAL SUPER ADMIN (sederhana) -->
+<!-- MODAL SUPER ADMIN -->
 <div class="modal-overlay" id="superAdminModal"><div class="modal-content" style="max-width:700px">
   <h3>Panel Super Admin</h3>
-  <div class="flex gap-sm mb-2"><button class="btn btn-sm" onclick="adminTab('codes')">Kode</button><button class="btn btn-sm" onclick="adminTab('users')">User</button><button class="btn btn-sm" onclick="adminTab('settings')">Setelan</button></div>
-  <div id="adminContent"></div>
+  <div class="flex gap-sm mb-3">
+    <button class="btn btn-sm btn-outline active" onclick="switchAdminTab('codes')">Kode</button>
+    <button class="btn btn-sm btn-outline" onclick="switchAdminTab('users')">User</button>
+    <button class="btn btn-sm btn-outline" onclick="switchAdminTab('settings')">Setelan</button>
+  </div>
+  <div id="adminTabContent"></div>
 </div></div>
-
-<div class="toast-container" id="toastContainer"></div>
 </body>
-
 <script>
 // ===== ENCRYPT & DATA DEFAULT =====
 function encodePassword(pw){return btoa(pw)}
-function decodePassword(h){return atob(h)}
+function decodePassword(hash){return atob(hash)}
 const SUPER_ADMIN = {
   id:'sa',username:'superadmin',password:encodePassword('admin123'),nama:'Super Admin',
   email:'admin@aistudio.com',hp:'081220285226',role:'superadmin',premium:true,premiumExpiry:null,locked:false
 };
 const DEFAULT_WHATSAPP = '081220285226';
-function gs(k,d){try{const v=localStorage.getItem('ai_'+k);return v?JSON.parse(v):d}catch(e){return d}}
-function ss(k,v){localStorage.setItem('ai_'+k,JSON.stringify(v))}
-function rs(k){localStorage.removeItem('ai_'+k)}
-function getUsers(){return gs('users',[])}
-function saveUsers(u){ss('users',u)}
-function getSession(){return gs('session',null)}
-function saveSession(s){ss('session',s)}
-function clearSession(){rs('session')}
-function getWA(){return gs('whatsapp',DEFAULT_WHATSAPP)}
-function saveWA(n){ss('whatsapp',n)}
-function getCodes(){return gs('codes',{})}
-function saveCodes(c){ss('codes',c)}
-function getKnowledge(){return gs('knowledge',[])}
-function saveKnowledge(k){ss('knowledge',k)}
+const DEFAULT_PACKAGES = [
+  {id:'premium1',name:'Premium Bulanan',price:50000,days:30,label:'1 Bulan'},
+  {id:'premium3',name:'Premium 3 Bulan',price:120000,days:90,label:'3 Bulan'}
+];
+
+function getStore(key,def){try{const v=localStorage.getItem('ai_'+key);return v?JSON.parse(v):def}catch(e){return def}}
+function setStore(key,val){localStorage.setItem('ai_'+key,JSON.stringify(val))}
+function removeStore(key){localStorage.removeItem('ai_'+key)}
+
+function getAllUsers(){return getStore('users',[])}
+function saveAllUsers(u){setStore('users',u)}
+function getSession(){return getStore('session',null)}
+function saveSession(s){setStore('session',s)}
+function clearSession(){removeStore('session')}
+function getWhatsAppNumber(){return getStore('whatsapp',DEFAULT_WHATSAPP)}
+function saveWhatsAppNumber(n){setStore('whatsapp',n)}
+function getValidCodes(){return getStore('codes',{})}
+function saveValidCodes(c){setStore('codes',c)}
+function getKnowledge(){return getStore('knowledge',[])}
+function saveKnowledge(k){setStore('knowledge',k)}
+
+// ===== WHATSAPP =====
+function formatWA(raw){let n=raw.replace(/[^0-9]/g,'');if(n.startsWith('0'))n='62'+n.substring(1);if(!n.startsWith('62'))n='62'+n;return '+'+n}
+function updateWA(){document.getElementById('whatsappNumber').textContent=formatWA(getWhatsAppNumber())}
+function openWhatsApp(msg){window.open('https://wa.me/'+getWhatsAppNumber().replace(/[^0-9]/g,'')+(msg?'?text='+encodeURIComponent(msg):''),'_blank')}
 
 // ===== TOAST =====
 function showToast(msg,type){
   const c=document.getElementById('toastContainer'),t=document.createElement('div');
   t.className='toast toast-'+(type||'info');t.textContent=msg;c.appendChild(t);
-  setTimeout(()=>t.classList.add('show'),10);
+  requestAnimationFrame(()=>t.classList.add('show'));
   setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3000);
 }
 
@@ -223,343 +259,245 @@ function toggleTheme(){
 }
 (function(){if(localStorage.getItem('ai_theme')==='light')document.body.classList.add('light-theme')})();
 
-// ===== UI UPDATE =====
+// ===== UI =====
 function updateUI(){
   const s=getSession();
-  const loginBtn=document.getElementById('loginButton'),profileBtn=document.getElementById('profileButton'),
-        adminBtn=document.getElementById('adminButton'),logoutBtn=document.getElementById('logoutButton'),
-        badge=document.getElementById('userBadge'),actBtn=document.getElementById('activationButton');
-  if(s){
-    loginBtn.classList.add('hidden');profileBtn.classList.remove('hidden');logoutBtn.classList.remove('hidden');
-    badge.classList.remove('hidden');badge.textContent=s.nama;
-    adminBtn.classList.toggle('hidden',s.role!=='superadmin');
-    actBtn.classList.toggle('hidden',s.premium||s.role==='superadmin');
-  }else{
-    loginBtn.classList.remove('hidden');profileBtn.classList.add('hidden');logoutBtn.classList.add('hidden');
-    badge.classList.add('hidden');adminBtn.classList.add('hidden');actBtn.classList.add('hidden');
-  }
+  document.getElementById('loginButton').classList.toggle('hidden',!!s);
+  document.getElementById('profileButton').classList.toggle('hidden',!s);
+  document.getElementById('adminButton').classList.toggle('hidden',!s||s.role!=='superadmin');
+  document.getElementById('logoutButton').classList.toggle('hidden',!s);
+  const badge=document.getElementById('userBadge');
+  if(s){badge.classList.remove('hidden');badge.textContent=s.nama}else{badge.classList.add('hidden')}
+  document.getElementById('activationButton').classList.toggle('hidden',!s||s.premium||s.role==='superadmin');
 }
 
 // ===== AUTH =====
+function showLoginModal(){openModal('loginModal')}
+function showRegisterModal(){openModal('registerModal')}
+function showForgotPasswordModal(){openModal('forgotPasswordModal')}
+function showProfileModal(){openModal('profileModal');loadProfile()}
+function showActivationModal(){openModal('activationModal')}
+
 function handleLogin(){
   const u=document.getElementById('loginUsername').value.trim(),p=document.getElementById('loginPassword').value;
+  const err=document.getElementById('loginError');err.textContent='';
+  if(!u||!p){err.textContent='Isi semua field!';return}
   if(u===SUPER_ADMIN.username&&p===decodePassword(SUPER_ADMIN.password)){
-    saveSession(SUPER_ADMIN);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();return;
+    saveSession(SUPER_ADMIN);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();
+    showToast('Login Super Admin','success');return;
   }
-  const user=getUsers().find(x=>(x.username===u||x.email===u)&&p===decodePassword(x.password));
-  if(!user)return showToast('Username/password salah!','error');
-  if(user.locked)return showToast('Akun terkunci!','error');
+  const users=getAllUsers();
+  const user=users.find(x=>(x.username===u||x.email===u)&&p===decodePassword(x.password));
+  if(!user){err.textContent='Username/password salah!';return}
+  if(user.locked){err.textContent='Akun terkunci!';return}
   saveSession(user);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();
+  showToast('Login berhasil','success');
 }
 function handleRegister(){
   const n=document.getElementById('registerNama').value.trim(),e=document.getElementById('registerEmail').value.trim(),
         hp=document.getElementById('registerHp').value.trim(),un=document.getElementById('registerUsername').value.trim(),
         pw=document.getElementById('registerPassword').value,cp=document.getElementById('registerPasswordConfirm').value;
-  if(!n||!e||!hp||!un||!pw||!cp)return showToast('Semua field wajib!','error');
-  if(pw!==cp)return showToast('Password tidak cocok!','error');
-  if(pw.length<6)return showToast('Password min 6 karakter!','error');
-  const users=getUsers();
-  if(users.find(x=>x.username===un))return showToast('Username sudah dipakai!','error');
-  const nu={id:Date.now().toString(),nama:n,email:e,hp:hp,username:un,password:encodePassword(pw),role:'user',premium:false,premiumExpiry:null,locked:false};
-  users.push(nu);saveUsers(users);closeModal('registerModal');showToast('Berhasil daftar!','success');
+  const err=document.getElementById('registerError'),suc=document.getElementById('registerSuccess');
+  err.textContent='';suc.textContent='';
+  if(!n||!e||!hp||!un||!pw||!cp){err.textContent='Semua field wajib!';return}
+  if(pw!==cp){err.textContent='Password tidak cocok!';return}
+  if(pw.length<6){err.textContent='Password min 6 karakter!';return}
+  const users=getAllUsers();
+  if(users.find(x=>x.username===un)){err.textContent='Username sudah dipakai!';return}
+  if(users.find(x=>x.email===e)){err.textContent='Email sudah dipakai!';return}
+  const nu={id:Date.now().toString(),nama:n,email:e,hp:hp,username:un,password:encodePassword(pw),role:'user',premium:false,premiumExpiry:null,locked:false,createdAt:new Date().toISOString()};
+  users.push(nu);saveAllUsers(users);
+  suc.textContent='Pendaftaran berhasil! Silakan login.';setTimeout(()=>{closeModal('registerModal');showLoginModal()},2000);
 }
 function handleLogout(){clearSession();updateUI();document.getElementById('chatMessages').innerHTML='';showToast('Logout','info')}
 
 // ===== PREMIUM =====
 function activatePremiumFromModal(){
   const code=document.getElementById('activationCodeInput').value.trim();
-  const codes=getCodes();const cd=codes[code];
-  if(!cd||cd.used)return showToast('Kode tidak valid!','error');
-  const s=getSession();if(!s)return;
-  const users=getUsers();const idx=users.findIndex(x=>x.id===s.id);
-  users[idx].premium=true;users[idx].premiumExpiry=new Date(Date.now()+30*86400000).toISOString();
-  cd.used=true;codes[code]=cd;saveCodes(codes);saveUsers(users);saveSession(users[idx]);
-  updateUI();closeModal('activationModal');showToast('Premium aktif!','success');
+  const err=document.getElementById('activationError'),suc=document.getElementById('activationSuccess');
+  err.textContent='';suc.textContent='';
+  if(!code){err.textContent='Masukkan kode!';return}
+  const s=getSession();if(!s){err.textContent='Login dulu!';return}
+  const codes=getValidCodes();const cd=codes[code];
+  if(!cd||cd.used){err.textContent='Kode tidak valid!';return}
+  const users=getAllUsers();const idx=users.findIndex(x=>x.id===s.id);
+  const pkg=DEFAULT_PACKAGES.find(p=>p.id===cd.packageId)||DEFAULT_PACKAGES[0];
+  const exp=new Date(Date.now()+pkg.days*86400000);
+  users[idx].premium=true;users[idx].premiumExpiry=exp.toISOString();saveAllUsers(users);
+  cd.used=true;cd.usedBy=s.username;cd.usedAt=new Date().toISOString();codes[code]=cd;saveValidCodes(codes);
+  saveSession({...users[idx]});
+  suc.textContent='Premium aktif hingga '+exp.toLocaleDateString();updateUI();
+  setTimeout(()=>closeModal('activationModal'),2000);
 }
 
 // ===== PROFILE =====
-function showProfileModal(){openModal('profileModal');const s=getSession();if(!s)return;document.getElementById('editProfileNama').value=s.nama;document.getElementById('editProfileEmail').value=s.email;document.getElementById('editProfileHp').value=s.hp;document.getElementById('deleteAccountButton').style.display=s.role==='superadmin'?'none':'block'}
+function loadProfile(){
+  const s=getSession();if(!s)return;
+  document.getElementById('profileAvatar').textContent=s.nama.charAt(0).toUpperCase();
+  document.getElementById('profileNameDisplay').textContent=s.nama;
+  document.getElementById('profileRoleDisplay').textContent=s.role==='superadmin'?'Super Admin':(s.premium?'Premium':'Free');
+  document.getElementById('editProfileNama').value=s.nama;document.getElementById('editProfileEmail').value=s.email;document.getElementById('editProfileHp').value=s.hp;
+  document.getElementById('deleteAccountButton').style.display=s.role==='superadmin'?'none':'block';
+}
 function saveProfile(){
   const s=getSession();if(!s)return;
-  s.nama=document.getElementById('editProfileNama').value.trim();s.email=document.getElementById('editProfileEmail').value.trim();s.hp=document.getElementById('editProfileHp').value.trim();
-  saveSession(s);const users=getUsers();const idx=users.findIndex(x=>x.id===s.id);if(idx!==-1){users[idx]=s;saveUsers(users)}
-  updateUI();closeModal('profileModal');showToast('Profil disimpan','success');
+  const n=document.getElementById('editProfileNama').value.trim(),e=document.getElementById('editProfileEmail').value.trim(),hp=document.getElementById('editProfileHp').value.trim();
+  if(!n||!e||!hp){document.getElementById('profileError').textContent='Semua field wajib!';return}
+  s.nama=n;s.email=e;s.hp=hp;saveSession(s);
+  const users=getAllUsers();const idx=users.findIndex(x=>x.id===s.id);
+  if(idx!==-1){users[idx].nama=n;users[idx].email=e;users[idx].hp=hp;saveAllUsers(users)}
+  document.getElementById('profileSuccess').textContent='Profil tersimpan!';updateUI();setTimeout(()=>closeModal('profileModal'),1500);
 }
 function deleteAccount(){
   const s=getSession();if(!s||s.role==='superadmin')return;
-  if(confirm('Hapus akun?')){const users=getUsers().filter(x=>x.id!==s.id);saveUsers(users);clearSession();updateUI();closeModal('profileModal');showToast('Akun dihapus','warning')}
+  if(confirm('Hapus akun? Semua data hilang.')){
+    const users=getAllUsers().filter(x=>x.id!==s.id);saveAllUsers(users);
+    removeStore('chat_'+s.id);clearSession();updateUI();closeModal('profileModal');showToast('Akun dihapus','warning');
+  }
 }
 
 // ===== SUPER ADMIN =====
-function showSuperAdminPanel(){openModal('superAdminModal');adminTab('codes')}
-function adminTab(tab){
-  const c=document.getElementById('adminContent');
+function showSuperAdminPanel(){openModal('superAdminModal');switchAdminTab('codes')}
+function switchAdminTab(tab){
+  const c=document.getElementById('adminTabContent');
   if(tab==='codes'){
-    c.innerHTML=`<input id="adminCodeUser" placeholder="Username/email" class="mb-2"><select id="adminCodePackage" class="mb-2"><option value="premium1">Premium 1 Bulan</option></select><button class="btn btn-accent w-full" onclick="adminCreateCode()">Buat Kode</button><div id="adminCodeResult"></div>`;
+    c.innerHTML=`<h4>Buat Kode</h4><input id="adminActUser" placeholder="Username/email" class="mb-2"><select id="adminActPackage" class="mb-2">${DEFAULT_PACKAGES.map(p=>`<option value="${p.id}">${p.name} - Rp ${p.price}</option>`).join('')}</select><button class="btn btn-success w-full" onclick="adminCreateCode()">Buat Kode</button><div id="adminCodeResult"></div><h4 class="mt-3">Kode Aktif</h4><div id="activeCodesList"></div>`;
+    renderActiveCodes();
   }else if(tab==='users'){
-    c.innerHTML=getUsers().map(u=>`<div>${u.nama} (${u.username}) - ${u.premium?'Premium':'Free'} <button class="btn btn-sm btn-warning" onclick="toggleLockUser('${u.id}')">${u.locked?'Buka':'Kunci'}</button></div>`).join('');
+    c.innerHTML=`<table style="width:100%;border-collapse:collapse">${getAllUsers().map(u=>`<tr><td>${u.nama}</td><td>${u.username}</td><td>${u.premium?'Ya':'Tidak'}</td><td><button class="btn btn-sm btn-warning" onclick="toggleLockUser('${u.id}')">${u.locked?'Buka':'Kunci'}</button><button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')">Hapus</button></td></tr>`).join('')}</table>`;
   }else if(tab==='settings'){
-    c.innerHTML=`<input id="adminWA" value="${getWA()}" class="mb-2"><button class="btn btn-accent w-full" onclick="saveAdminWA()">Simpan WA</button><input type="password" id="adminNewPass" placeholder="Password Baru" class="mb-2 mt-2"><button class="btn btn-warning w-full" onclick="changeAdminPass()">Ganti Password</button><input id="adminNewName" value="${SUPER_ADMIN.nama}" class="mb-2 mt-2"><button class="btn btn-info w-full" onclick="changeAdminName()">Ganti Nama</button>`;
+    c.innerHTML=`<input id="adminWA" value="${getWhatsAppNumber()}" class="mb-2"><button class="btn btn-success w-full" onclick="saveAdminWA()">Simpan WA</button><hr class="mt-3 mb-3"><input type="password" id="adminNewPass" placeholder="Password Baru" class="mb-2"><button class="btn btn-warning w-full" onclick="changeAdminPass()">Ganti Password</button><input id="adminNewName" value="${SUPER_ADMIN.nama}" class="mb-2 mt-3"><button class="btn btn-info w-full" onclick="changeAdminName()">Ganti Nama</button><hr class="mt-3 mb-3"><button class="btn btn-danger w-full" onclick="resetAllData()">Reset Semua Data</button>`;
   }
+  document.querySelectorAll('#superAdminModal .btn-outline').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
 }
 function adminCreateCode(){
-  const u=document.getElementById('adminCodeUser').value.trim();if(!u)return;
-  const code='AI-'+Date.now().toString(36).toUpperCase();const codes=getCodes();codes[code]={packageId:'premium1',used:false};saveCodes(codes);
-  document.getElementById('adminCodeResult').innerHTML='<p class="text-success">Kode: <strong>'+code+'</strong></p>';
+  const u=document.getElementById('adminActUser').value.trim(),pkg=document.getElementById('adminActPackage').value;
+  if(!u||!pkg)return;const code='AI-'+Date.now().toString(36).toUpperCase();const codes=getValidCodes();codes[code]={packageId:pkg,used:false};saveValidCodes(codes);
+  document.getElementById('adminCodeResult').innerHTML='<span style="color:var(--success)">Kode: <strong>'+code+'</strong></span>';renderActiveCodes();
 }
-function toggleLockUser(id){const users=getUsers();const u=users.find(x=>x.id===id);if(u){u.locked=!u.locked;saveUsers(users);adminTab('users')}}
-function saveAdminWA(){const v=document.getElementById('adminWA').value.trim();if(v){saveWA(v);showToast('WA disimpan','success')}}
+function renderActiveCodes(){
+  const codes=getValidCodes();
+  document.getElementById('activeCodesList').innerHTML=Object.keys(codes).map(c=>`<div>${c} - ${codes[c].packageId} ${codes[c].used?'<span style="color:red">Terpakai</span>':'<span style="color:green">Aktif</span>'}</div>`).join('')||'Tidak ada';
+}
+function toggleLockUser(id){const users=getAllUsers();const u=users.find(x=>x.id===id);if(u){u.locked=!u.locked;saveAllUsers(users);switchAdminTab('users')}}
+function deleteUser(id){if(confirm('Hapus user?')){const users=getAllUsers().filter(x=>x.id!==id);saveAllUsers(users);switchAdminTab('users')}}
+function saveAdminWA(){const v=document.getElementById('adminWA').value.trim();if(v){saveWhatsAppNumber(v);updateWA();showToast('WA disimpan','success')}}
 function changeAdminPass(){const p=document.getElementById('adminNewPass').value.trim();if(p){SUPER_ADMIN.password=encodePassword(p);showToast('Password diubah','success')}}
-function changeAdminName(){const n=document.getElementById('adminNewName').value.trim();if(n){SUPER_ADMIN.nama=n;showToast('Nama diubah','success')}}
+function changeAdminName(){const n=document.getElementById('adminNewName').value.trim();if(n){SUPER_ADMIN.nama=n;const s=getSession();if(s&&s.role==='superadmin'){s.nama=n;saveSession(s)}showToast('Nama diubah','success')}}
+function resetAllData(){if(confirm('RESET SEMUA?')){localStorage.clear();saveAllUsers([SUPER_ADMIN]);updateWA();updateUI();closeModal('superAdminModal');showToast('Data direset','warning')}}
 
-// ===== WHATSAPP =====
-function openWhatsApp(msg){window.open('https://wa.me/'+getWA().replace(/[^0-9]/g,'')+(msg?'?text='+encodeURIComponent(msg):''),'_blank')}
+// ===== FORGOT PASSWORD =====
 function handleForgotPassword(){
   const n=document.getElementById('forgotNama').value.trim();if(!n)return;
-  closeModal('forgotPasswordModal');openWhatsApp('Halo, saya lupa password. Nama: '+n);
+  closeModal('forgotPasswordModal');openWhatsApp('Halo admin, saya lupa password. Nama: '+n);
 }
 
 // ===== CHAT HISTORY =====
-function getChatHistory(){const s=getSession();return s?gs('chat_'+s.id,[]):[]}
-function saveChatHistory(msgs){const s=getSession();if(s)ss('chat_'+s.id,msgs)}
+function getChatHistory(){const s=getSession();return s?getStore('chat_'+s.id,[]):[]}
+function saveChatHistory(msgs){const s=getSession();if(s)setStore('chat_'+s.id,msgs)}
 function loadChatHistory(){
-  const msgs=getChatHistory();const box=document.getElementById('chatMessages');box.innerHTML='';
-  msgs.forEach((m,i)=>{const div=document.createElement('div');div.className='chat-msg '+(m.role==='user'?'user-msg':'ai-msg');div.innerHTML=`<strong>${m.role==='user'?'Anda':'AI'}:</strong> ${m.text}<button class="delete-msg" onclick="deleteChatMsg(${i})">x</button>`;box.appendChild(div)});
+  const msgs=getChatHistory(),box=document.getElementById('chatMessages');box.innerHTML='';
+  msgs.forEach((m,i)=>{const d=document.createElement('div');d.className='chat-msg '+(m.role==='user'?'user-msg':'ai-msg');d.innerHTML=`<strong>${m.role==='user'?'Anda':'AI'}:</strong> ${m.text}<button class="delete-msg" onclick="deleteChatMessage(${i})">×</button>`;box.appendChild(d)});
   box.scrollTop=box.scrollHeight;
 }
-function deleteChatMsg(index){
-  const msgs=getChatHistory();msgs.splice(index,1);saveChatHistory(msgs);loadChatHistory();
+function deleteChatMessage(i){const msgs=getChatHistory();msgs.splice(i,1);saveChatHistory(msgs);loadChatHistory()}
+function clearChatHistory(){saveChatHistory([]);loadChatHistory()}
+
+// ===== MANAJEMEN PENGETAHUAN (TAB) =====
+function renderKnowledgeList(){
+  const knowledge=getKnowledge(),list=document.getElementById('knowledgeList');
+  list.innerHTML=knowledge.map((k,i)=>`
+    <div class="knowledge-item">
+      <div><strong>${k.filename}</strong><br><small style="color:var(--text2)">${k.content.substring(0,100)}...</small></div>
+      <div class="flex gap-sm">
+        <button class="btn btn-sm btn-warning" onclick="editKnowledge(${i})">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteKnowledge(${i})">Hapus</button>
+      </div>
+    </div>
+  `).join('')||'<p style="color:var(--text2)">Belum ada pengetahuan.</p>';
 }
-function clearChatHistory(){saveChatHistory([]);loadChatHistory();}
+function editKnowledge(index){
+  const knowledge=getKnowledge(),item=knowledge[index];
+  document.getElementById('editKnowledgeIndex').value=index;
+  document.getElementById('editKnowledgeFilename').value=item.filename;
+  document.getElementById('editKnowledgeContent').value=item.content;
+  openModal('editKnowledgeModal');
+}
+function saveEditKnowledge(){
+  const index=parseInt(document.getElementById('editKnowledgeIndex').value);
+  const knowledge=getKnowledge();
+  knowledge[index].filename=document.getElementById('editKnowledgeFilename').value.trim()||knowledge[index].filename;
+  knowledge[index].content=document.getElementById('editKnowledgeContent').value;
+  saveKnowledge(knowledge);renderKnowledgeList();closeModal('editKnowledgeModal');showToast('Pengetahuan diperbarui','success');
+}
+function deleteKnowledge(index){
+  if(confirm('Hapus pengetahuan ini?')){const knowledge=getKnowledge();knowledge.splice(index,1);saveKnowledge(knowledge);renderKnowledgeList();showToast('Pengetahuan dihapus','warning')}
+}
+function clearAllKnowledge(){
+  if(confirm('Hapus SEMUA pengetahuan?')){saveKnowledge([]);renderKnowledgeList();showToast('Semua pengetahuan dihapus','warning')}
+}
 
 // ===== UPLOAD PENGETAHUAN =====
 function openUploadModal(){openModal('uploadModal')}
-function closeUploadModal(){closeModal('uploadModal')}
 async function uploadKnowledge(){
-  const files=document.getElementById('knowledgeFile').files;
-  const text=document.getElementById('knowledgeText').value.trim();
+  const files=document.getElementById('knowledgeFile').files,text=document.getElementById('knowledgeText').value.trim();
   const knowledge=getKnowledge();
-  for(const file of files){const t=await file.text();knowledge.push({filename:file.name,content:t})}
-  if(text){knowledge.push({filename:'manual.txt',content:text})}
+  for(const file of files){knowledge.push({filename:file.name,content:await file.text()})}
+  if(text){knowledge.push({filename:'manual_'+Date.now()+'.txt',content:text})}
   saveKnowledge(knowledge);
   document.getElementById('knowledgeText').value='';document.getElementById('knowledgeFile').value='';
-  closeModal('uploadModal');showToast('Pengetahuan disimpan!','success');
+  closeModal('uploadModal');showToast('Pengetahuan disimpan','success');
+  renderKnowledgeList();
 }
 
-// ===== NAVIGASI =====
+// ===== NAVIGASI TAB =====
 function switchTab(tab){
-  ['chat','generate','rekayasa','snippets'].forEach(id=>document.getElementById('tab-'+id).classList.add('hidden'));
+  ['chat','generate','rekayasa','snippets','knowledge'].forEach(id=>document.getElementById('tab-'+id).classList.add('hidden'));
   document.getElementById('tab-'+tab).classList.remove('hidden');
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   event.target.classList.add('active');
+  if(tab==='knowledge') renderKnowledgeList();
 }
+
+// ===== INIT =====
+(function(){
+  const users=getAllUsers();if(!users.find(u=>u.role==='superadmin'))users.push(SUPER_ADMIN);saveAllUsers(users);
+  updateWA();updateUI();renderSnippets();renderKnowledgeList();
+})();
 </script>
 <script>
-// ===== ENCRYPT & DATA DEFAULT =====
-function encodePassword(pw){return btoa(pw)}
-function decodePassword(h){return atob(h)}
-const SUPER_ADMIN = {
-  id:'sa',username:'superadmin',password:encodePassword('admin123'),nama:'Super Admin',
-  email:'admin@aistudio.com',hp:'081220285226',role:'superadmin',premium:true,premiumExpiry:null,locked:false
-};
-const DEFAULT_WHATSAPP = '081220285226';
-function gs(k,d){try{const v=localStorage.getItem('ai_'+k);return v?JSON.parse(v):d}catch(e){return d}}
-function ss(k,v){localStorage.setItem('ai_'+k,JSON.stringify(v))}
-function rs(k){localStorage.removeItem('ai_'+k)}
-function getUsers(){return gs('users',[])}
-function saveUsers(u){ss('users',u)}
-function getSession(){return gs('session',null)}
-function saveSession(s){ss('session',s)}
-function clearSession(){rs('session')}
-function getWA(){return gs('whatsapp',DEFAULT_WHATSAPP)}
-function saveWA(n){ss('whatsapp',n)}
-function getCodes(){return gs('codes',{})}
-function saveCodes(c){ss('codes',c)}
-function getKnowledge(){return gs('knowledge',[])}
-function saveKnowledge(k){ss('knowledge',k)}
-
-// ===== TOAST =====
-function showToast(msg,type){
-  const c=document.getElementById('toastContainer'),t=document.createElement('div');
-  t.className='toast toast-'+(type||'info');t.textContent=msg;c.appendChild(t);
-  setTimeout(()=>t.classList.add('show'),10);
-  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},3000);
-}
-
-// ===== MODAL =====
-function openModal(id){document.getElementById(id).style.display='flex'}
-function closeModal(id){document.getElementById(id).style.display='none'}
-
-// ===== THEME =====
-function toggleTheme(){
-  document.body.classList.toggle('light-theme');
-  localStorage.setItem('ai_theme',document.body.classList.contains('light-theme')?'light':'dark');
-}
-(function(){if(localStorage.getItem('ai_theme')==='light')document.body.classList.add('light-theme')})();
-
-// ===== UI UPDATE =====
-function updateUI(){
-  const s=getSession();
-  const loginBtn=document.getElementById('loginButton'),profileBtn=document.getElementById('profileButton'),
-        adminBtn=document.getElementById('adminButton'),logoutBtn=document.getElementById('logoutButton'),
-        badge=document.getElementById('userBadge'),actBtn=document.getElementById('activationButton');
-  if(s){
-    loginBtn.classList.add('hidden');profileBtn.classList.remove('hidden');logoutBtn.classList.remove('hidden');
-    badge.classList.remove('hidden');badge.textContent=s.nama;
-    adminBtn.classList.toggle('hidden',s.role!=='superadmin');
-    actBtn.classList.toggle('hidden',s.premium||s.role==='superadmin');
-  }else{
-    loginBtn.classList.remove('hidden');profileBtn.classList.add('hidden');logoutBtn.classList.add('hidden');
-    badge.classList.add('hidden');adminBtn.classList.add('hidden');actBtn.classList.add('hidden');
-  }
-}
-
-// ===== AUTH =====
-function handleLogin(){
-  const u=document.getElementById('loginUsername').value.trim(),p=document.getElementById('loginPassword').value;
-  if(u===SUPER_ADMIN.username&&p===decodePassword(SUPER_ADMIN.password)){
-    saveSession(SUPER_ADMIN);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();return;
-  }
-  const user=getUsers().find(x=>(x.username===u||x.email===u)&&p===decodePassword(x.password));
-  if(!user)return showToast('Username/password salah!','error');
-  if(user.locked)return showToast('Akun terkunci!','error');
-  saveSession(user);closeModal('loginModal');updateUI();switchTab('chat');loadChatHistory();
-}
-function handleRegister(){
-  const n=document.getElementById('registerNama').value.trim(),e=document.getElementById('registerEmail').value.trim(),
-        hp=document.getElementById('registerHp').value.trim(),un=document.getElementById('registerUsername').value.trim(),
-        pw=document.getElementById('registerPassword').value,cp=document.getElementById('registerPasswordConfirm').value;
-  if(!n||!e||!hp||!un||!pw||!cp)return showToast('Semua field wajib!','error');
-  if(pw!==cp)return showToast('Password tidak cocok!','error');
-  if(pw.length<6)return showToast('Password min 6 karakter!','error');
-  const users=getUsers();
-  if(users.find(x=>x.username===un))return showToast('Username sudah dipakai!','error');
-  const nu={id:Date.now().toString(),nama:n,email:e,hp:hp,username:un,password:encodePassword(pw),role:'user',premium:false,premiumExpiry:null,locked:false};
-  users.push(nu);saveUsers(users);closeModal('registerModal');showToast('Berhasil daftar!','success');
-}
-function handleLogout(){clearSession();updateUI();document.getElementById('chatMessages').innerHTML='';showToast('Logout','info')}
-
-// ===== PREMIUM =====
-function activatePremiumFromModal(){
-  const code=document.getElementById('activationCodeInput').value.trim();
-  const codes=getCodes();const cd=codes[code];
-  if(!cd||cd.used)return showToast('Kode tidak valid!','error');
-  const s=getSession();if(!s)return;
-  const users=getUsers();const idx=users.findIndex(x=>x.id===s.id);
-  users[idx].premium=true;users[idx].premiumExpiry=new Date(Date.now()+30*86400000).toISOString();
-  cd.used=true;codes[code]=cd;saveCodes(codes);saveUsers(users);saveSession(users[idx]);
-  updateUI();closeModal('activationModal');showToast('Premium aktif!','success');
-}
-
-// ===== PROFILE =====
-function showProfileModal(){openModal('profileModal');const s=getSession();if(!s)return;document.getElementById('editProfileNama').value=s.nama;document.getElementById('editProfileEmail').value=s.email;document.getElementById('editProfileHp').value=s.hp;document.getElementById('deleteAccountButton').style.display=s.role==='superadmin'?'none':'block'}
-function saveProfile(){
-  const s=getSession();if(!s)return;
-  s.nama=document.getElementById('editProfileNama').value.trim();s.email=document.getElementById('editProfileEmail').value.trim();s.hp=document.getElementById('editProfileHp').value.trim();
-  saveSession(s);const users=getUsers();const idx=users.findIndex(x=>x.id===s.id);if(idx!==-1){users[idx]=s;saveUsers(users)}
-  updateUI();closeModal('profileModal');showToast('Profil disimpan','success');
-}
-function deleteAccount(){
-  const s=getSession();if(!s||s.role==='superadmin')return;
-  if(confirm('Hapus akun?')){const users=getUsers().filter(x=>x.id!==s.id);saveUsers(users);clearSession();updateUI();closeModal('profileModal');showToast('Akun dihapus','warning')}
-}
-
-// ===== SUPER ADMIN =====
-function showSuperAdminPanel(){openModal('superAdminModal');adminTab('codes')}
-function adminTab(tab){
-  const c=document.getElementById('adminContent');
-  if(tab==='codes'){
-    c.innerHTML=`<input id="adminCodeUser" placeholder="Username/email" class="mb-2"><select id="adminCodePackage" class="mb-2"><option value="premium1">Premium 1 Bulan</option></select><button class="btn btn-accent w-full" onclick="adminCreateCode()">Buat Kode</button><div id="adminCodeResult"></div>`;
-  }else if(tab==='users'){
-    c.innerHTML=getUsers().map(u=>`<div>${u.nama} (${u.username}) - ${u.premium?'Premium':'Free'} <button class="btn btn-sm btn-warning" onclick="toggleLockUser('${u.id}')">${u.locked?'Buka':'Kunci'}</button></div>`).join('');
-  }else if(tab==='settings'){
-    c.innerHTML=`<input id="adminWA" value="${getWA()}" class="mb-2"><button class="btn btn-accent w-full" onclick="saveAdminWA()">Simpan WA</button><input type="password" id="adminNewPass" placeholder="Password Baru" class="mb-2 mt-2"><button class="btn btn-warning w-full" onclick="changeAdminPass()">Ganti Password</button><input id="adminNewName" value="${SUPER_ADMIN.nama}" class="mb-2 mt-2"><button class="btn btn-info w-full" onclick="changeAdminName()">Ganti Nama</button>`;
-  }
-}
-function adminCreateCode(){
-  const u=document.getElementById('adminCodeUser').value.trim();if(!u)return;
-  const code='AI-'+Date.now().toString(36).toUpperCase();const codes=getCodes();codes[code]={packageId:'premium1',used:false};saveCodes(codes);
-  document.getElementById('adminCodeResult').innerHTML='<p class="text-success">Kode: <strong>'+code+'</strong></p>';
-}
-function toggleLockUser(id){const users=getUsers();const u=users.find(x=>x.id===id);if(u){u.locked=!u.locked;saveUsers(users);adminTab('users')}}
-function saveAdminWA(){const v=document.getElementById('adminWA').value.trim();if(v){saveWA(v);showToast('WA disimpan','success')}}
-function changeAdminPass(){const p=document.getElementById('adminNewPass').value.trim();if(p){SUPER_ADMIN.password=encodePassword(p);showToast('Password diubah','success')}}
-function changeAdminName(){const n=document.getElementById('adminNewName').value.trim();if(n){SUPER_ADMIN.nama=n;showToast('Nama diubah','success')}}
-
-// ===== WHATSAPP =====
-function openWhatsApp(msg){window.open('https://wa.me/'+getWA().replace(/[^0-9]/g,'')+(msg?'?text='+encodeURIComponent(msg):''),'_blank')}
-function handleForgotPassword(){
-  const n=document.getElementById('forgotNama').value.trim();if(!n)return;
-  closeModal('forgotPasswordModal');openWhatsApp('Halo, saya lupa password. Nama: '+n);
-}
-
-// ===== CHAT HISTORY =====
-function getChatHistory(){const s=getSession();return s?gs('chat_'+s.id,[]):[]}
-function saveChatHistory(msgs){const s=getSession();if(s)ss('chat_'+s.id,msgs)}
-function loadChatHistory(){
-  const msgs=getChatHistory();const box=document.getElementById('chatMessages');box.innerHTML='';
-  msgs.forEach((m,i)=>{const div=document.createElement('div');div.className='chat-msg '+(m.role==='user'?'user-msg':'ai-msg');div.innerHTML=`<strong>${m.role==='user'?'Anda':'AI'}:</strong> ${m.text}<button class="delete-msg" onclick="deleteChatMsg(${i})">x</button>`;box.appendChild(div)});
-  box.scrollTop=box.scrollHeight;
-}
-function deleteChatMsg(index){
-  const msgs=getChatHistory();msgs.splice(index,1);saveChatHistory(msgs);loadChatHistory();
-}
-function clearChatHistory(){saveChatHistory([]);loadChatHistory();}
-
-// ===== UPLOAD PENGETAHUAN =====
-function openUploadModal(){openModal('uploadModal')}
-function closeUploadModal(){closeModal('uploadModal')}
-async function uploadKnowledge(){
-  const files=document.getElementById('knowledgeFile').files;
-  const text=document.getElementById('knowledgeText').value.trim();
-  const knowledge=getKnowledge();
-  for(const file of files){const t=await file.text();knowledge.push({filename:file.name,content:t})}
-  if(text){knowledge.push({filename:'manual.txt',content:text})}
-  saveKnowledge(knowledge);
-  document.getElementById('knowledgeText').value='';document.getElementById('knowledgeFile').value='';
-  closeModal('uploadModal');showToast('Pengetahuan disimpan!','success');
-}
-
-// ===== NAVIGASI =====
-function switchTab(tab){
-  ['chat','generate','rekayasa','snippets'].forEach(id=>document.getElementById('tab-'+id).classList.add('hidden'));
-  document.getElementById('tab-'+tab).classList.remove('hidden');
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
-}
-</script>
-<script>
-// ===== SYSTEM PROMPT + KNOWLEDGE =====
-const SYSTEM_PROMPT = `Kamu adalah AI Code Builder Pro. Kuasai HTML5, CSS3, JavaScript ES6+, Web API, framework populer, best practice. Berikan kode valid, semantik, responsif. Jelaskan dengan komentar. Jika ragu, cari di internet atau gunakan pengetahuan user.`;
+// ===== SYSTEM PROMPT =====
+const SYSTEM_PROMPT = `Kamu adalah AI Code Builder Pro, asisten pemrograman web paling lengkap. Kuasai HTML5, CSS3, JS ES6+, Web API, best practice. Berikan kode valid, semantik, responsif. Jika merekayasa, perbaiki sesuai instruksi.`;
 
 async function callAI(prompt, useInternet=true){
-  const knowledge=getKnowledge();
-  let fullPrompt=SYSTEM_PROMPT;
-  if(knowledge.length) fullPrompt+='\n\nPengetahuan user:\n'+knowledge.map(k=>`[${k.filename}]:\n${k.content}`).join('\n\n');
-  fullPrompt+='\n\nUser: '+prompt+'\nAI:';
+  const knowledge=getKnowledge();let full=SYSTEM_PROMPT;
+  if(knowledge.length) full+='\n\nPengetahuan user:\n'+knowledge.map(k=>`[${k.filename}]:\n${k.content}`).join('\n\n');
+  full+='\n\nUser: '+prompt+'\nAI:';
   const apis=[
-    {url:'https://api.akuari.my.id/ai/gpt4?prompt='+encodeURIComponent(fullPrompt),parse:d=>d.result||d.respon},
-    {url:'https://api.akuari.my.id/ai/gpt3?prompt='+encodeURIComponent(fullPrompt),parse:d=>d.result||d.respon},
-    {url:'https://api.akuari.my.id/ai/gpt?prompt='+encodeURIComponent(fullPrompt),parse:d=>d.result||d.respon}
+    {url:'https://api.akuari.my.id/ai/gpt4?prompt='+encodeURIComponent(full),parse:d=>d.result||d.respon},
+    {url:'https://api.akuari.my.id/ai/gpt3?prompt='+encodeURIComponent(full),parse:d=>d.result||d.respon},
+    {url:'https://api.akuari.my.id/ai/gpt?prompt='+encodeURIComponent(full),parse:d=>d.result||d.respon}
   ];
   for(const api of apis){try{const r=await fetch(api.url);const d=await r.json();const reply=api.parse(d);if(reply)return reply}catch(e){}}
   if(useInternet){try{const r=await fetch('https://api.duckduckgo.com/?q='+encodeURIComponent(prompt)+'&format=json');const d=await r.json();if(d.AbstractText)return d.AbstractText}catch(e){}}
-  return "Maaf, AI tidak tersedia saat ini.";
+  return 'Maaf, AI tidak tersedia saat ini.';
 }
 
 // ===== CHAT =====
 async function sendChatMessage(){
-  const input=document.getElementById('chatInput');const msg=input.value.trim();if(!msg)return;
+  const input=document.getElementById('chatInput'),msg=input.value.trim();
+  if(!msg)return;
   const msgs=getChatHistory();msgs.push({role:'user',text:msg});saveChatHistory(msgs);loadChatHistory();
   input.value='';
   const reply=await callAI(msg);msgs.push({role:'ai',text:reply});saveChatHistory(msgs);loadChatHistory();
 }
 
-// ===== GENERATE KODE =====
+// ===== GENERATE =====
 async function generateCode(){
   const prompt=document.getElementById('codePrompt').value.trim(),type=document.getElementById('codeType').value;
-  if(!prompt)return;
-  let p='';if(type==='full')p='Buat kode HTML+CSS+JS lengkap: '+prompt;else if(type==='html')p='Buat HTML: '+prompt;else if(type==='css')p='Buat CSS: '+prompt;else p='Buat JavaScript: '+prompt;
+  if(!prompt)return showToast('Masukkan deskripsi kode!','error');
+  let p='';if(type==='full')p='Buat HTML+CSS+JS lengkap: '+prompt;else if(type==='html')p='Buat HTML: '+prompt;else if(type==='css')p='Buat CSS: '+prompt;else p='Buat JavaScript: '+prompt;
   document.getElementById('codeOutput').textContent='Memproses...';
   const res=await callAI(p);document.getElementById('codeOutput').textContent=res;
   document.getElementById('previewFrame').srcdoc=res;
@@ -568,12 +506,12 @@ function applyToPreview(){document.getElementById('previewFrame').srcdoc=documen
 function copyCode(){navigator.clipboard.writeText(document.getElementById('codeOutput').textContent);showToast('Disalin!')}
 function downloadCode(){const b=new Blob([document.getElementById('codeOutput').textContent],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='index.html';a.click()}
 
-// ===== REKAYASA KODE =====
+// ===== REKAYASA =====
 async function rekayasaCode(){
   const code=document.getElementById('rekayasaInputCode').value.trim(),inst=document.getElementById('rekayasaInstruction').value.trim();
-  if(!code)return;
+  if(!code)return showToast('Tempel kode!','error');
   document.getElementById('rekayasaOutput').textContent='Memproses...';
-  const res=await callAI('Rekayasa kode berikut:\n```\n'+code+'\n```\nInstruksi: '+(inst||'Sempurnakan'));
+  const res=await callAI('Rekayasa kode:\n```\n'+code+'\n```\nInstruksi: '+(inst||'Sempurnakan'));
   document.getElementById('rekayasaOutput').textContent=res;document.getElementById('rekayasaPreviewFrame').srcdoc=res;
 }
 function previewRekayasaCode(){document.getElementById('rekayasaPreviewFrame').srcdoc=document.getElementById('rekayasaOutput').textContent}
@@ -581,18 +519,33 @@ function copyRekayasaCode(){navigator.clipboard.writeText(document.getElementByI
 function downloadRekayasaCode(){const b=new Blob([document.getElementById('rekayasaOutput').textContent],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='rekayasa.html';a.click()}
 
 // ===== SNIPPETS =====
-const DEFAULT_SNIPPETS=[{title:'HTML5 Boilerplate',code:'<!DOCTYPE html>\n<html lang="id">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>'}];
-let snippets=JSON.parse(localStorage.getItem('ai_snippets'))||[...DEFAULT_SNIPPETS];
-function renderSnippets(){
-  document.getElementById('snippetsList').innerHTML=snippets.map((s,i)=>`<div class="snippet-card" onclick="loadSnippet(${i})"><strong>${s.title}</strong><pre>${s.code.substring(0,100)}...</pre></div>`).join('');
-}
-function loadSnippet(i){const s=snippets[i];document.getElementById('rekayasaInputCode').value=s.code;document.getElementById('rekayasaInstruction').value='Sempurnakan: '+s.title;switchTab('rekayasa')}
-function addCustomSnippet(){const t=prompt('Judul:');if(!t)return;const c=prompt('Kode:');if(!c)return;snippets.push({title:t,code:c});localStorage.setItem('ai_snippets',JSON.stringify(snippets));renderSnippets()}
+const DEFAULT_SNIPPETS = [
+  {title:'HTML5 Boilerplate',code:'<!DOCTYPE html>\n<html lang="id">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>'},
+  {title:'CSS Flexbox Center',code:'.container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n}'}
+];
+let snippets = JSON.parse(localStorage.getItem('ai_snippets')) || [...DEFAULT_SNIPPETS];
 
-// ===== INIT =====
-(function(){
-  const users=getUsers();if(!users.find(u=>u.role==='superadmin'))users.push(SUPER_ADMIN);saveUsers(users);
-  updateUI();renderSnippets();
-})();
+function renderSnippets(){
+  document.getElementById('snippetsList').innerHTML = snippets.map((s,i) => `
+    <div class="snippet-card" onclick="loadSnippet(${i})">
+      <strong>${s.title}</strong>
+      <pre style="font-size:0.75rem; max-height:100px; overflow:auto; margin-top:4px;">${escapeHTML(s.code.substring(0,150))}...</pre>
+    </div>
+  `).join('');
+}
+function escapeHTML(str){return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m])}
+function loadSnippet(i){
+  const s=snippets[i];
+  document.getElementById('rekayasaInputCode').value=s.code;
+  document.getElementById('rekayasaInstruction').value='Sempurnakan: '+s.title;
+  switchTab('rekayasa');
+}
+function addCustomSnippet(){
+  const t=prompt('Judul:');if(!t)return;
+  const c=prompt('Kode:');if(!c)return;
+  snippets.push({title:t,code:c});
+  localStorage.setItem('ai_snippets',JSON.stringify(snippets));
+  renderSnippets();
+}
 </script>
 </html>
