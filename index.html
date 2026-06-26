@@ -1,6 +1,6 @@
 <style>
     /* ============================================================
-       AI CODE BUILDER PRO v11.0 ULTIMATE - COMPLETE STYLESHEET
+       AI CODE BUILDER PRO v12.0 - COMPLETE STYLESHEET (Blok 1/5)
        ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border: 0; font: inherit; vertical-align: baseline; }
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -174,9 +174,719 @@
     .tab-nav button { background: none; border: none; padding: 10px 20px; font-weight: 600; color: var(--text-secondary); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
     .tab-nav button.active { color: var(--accent-light); border-bottom-color: var(--accent-primary); }
 </style>
+<!-- ==================== STRUKTUR HALAMAN ==================== -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- ==================== LANDING PAGE ==================== -->
+<div class="container" id="landingPage">
+  <header class="header">
+    <div class="logo"><span class="logo-icon">🧠</span><span class="logo-text">AI Code Builder Pro v12.0</span></div>
+    <div class="header-buttons">
+      <button class="btn btn-sm" onclick="toggleTheme()">🌓 Tema</button>
+      <button class="btn btn-outline btn-sm" onclick="showLoginModal()">Login</button>
+      <button class="btn btn-primary btn-sm" onclick="showRegisterModal()">Daftar</button>
+      <button class="btn btn-success btn-sm hidden" id="installButton" onclick="installPWA()">📲 Install</button>
+    </div>
+  </header>
+
+  <!-- IKLAN (EDITABLE OLEH SUPER ADMIN) -->
+  <div class="premium-ad" id="landingAd"></div>
+
+  <section class="hero">
+    <div class="hero-icon">🧠</div>
+    <h1 class="gradient-text">AI Code Builder Pro</h1>
+    <p class="hero-description">Generate & rekayasa kode HTML, CSS, JavaScript dengan AI cerdas yang belajar dari pengetahuan Anda.</p>
+    <div class="hero-buttons">
+      <button class="btn btn-primary btn-lg" onclick="showLoginModal()">🔐 Mulai Sekarang</button>
+      <button class="btn btn-outline btn-lg" onclick="showRegisterModal()">📝 Daftar Akun</button>
+    </div>
+  </section>
+
+  <div class="whatsapp-banner" id="contactBanner" onclick="openGuestChat()">
+    <div class="whatsapp-banner-left">
+      <span class="whatsapp-banner-icon">💬</span>
+      <div><strong>Hubungi Super Admin</strong><br><small>Chat langsung untuk bantuan</small></div>
+    </div>
+    <div class="whatsapp-banner-right">
+      <span>📱 <span id="whatsappNumberLanding"></span></span>
+      <span style="font-size:1.2rem;">👉</span>
+    </div>
+  </div>
+
+  <h3 class="section-title">Fitur Unggulan</h3>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">🧠</div><h4>Generate Kode AI</h4><p>Dari deskripsi langsung jadi kode HTML/CSS/JS lengkap.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔧</div><h4>Rekayasa Kode</h4><p>Perbaiki & sempurnakan kode lama dengan AI.</p></div>
+    <div class="feature-card"><div class="feature-icon">📚</div><h4>Pengetahuan Pribadi</h4><p>Upload file atau tulis langsung pengetahuan coding Anda.</p></div>
+    <div class="feature-card"><div class="feature-icon">👥</div><h4>Multi User</h4><p>Setiap pengguna memiliki akun dan data masing‑masing.</p></div>
+    <div class="feature-card"><div class="feature-icon">💬</div><h4>Chat Internal</h4><p>Hubungi admin & sesama user langsung dari aplikasi.</p></div>
+    <div class="feature-card"><div class="feature-icon">💾</div><h4>Backup & Restore</h4><p>Simpan dan pulihkan semua data dengan mudah.</p></div>
+  </div>
+
+  <h3 class="section-title">Paket Aktivasi Premium</h3>
+  <div class="price-grid" id="landingPriceGrid"></div>
+  <div class="text-center mb-3"><button class="btn btn-primary" onclick="showRegisterModal()">Daftar & Coba Premium</button></div>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div class="container hidden" id="dashboardPage">
+  <header class="header">
+    <div class="logo"><span class="logo-icon">🧠</span><span class="logo-text">AI Code Builder Pro</span></div>
+    <div class="header-buttons">
+      <button class="btn btn-sm" onclick="toggleTheme()">🌓 Tema</button>
+      <button class="btn btn-sm btn-primary hidden" id="profileButton" onclick="showProfileModal()">👤 Profil</button>
+      <button class="btn btn-sm btn-warning hidden" id="adminButton" onclick="showSuperAdminPanel()">👑 Admin</button>
+      <div class="user-badge hidden" id="userBadge"><span class="user-avatar" id="userAvatar">U</span><span class="user-name" id="userNameDisplay">User</span></div>
+      <button class="btn btn-sm btn-danger hidden" id="logoutButton" onclick="handleLogout()">Logout</button>
+      <button class="btn btn-sm btn-info hidden" id="downloadHTMLButton" onclick="downloadOfflinePage()">⬇ Download HTML</button>
+      <button class="btn btn-sm btn-success hidden" id="installButton2" onclick="installPWA()">📲 Install</button>
+    </div>
+  </header>
+
+  <div class="whatsapp-banner hidden" id="premiumBanner" style="background: linear-gradient(135deg, #f59e0b, #e67e22);">
+    <div><strong>🔓 Upgrade ke Premium</strong> – Dapatkan fitur Gabung Kode dan lainnya.</div>
+    <button class="btn btn-warning btn-sm" onclick="showActivationModal()">Upgrade</button>
+  </div>
+
+  <div class="stats-grid" id="dashboardStats">
+    <div class="stat-card"><div class="stat-value" id="statTotalApps">0</div><div class="stat-label">Aplikasi</div></div>
+    <div class="stat-card"><div class="stat-value" id="statTotalCodes">0</div><div class="stat-label">Total Kode</div></div>
+    <div class="stat-card"><div class="stat-value" id="statStorage">0 KB</div><div class="stat-label">Penyimpanan</div></div>
+    <div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">Pengguna</div></div>
+    <div class="stat-card"><div class="stat-value" id="statPremiumStatus">Free</div><div class="stat-label">Status</div></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn btn-success" onclick="showAddAppModal()">➕ Tambah Aplikasi</button>
+    <button class="btn btn-primary" onclick="showGenerateCodeModal()">⚡ Generate Kode</button>
+    <button class="btn btn-warning" onclick="showRekayasaCodeModal()">🔧 Rekayasa Kode</button>
+    <button class="btn btn-info" onclick="showKnowledgeModal()">📚 Pengetahuan</button>
+    <button class="btn btn-blue" onclick="showUserChatModal()">💬 Chat</button>
+    <button class="btn btn-success hidden" id="backupJSONButton" onclick="backupAllData()">💾 Backup JSON</button>
+    <label class="btn btn-warning hidden" id="restoreJSONButton" style="cursor:pointer;">📤 Restore JSON<input type="file" accept=".json" onchange="restoreAllData(this)" hidden></label>
+    <button class="btn btn-primary" id="mergeButton" onclick="showMergeModal()">🧩 Gabung & Copy <span class="badge badge-purple">Premium</span></button>
+    <button class="btn btn-warning hidden" id="activationButton" onclick="showActivationModal()">🔑 Aktivasi Premium</button>
+  </div>
+
+  <div id="appListContainer"></div>
+  <div id="emptyState" class="empty-state">
+    <div class="empty-state-icon">🧠</div>
+    <h3>Belum Ada Aplikasi</h3>
+    <p>Mulai tambahkan aplikasi dan generate kode AI sekarang.</p>
+    <button class="btn btn-success" onclick="showAddAppModal()">Tambah Aplikasi Pertama</button>
+  </div>
+</div>
+
+<!-- ==================== SEMUA MODAL ==================== -->
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal"><div class="modal-content" style="max-width:420px;">
+  <div class="modal-header"><h3>🔐 Login</h3><button class="modal-close" onclick="closeModal('loginModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="text" id="loginUsername" placeholder="Username atau Email" class="mb-2">
+    <input type="password" id="loginPassword" placeholder="Password" class="mb-2">
+    <button class="btn btn-success btn-block" onclick="handleLogin()">Masuk</button>
+    <div class="form-error" id="loginError"></div>
+    <div class="flex-between mt-2 text-sm">
+      <span class="link-text" onclick="closeModal('loginModal');showRegisterModal()">Daftar Akun Baru</span>
+      <span class="link-text" onclick="closeModal('loginModal');openModal('forgotPasswordModal')">Lupa Password?</span>
+    </div>
+  </div>
+</div></div>
+
+<!-- Register Modal -->
+<div class="modal-overlay" id="registerModal"><div class="modal-content" style="max-width:420px;">
+  <div class="modal-header"><h3>📝 Daftar Akun Baru</h3><button class="modal-close" onclick="closeModal('registerModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="text" id="registerNama" placeholder="Nama Lengkap" class="mb-2">
+    <input type="email" id="registerEmail" placeholder="Email" class="mb-2">
+    <input type="text" id="registerHp" placeholder="No HP (08xxx)" class="mb-2">
+    <input type="text" id="registerUsername" placeholder="Username" class="mb-2">
+    <input type="password" id="registerPassword" placeholder="Password (min 6)" class="mb-2">
+    <input type="password" id="registerPasswordConfirm" placeholder="Konfirmasi Password" class="mb-2">
+    <button class="btn btn-primary btn-block" onclick="handleRegister()">Daftar</button>
+    <div class="form-error" id="registerError"></div>
+    <div class="form-success" id="registerSuccess"></div>
+  </div>
+</div></div>
+
+<!-- Profile Modal -->
+<div class="modal-overlay" id="profileModal"><div class="modal-content" style="max-width:450px;">
+  <div class="modal-header"><h3>👤 Profil Saya</h3><button class="modal-close" onclick="closeModal('profileModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="flex gap-md mb-3">
+      <div id="profileAvatarBig" style="width:60px;height:60px;border-radius:50%;background:var(--accent-primary);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;">U</div>
+      <div><h4 id="profileName">User</h4><p id="profileRole" style="color:var(--text-secondary);">User Biasa</p></div>
+    </div>
+    <input type="text" id="editProfileNama" placeholder="Nama Lengkap" class="mb-2">
+    <input type="email" id="editProfileEmail" placeholder="Email" class="mb-2">
+    <input type="text" id="editProfileHp" placeholder="No HP" class="mb-2">
+    <button class="btn btn-success btn-block" onclick="saveProfile()">Simpan Profil</button>
+    <div class="form-error" id="profileError"></div><div class="form-success" id="profileSuccess"></div>
+    <hr style="border-color:var(--border-color);margin:16px 0;">
+    <button class="btn btn-danger btn-block" id="deleteAccountButton" onclick="deleteAccount()">🗑 Hapus Akun Saya</button>
+  </div>
+</div></div>
+
+<!-- Activation Modal -->
+<div class="modal-overlay" id="activationModal"><div class="modal-content" style="max-width:420px;">
+  <div class="modal-header"><h3>🔑 Aktivasi Premium</h3><button class="modal-close" onclick="closeModal('activationModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="text" id="activationCodeInputMain" placeholder="Kode Aktivasi" class="mb-2">
+    <button class="btn btn-success btn-block" onclick="activatePremiumFromModal()">Aktifkan</button>
+    <div class="form-error" id="activationModalError"></div><div class="form-success" id="activationModalSuccess"></div>
+  </div>
+</div></div>
+
+<!-- App Modal -->
+<div class="modal-overlay" id="appModal"><div class="modal-content">
+  <div class="modal-header"><h3 id="appModalTitle">Tambah Aplikasi</h3><button class="modal-close" onclick="closeModal('appModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="editAppId">
+    <input type="text" id="appNameInput" placeholder="Nama Aplikasi" class="mb-2">
+    <textarea id="appDescInput" rows="2" placeholder="Deskripsi"></textarea>
+    <div class="form-error" id="appError"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('appModal')">Batal</button>
+    <button class="btn btn-success" onclick="saveApplication()">Simpan</button>
+  </div>
+</div></div>
+
+<!-- Code Modal -->
+<div class="modal-overlay" id="codeModal"><div class="modal-content">
+  <div class="modal-header"><h3 id="codeModalTitle">Tambah Code</h3><button class="modal-close" onclick="closeModal('codeModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="editCodeId"><input type="hidden" id="codeAppId">
+    <input type="text" id="codeNameInput" placeholder="Nama Code" class="mb-2">
+    <textarea id="codeContentInput" rows="10" placeholder="Kode HTML"></textarea>
+    <div class="form-error" id="codeError"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('codeModal')">Batal</button>
+    <button class="btn btn-success" onclick="saveCode()">Simpan Code</button>
+  </div>
+</div></div>
+
+<!-- Generate Code Modal -->
+<div class="modal-overlay" id="generateCodeModal"><div class="modal-content wide">
+  <div class="modal-header"><h3>⚡ Generate Kode AI</h3><button class="modal-close" onclick="closeModal('generateCodeModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="form-group"><label class="form-label">Deskripsikan kode yang ingin dibuat:</label><textarea id="generatePrompt" rows="4" placeholder="Contoh: Buat halaman login responsif..."></textarea></div>
+    <div class="form-group"><label class="form-label">Jenis Kode:</label><select id="generateType"><option value="full">HTML + CSS + JavaScript</option><option value="html">HTML only</option><option value="css">CSS only</option><option value="js">JavaScript only</option></select></div>
+    <button class="btn btn-primary btn-block" onclick="generateCode()">⚡ Generate Kode</button>
+    <div class="mt-3 hidden" id="generateOutputContainer">
+      <div class="flex-between mb-2"><strong>Kode Hasil Generate</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyGeneratedCode()">📋 Copy</button><button class="btn btn-sm btn-success" onclick="downloadGeneratedCode()">⬇ Download</button></div></div>
+      <textarea id="generateOutput" readonly style="font-family:'Courier New',monospace;font-size:0.8rem;min-height:200px;background:var(--bg-primary);color:var(--text-primary);border:1px solid var(--accent-primary);"></textarea>
+    </div>
+  </div>
+</div></div>
+
+<!-- Rekayasa Code Modal -->
+<div class="modal-overlay" id="rekayasaCodeModal"><div class="modal-content wide">
+  <div class="modal-header"><h3>🔧 Rekayasa Kode AI</h3><button class="modal-close" onclick="closeModal('rekayasaCodeModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="form-group"><label class="form-label">Tempel kode yang ingin direkayasa:</label><textarea id="rekayasaInput" rows="10" placeholder="Tempel kode HTML/CSS/JS di sini..."></textarea></div>
+    <div class="form-group"><label class="form-label">Instruksi perbaikan:</label><textarea id="rekayasaInstruction" rows="3" placeholder="Contoh: Buat lebih responsif, tambahkan animasi..."></textarea></div>
+    <button class="btn btn-warning btn-block" onclick="rekayasaCode()">🔧 Rekayasa Kode</button>
+    <div class="mt-3 hidden" id="rekayasaOutputContainer">
+      <div class="flex-between mb-2"><strong>Hasil Rekayasa</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyRekayasaCode()">📋 Copy</button><button class="btn btn-sm btn-success" onclick="downloadRekayasaCode()">⬇ Download</button></div></div>
+      <textarea id="rekayasaOutput" readonly style="font-family:'Courier New',monospace;font-size:0.8rem;min-height:200px;background:var(--bg-primary);color:var(--text-primary);border:1px solid var(--accent-primary);"></textarea>
+    </div>
+  </div>
+</div></div>
+
+<!-- Knowledge Modal -->
+<div class="modal-overlay" id="knowledgeModal"><div class="modal-content wide">
+  <div class="modal-header"><h3>📚 Pengetahuan Saya</h3><button class="modal-close" onclick="closeModal('knowledgeModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="flex gap-sm mb-3">
+      <button class="btn btn-sm btn-primary" onclick="openUploadKnowledgeModal()">➕ Tambah Pengetahuan</button>
+      <button class="btn btn-sm btn-danger" onclick="clearAllKnowledge()">🗑 Hapus Semua</button>
+    </div>
+    <div id="knowledgeList"></div>
+  </div>
+</div></div>
+
+<!-- Upload Knowledge Modal -->
+<div class="modal-overlay" id="uploadKnowledgeModal"><div class="modal-content">
+  <div class="modal-header"><h3 id="knowledgeFormTitle">Tambah Pengetahuan</h3><button class="modal-close" onclick="closeModal('uploadKnowledgeModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="editKnowledgeIndex">
+    <div class="form-group"><label class="form-label">Upload File (HTML, CSS, JS, TXT):</label><input type="file" id="knowledgeFile" accept=".html,.css,.js,.txt" multiple></div>
+    <div class="text-center text-muted my-2">— atau —</div>
+    <div class="form-group"><label class="form-label">Tulis Langsung:</label><textarea id="knowledgeText" rows="8" placeholder="Tulis langsung kode, tips, trik, atau referensi di sini..."></textarea></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('uploadKnowledgeModal')">Batal</button>
+    <button class="btn btn-success" onclick="saveKnowledge()">💾 Simpan Pengetahuan</button>
+  </div>
+</div></div>
+
+<!-- Merge Modal -->
+<div class="modal-overlay" id="mergeModal"><div class="modal-content">
+  <div class="modal-header"><h3>🧩 Gabung & Copy Semua Code</h3><button class="modal-close" onclick="closeModal('mergeModal')">✕</button></div>
+  <div class="modal-body">
+    <p class="text-secondary mb-2">Pilih aplikasi yang kode-nya ingin digabung menjadi 1 file index.html.</p>
+    <div id="mergeAppList" class="flex flex-wrap gap-sm mb-3"></div>
+    <button class="btn btn-success btn-block" onclick="performMerge()">Gabung Semua Code</button>
+    <div id="mergeResult" class="hidden mt-3">
+      <div class="flex-between mb-2"><strong>Hasil Gabungan</strong><div class="flex gap-sm"><button class="btn btn-primary btn-sm" onclick="copyMergeResult()">Copy</button><button class="btn btn-success btn-sm" onclick="downloadMergeResult()">Download</button></div></div>
+      <textarea id="mergeOutput" readonly style="font-family:'Courier New',monospace;font-size:0.8rem;min-height:250px;background:var(--bg-primary);color:var(--text-primary);border:1px solid #7c3aed;"></textarea>
+    </div>
+  </div>
+</div></div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal"><div class="modal-content" style="max-width:380px;">
+  <div class="modal-header"><h3 id="confirmTitle">Konfirmasi</h3><button class="modal-close" onclick="closeModal('confirmModal')">✕</button></div>
+  <div class="modal-body"><p id="confirmMessage"></p></div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('confirmModal')">Batal</button>
+    <button class="btn btn-danger" onclick="executeConfirmAction()">Ya</button>
+  </div>
+</div></div>
+
+<!-- Edit Package Modal -->
+<div class="modal-overlay" id="editPackageModal"><div class="modal-content">
+  <div class="modal-header"><h3>Edit Paket</h3><button class="modal-close" onclick="closeModal('editPackageModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="editPackageId">
+    <input type="text" id="editPackageName" placeholder="Nama" class="mb-2">
+    <input type="number" id="editPackagePrice" placeholder="Harga" class="mb-2">
+    <input type="number" id="editPackageDays" placeholder="Hari" class="mb-2">
+    <input type="text" id="editPackageLabel" placeholder="Label" class="mb-2">
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('editPackageModal')">Batal</button>
+    <button class="btn btn-success" onclick="savePackageChanges()">Simpan</button>
+  </div>
+</div></div>
+
+<!-- User Chat Modal -->
+<div class="modal-overlay" id="userChatModal"><div class="modal-content wide">
+  <div class="modal-header">
+    <h3>💬 Chat</h3>
+    <div class="flex gap-sm">
+      <button class="btn btn-sm btn-danger" onclick="clearAllUserChats()">🗑 Hapus Semua Chat</button>
+      <button class="modal-close" onclick="closeModal('userChatModal')">✕</button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="tab-nav">
+      <button class="btn btn-sm btn-primary active" id="tabChatAdminBtn" onclick="switchUserChatTab('admin')">👑 Chat Admin</button>
+      <button class="btn btn-sm btn-outline" id="tabChatUsersBtn" onclick="switchUserChatTab('users')">👥 Chat User</button>
+    </div>
+    <div id="userChatTabAdmin">
+      <div class="chat-box" id="userChatMessages" style="max-height:300px;overflow-y:auto;background:var(--bg-tertiary);padding:10px;border-radius:8px;margin-bottom:10px;"></div>
+      <div class="flex"><input type="text" id="userChatInput" placeholder="Ketik pesan ke Admin..."><button class="btn btn-primary" onclick="sendUserChatToAdmin()">Kirim</button></div>
+    </div>
+    <div id="userChatTabUsers" class="hidden">
+      <div class="flex gap-sm mb-2">
+        <select id="userChatSelectUser" onchange="loadUserToUserChat()"><option value="">-- Pilih User --</option></select>
+        <button class="btn btn-sm" onclick="loadUserToUserChat()">Muat Chat</button>
+      </div>
+      <div class="chat-box" id="userToUserChatMessages" style="max-height:300px;overflow-y:auto;background:var(--bg-tertiary);padding:10px;border-radius:8px;margin-bottom:10px;"></div>
+      <div class="flex"><input type="text" id="userToUserChatInput" placeholder="Ketik pesan..."><button class="btn btn-primary" onclick="sendUserToUserChat()">Kirim</button></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- Guest Chat Modal -->
+<div class="modal-overlay" id="guestChatModal"><div class="modal-content">
+  <div class="modal-header"><h3>💬 Hubungi Super Admin</h3><button class="modal-close" onclick="closeModal('guestChatModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="chat-box" id="guestChatMessages" style="max-height:300px;overflow-y:auto;background:var(--bg-tertiary);padding:10px;border-radius:8px;margin-bottom:10px;"></div>
+    <div class="flex"><input type="text" id="guestChatInput" placeholder="Ketik..."><button class="btn btn-primary" onclick="sendGuestChat()">Kirim</button></div>
+  </div>
+</div></div>
+
+<!-- Super Admin Modal -->
+<div class="modal-overlay" id="superAdminModal"><div class="modal-content wide">
+  <div class="modal-header"><h3>👑 Panel Super Admin</h3><button class="modal-close" onclick="closeModal('superAdminModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="admin-tabs">
+      <div class="admin-tab active" onclick="switchAdminTab('codes')">Kode</div>
+      <div class="admin-tab" onclick="switchAdminTab('users')">User</div>
+      <div class="admin-tab" onclick="switchAdminTab('packages')">Paket</div>
+      <div class="admin-tab" onclick="switchAdminTab('chat')">💬 Chat</div>
+      <div class="admin-tab" onclick="switchAdminTab('masschat')">📢 Chat Massal</div>
+      <div class="admin-tab" onclick="switchAdminTab('iklan')">📢 Iklan</div>
+      <div class="admin-tab" onclick="switchAdminTab('settings')">Setelan</div>
+      <div class="admin-tab" onclick="switchAdminTab('backup')">💾 Backup</div>
+    </div>
+    <div id="adminTabContent"></div>
+  </div>
+</div></div>
+
+<!-- Forgot Password Modal -->
+<div class="modal-overlay" id="forgotPasswordModal"><div class="modal-content">
+  <div class="modal-header"><h3>Lupa Password</h3><button class="modal-close" onclick="closeModal('forgotPasswordModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="text" id="forgotNama" placeholder="Nama" class="mb-2">
+    <input type="email" id="forgotEmail" placeholder="Email" class="mb-2">
+    <input type="text" id="forgotHp" placeholder="No HP" class="mb-2">
+    <button class="btn btn-warning btn-block" onclick="handleForgotPassword()">Reset via Chat</button>
+  </div>
+</div></div>
+<!-- ==================== STRUKTUR HALAMAN ==================== -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- ==================== LANDING PAGE ==================== -->
+<div class="container" id="landingPage">
+  <header class="header">
+    <div class="logo"><span class="logo-icon">🧠</span><span class="logo-text">AI Code Builder Pro v12.0</span></div>
+    <div class="header-buttons">
+      <button class="btn btn-sm" onclick="toggleTheme()">🌓 Tema</button>
+      <button class="btn btn-outline btn-sm" onclick="showLoginModal()">Login</button>
+      <button class="btn btn-primary btn-sm" onclick="showRegisterModal()">Daftar</button>
+      <button class="btn btn-success btn-sm hidden" id="installButton" onclick="installPWA()">📲 Install</button>
+    </div>
+  </header>
+
+  <!-- IKLAN (EDITABLE OLEH SUPER ADMIN) -->
+  <div class="premium-ad" id="landingAd"></div>
+
+  <section class="hero">
+    <div class="hero-icon">🧠</div>
+    <h1 class="gradient-text">AI Code Builder Pro</h1>
+    <p class="hero-description">Generate & rekayasa kode HTML, CSS, JavaScript dengan AI cerdas yang belajar dari pengetahuan Anda.</p>
+    <div class="hero-buttons">
+      <button class="btn btn-primary btn-lg" onclick="showLoginModal()">🔐 Mulai Sekarang</button>
+      <button class="btn btn-outline btn-lg" onclick="showRegisterModal()">📝 Daftar Akun</button>
+    </div>
+  </section>
+
+  <div class="whatsapp-banner" id="contactBanner" onclick="openGuestChat()">
+    <div class="whatsapp-banner-left">
+      <span class="whatsapp-banner-icon">💬</span>
+      <div><strong>Hubungi Super Admin</strong><br><small>Chat langsung untuk bantuan</small></div>
+    </div>
+    <div class="whatsapp-banner-right">
+      <span>📱 <span id="whatsappNumberLanding"></span></span>
+      <span style="font-size:1.2rem;">👉</span>
+    </div>
+  </div>
+
+  <h3 class="section-title">Fitur Unggulan</h3>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">🧠</div><h4>Generate Kode AI</h4><p>Dari deskripsi langsung jadi kode HTML/CSS/JS lengkap.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔧</div><h4>Rekayasa Kode</h4><p>Perbaiki & sempurnakan kode lama dengan AI.</p></div>
+    <div class="feature-card"><div class="feature-icon">📚</div><h4>Pengetahuan Pribadi</h4><p>Upload file atau tulis langsung pengetahuan coding Anda.</p></div>
+    <div class="feature-card"><div class="feature-icon">👥</div><h4>Multi User</h4><p>Setiap pengguna memiliki akun dan data masing‑masing.</p></div>
+    <div class="feature-card"><div class="feature-icon">💬</div><h4>Chat Internal</h4><p>Hubungi admin & sesama user langsung dari aplikasi.</p></div>
+    <div class="feature-card"><div class="feature-icon">💾</div><h4>Backup & Restore</h4><p>Simpan dan pulihkan semua data dengan mudah.</p></div>
+  </div>
+
+  <h3 class="section-title">Paket Aktivasi Premium</h3>
+  <div class="price-grid" id="landingPriceGrid"></div>
+  <div class="text-center mb-3"><button class="btn btn-primary" onclick="showRegisterModal()">Daftar & Coba Premium</button></div>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div class="container hidden" id="dashboardPage">
+  <header class="header">
+    <div class="logo"><span class="logo-icon">🧠</span><span class="logo-text">AI Code Builder Pro</span></div>
+    <div class="header-buttons">
+      <button class="btn btn-sm" onclick="toggleTheme()">🌓 Tema</button>
+      <button class="btn btn-sm btn-primary hidden" id="profileButton" onclick="showProfileModal()">👤 Profil</button>
+      <button class="btn btn-sm btn-warning hidden" id="adminButton" onclick="showSuperAdminPanel()">👑 Admin</button>
+      <div class="user-badge hidden" id="userBadge"><span class="user-avatar" id="userAvatar">U</span><span class="user-name" id="userNameDisplay">User</span></div>
+      <button class="btn btn-sm btn-danger hidden" id="logoutButton" onclick="handleLogout()">Logout</button>
+      <button class="btn btn-sm btn-info hidden" id="downloadHTMLButton" onclick="downloadOfflinePage()">⬇ Download HTML</button>
+      <button class="btn btn-sm btn-success hidden" id="installButton2" onclick="installPWA()">📲 Install</button>
+    </div>
+  </header>
+
+  <div class="whatsapp-banner hidden" id="premiumBanner" style="background: linear-gradient(135deg, #f59e0b, #e67e22);">
+    <div><strong>🔓 Upgrade ke Premium</strong> – Dapatkan fitur Gabung Kode dan lainnya.</div>
+    <button class="btn btn-warning btn-sm" onclick="showActivationModal()">Upgrade</button>
+  </div>
+
+  <div class="stats-grid" id="dashboardStats">
+    <div class="stat-card"><div class="stat-value" id="statTotalApps">0</div><div class="stat-label">Aplikasi</div></div>
+    <div class="stat-card"><div class="stat-value" id="statTotalCodes">0</div><div class="stat-label">Total Kode</div></div>
+    <div class="stat-card"><div class="stat-value" id="statStorage">0 KB</div><div class="stat-label">Penyimpanan</div></div>
+    <div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">Pengguna</div></div>
+    <div class="stat-card"><div class="stat-value" id="statPremiumStatus">Free</div><div class="stat-label">Status</div></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn btn-success" onclick="showAddAppModal()">➕ Tambah Aplikasi</button>
+    <button class="btn btn-primary" onclick="showGenerateCodeModal()">⚡ Generate Kode</button>
+    <button class="btn btn-warning" onclick="showRekayasaCodeModal()">🔧 Rekayasa Kode</button>
+    <button class="btn btn-info" onclick="showKnowledgeModal()">📚 Pengetahuan</button>
+    <button class="btn btn-blue" onclick="showUserChatModal()">💬 Chat</button>
+    <button class="btn btn-success hidden" id="backupJSONButton" onclick="backupAllData()">💾 Backup JSON</button>
+    <label class="btn btn-warning hidden" id="restoreJSONButton" style="cursor:pointer;">📤 Restore JSON<input type="file" accept=".json" onchange="restoreAllData(this)" hidden></label>
+    <button class="btn btn-primary" id="mergeButton" onclick="showMergeModal()">🧩 Gabung & Copy <span class="badge badge-purple">Premium</span></button>
+    <button class="btn btn-warning hidden" id="activationButton" onclick="showActivationModal()">🔑 Aktivasi Premium</button>
+  </div>
+
+  <div id="appListContainer"></div>
+  <div id="emptyState" class="empty-state">
+    <div class="empty-state-icon">🧠</div>
+    <h3>Belum Ada Aplikasi</h3>
+    <p>Mulai tambahkan aplikasi dan generate kode AI sekarang.</p>
+    <button class="btn btn-success" onclick="showAddAppModal()">Tambah Aplikasi Pertama</button>
+  </div>
+</div>
+
+<!-- ==================== SEMUA MODAL ==================== -->
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal"><div class="modal-content" style="max-width:420px;">
+  <div class="modal-header"><h3>🔐 Login</h3><button class="modal-close" onclick="closeModal('loginModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="text" id="loginUsername" placeholder="Username atau Email" class="mb-2">
+    <input type="password" id="loginPassword" placeholder="Password" class="mb-2">
+    <button class="btn btn-success btn-block" onclick="handleLogin()">Masuk</button>
+    <div class="form-error" id="loginError"></div>
+    <div class="flex-between mt-2 text-sm">
+      <span class="link-text" onclick="closeModal('loginModal');showRegisterModal()">Daftar Akun Baru</span>
+      <span class="link-text" onclick="closeModal('loginModal');openModal('forgotPasswordModal')">Lupa Password?</span>
+    </div>
+  </div>
+</div></div>
+
+<!-- Register Modal -->
+<div class="modal-overlay" id="registerModal"><div class="modal-content" style="max-width:420px;">
+  <div class="modal-header"><h3>📝 Daftar Akun Baru</h3><button class="modal-close" onclick="closeModal('registerModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="text" id="registerNama" placeholder="Nama Lengkap" class="mb-2">
+    <input type="email" id="registerEmail" placeholder="Email" class="mb-2">
+    <input type="text" id="registerHp" placeholder="No HP (08xxx)" class="mb-2">
+    <input type="text" id="registerUsername" placeholder="Username" class="mb-2">
+    <input type="password" id="registerPassword" placeholder="Password (min 6)" class="mb-2">
+    <input type="password" id="registerPasswordConfirm" placeholder="Konfirmasi Password" class="mb-2">
+    <button class="btn btn-primary btn-block" onclick="handleRegister()">Daftar</button>
+    <div class="form-error" id="registerError"></div>
+    <div class="form-success" id="registerSuccess"></div>
+  </div>
+</div></div>
+
+<!-- Profile Modal -->
+<div class="modal-overlay" id="profileModal"><div class="modal-content" style="max-width:450px;">
+  <div class="modal-header"><h3>👤 Profil Saya</h3><button class="modal-close" onclick="closeModal('profileModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="flex gap-md mb-3">
+      <div id="profileAvatarBig" style="width:60px;height:60px;border-radius:50%;background:var(--accent-primary);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;">U</div>
+      <div><h4 id="profileName">User</h4><p id="profileRole" style="color:var(--text-secondary);">User Biasa</p></div>
+    </div>
+    <input type="text" id="editProfileNama" placeholder="Nama Lengkap" class="mb-2">
+    <input type="email" id="editProfileEmail" placeholder="Email" class="mb-2">
+    <input type="text" id="editProfileHp" placeholder="No HP" class="mb-2">
+    <button class="btn btn-success btn-block" onclick="saveProfile()">Simpan Profil</button>
+    <div class="form-error" id="profileError"></div><div class="form-success" id="profileSuccess"></div>
+    <hr style="border-color:var(--border-color);margin:16px 0;">
+    <button class="btn btn-danger btn-block" id="deleteAccountButton" onclick="deleteAccount()">🗑 Hapus Akun Saya</button>
+  </div>
+</div></div>
+
+<!-- Activation Modal -->
+<div class="modal-overlay" id="activationModal"><div class="modal-content" style="max-width:420px;">
+  <div class="modal-header"><h3>🔑 Aktivasi Premium</h3><button class="modal-close" onclick="closeModal('activationModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="text" id="activationCodeInputMain" placeholder="Kode Aktivasi" class="mb-2">
+    <button class="btn btn-success btn-block" onclick="activatePremiumFromModal()">Aktifkan</button>
+    <div class="form-error" id="activationModalError"></div><div class="form-success" id="activationModalSuccess"></div>
+  </div>
+</div></div>
+
+<!-- App Modal -->
+<div class="modal-overlay" id="appModal"><div class="modal-content">
+  <div class="modal-header"><h3 id="appModalTitle">Tambah Aplikasi</h3><button class="modal-close" onclick="closeModal('appModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="editAppId">
+    <input type="text" id="appNameInput" placeholder="Nama Aplikasi" class="mb-2">
+    <textarea id="appDescInput" rows="2" placeholder="Deskripsi"></textarea>
+    <div class="form-error" id="appError"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('appModal')">Batal</button>
+    <button class="btn btn-success" onclick="saveApplication()">Simpan</button>
+  </div>
+</div></div>
+
+<!-- Code Modal -->
+<div class="modal-overlay" id="codeModal"><div class="modal-content">
+  <div class="modal-header"><h3 id="codeModalTitle">Tambah Code</h3><button class="modal-close" onclick="closeModal('codeModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="editCodeId"><input type="hidden" id="codeAppId">
+    <input type="text" id="codeNameInput" placeholder="Nama Code" class="mb-2">
+    <textarea id="codeContentInput" rows="10" placeholder="Kode HTML"></textarea>
+    <div class="form-error" id="codeError"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('codeModal')">Batal</button>
+    <button class="btn btn-success" onclick="saveCode()">Simpan Code</button>
+  </div>
+</div></div>
+
+<!-- Generate Code Modal -->
+<div class="modal-overlay" id="generateCodeModal"><div class="modal-content wide">
+  <div class="modal-header"><h3>⚡ Generate Kode AI</h3><button class="modal-close" onclick="closeModal('generateCodeModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="form-group"><label class="form-label">Deskripsikan kode yang ingin dibuat:</label><textarea id="generatePrompt" rows="4" placeholder="Contoh: Buat halaman login responsif..."></textarea></div>
+    <div class="form-group"><label class="form-label">Jenis Kode:</label><select id="generateType"><option value="full">HTML + CSS + JavaScript</option><option value="html">HTML only</option><option value="css">CSS only</option><option value="js">JavaScript only</option></select></div>
+    <button class="btn btn-primary btn-block" onclick="generateCode()">⚡ Generate Kode</button>
+    <div class="mt-3 hidden" id="generateOutputContainer">
+      <div class="flex-between mb-2"><strong>Kode Hasil Generate</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyGeneratedCode()">📋 Copy</button><button class="btn btn-sm btn-success" onclick="downloadGeneratedCode()">⬇ Download</button></div></div>
+      <textarea id="generateOutput" readonly style="font-family:'Courier New',monospace;font-size:0.8rem;min-height:200px;background:var(--bg-primary);color:var(--text-primary);border:1px solid var(--accent-primary);"></textarea>
+    </div>
+  </div>
+</div></div>
+
+<!-- Rekayasa Code Modal -->
+<div class="modal-overlay" id="rekayasaCodeModal"><div class="modal-content wide">
+  <div class="modal-header"><h3>🔧 Rekayasa Kode AI</h3><button class="modal-close" onclick="closeModal('rekayasaCodeModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="form-group"><label class="form-label">Tempel kode yang ingin direkayasa:</label><textarea id="rekayasaInput" rows="10" placeholder="Tempel kode HTML/CSS/JS di sini..."></textarea></div>
+    <div class="form-group"><label class="form-label">Instruksi perbaikan:</label><textarea id="rekayasaInstruction" rows="3" placeholder="Contoh: Buat lebih responsif, tambahkan animasi..."></textarea></div>
+    <button class="btn btn-warning btn-block" onclick="rekayasaCode()">🔧 Rekayasa Kode</button>
+    <div class="mt-3 hidden" id="rekayasaOutputContainer">
+      <div class="flex-between mb-2"><strong>Hasil Rekayasa</strong><div class="flex gap-sm"><button class="btn btn-sm" onclick="copyRekayasaCode()">📋 Copy</button><button class="btn btn-sm btn-success" onclick="downloadRekayasaCode()">⬇ Download</button></div></div>
+      <textarea id="rekayasaOutput" readonly style="font-family:'Courier New',monospace;font-size:0.8rem;min-height:200px;background:var(--bg-primary);color:var(--text-primary);border:1px solid var(--accent-primary);"></textarea>
+    </div>
+  </div>
+</div></div>
+
+<!-- Knowledge Modal -->
+<div class="modal-overlay" id="knowledgeModal"><div class="modal-content wide">
+  <div class="modal-header"><h3>📚 Pengetahuan Saya</h3><button class="modal-close" onclick="closeModal('knowledgeModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="flex gap-sm mb-3">
+      <button class="btn btn-sm btn-primary" onclick="openUploadKnowledgeModal()">➕ Tambah Pengetahuan</button>
+      <button class="btn btn-sm btn-danger" onclick="clearAllKnowledge()">🗑 Hapus Semua</button>
+    </div>
+    <div id="knowledgeList"></div>
+  </div>
+</div></div>
+
+<!-- Upload Knowledge Modal -->
+<div class="modal-overlay" id="uploadKnowledgeModal"><div class="modal-content">
+  <div class="modal-header"><h3 id="knowledgeFormTitle">Tambah Pengetahuan</h3><button class="modal-close" onclick="closeModal('uploadKnowledgeModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="editKnowledgeIndex">
+    <div class="form-group"><label class="form-label">Upload File (HTML, CSS, JS, TXT):</label><input type="file" id="knowledgeFile" accept=".html,.css,.js,.txt" multiple></div>
+    <div class="text-center text-muted my-2">— atau —</div>
+    <div class="form-group"><label class="form-label">Tulis Langsung:</label><textarea id="knowledgeText" rows="8" placeholder="Tulis langsung kode, tips, trik, atau referensi di sini..."></textarea></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('uploadKnowledgeModal')">Batal</button>
+    <button class="btn btn-success" onclick="saveKnowledge()">💾 Simpan Pengetahuan</button>
+  </div>
+</div></div>
+
+<!-- Merge Modal -->
+<div class="modal-overlay" id="mergeModal"><div class="modal-content">
+  <div class="modal-header"><h3>🧩 Gabung & Copy Semua Code</h3><button class="modal-close" onclick="closeModal('mergeModal')">✕</button></div>
+  <div class="modal-body">
+    <p class="text-secondary mb-2">Pilih aplikasi yang kode-nya ingin digabung menjadi 1 file index.html.</p>
+    <div id="mergeAppList" class="flex flex-wrap gap-sm mb-3"></div>
+    <button class="btn btn-success btn-block" onclick="performMerge()">Gabung Semua Code</button>
+    <div id="mergeResult" class="hidden mt-3">
+      <div class="flex-between mb-2"><strong>Hasil Gabungan</strong><div class="flex gap-sm"><button class="btn btn-primary btn-sm" onclick="copyMergeResult()">Copy</button><button class="btn btn-success btn-sm" onclick="downloadMergeResult()">Download</button></div></div>
+      <textarea id="mergeOutput" readonly style="font-family:'Courier New',monospace;font-size:0.8rem;min-height:250px;background:var(--bg-primary);color:var(--text-primary);border:1px solid #7c3aed;"></textarea>
+    </div>
+  </div>
+</div></div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal"><div class="modal-content" style="max-width:380px;">
+  <div class="modal-header"><h3 id="confirmTitle">Konfirmasi</h3><button class="modal-close" onclick="closeModal('confirmModal')">✕</button></div>
+  <div class="modal-body"><p id="confirmMessage"></p></div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('confirmModal')">Batal</button>
+    <button class="btn btn-danger" onclick="executeConfirmAction()">Ya</button>
+  </div>
+</div></div>
+
+<!-- Edit Package Modal -->
+<div class="modal-overlay" id="editPackageModal"><div class="modal-content">
+  <div class="modal-header"><h3>Edit Paket</h3><button class="modal-close" onclick="closeModal('editPackageModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="editPackageId">
+    <input type="text" id="editPackageName" placeholder="Nama" class="mb-2">
+    <input type="number" id="editPackagePrice" placeholder="Harga" class="mb-2">
+    <input type="number" id="editPackageDays" placeholder="Hari" class="mb-2">
+    <input type="text" id="editPackageLabel" placeholder="Label" class="mb-2">
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-gray" onclick="closeModal('editPackageModal')">Batal</button>
+    <button class="btn btn-success" onclick="savePackageChanges()">Simpan</button>
+  </div>
+</div></div>
+
+<!-- User Chat Modal -->
+<div class="modal-overlay" id="userChatModal"><div class="modal-content wide">
+  <div class="modal-header">
+    <h3>💬 Chat</h3>
+    <div class="flex gap-sm">
+      <button class="btn btn-sm btn-danger" onclick="clearAllUserChats()">🗑 Hapus Semua Chat</button>
+      <button class="modal-close" onclick="closeModal('userChatModal')">✕</button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="tab-nav">
+      <button class="btn btn-sm btn-primary active" id="tabChatAdminBtn" onclick="switchUserChatTab('admin')">👑 Chat Admin</button>
+      <button class="btn btn-sm btn-outline" id="tabChatUsersBtn" onclick="switchUserChatTab('users')">👥 Chat User</button>
+    </div>
+    <div id="userChatTabAdmin">
+      <div class="chat-box" id="userChatMessages" style="max-height:300px;overflow-y:auto;background:var(--bg-tertiary);padding:10px;border-radius:8px;margin-bottom:10px;"></div>
+      <div class="flex"><input type="text" id="userChatInput" placeholder="Ketik pesan ke Admin..."><button class="btn btn-primary" onclick="sendUserChatToAdmin()">Kirim</button></div>
+    </div>
+    <div id="userChatTabUsers" class="hidden">
+      <div class="flex gap-sm mb-2">
+        <select id="userChatSelectUser" onchange="loadUserToUserChat()"><option value="">-- Pilih User --</option></select>
+        <button class="btn btn-sm" onclick="loadUserToUserChat()">Muat Chat</button>
+      </div>
+      <div class="chat-box" id="userToUserChatMessages" style="max-height:300px;overflow-y:auto;background:var(--bg-tertiary);padding:10px;border-radius:8px;margin-bottom:10px;"></div>
+      <div class="flex"><input type="text" id="userToUserChatInput" placeholder="Ketik pesan..."><button class="btn btn-primary" onclick="sendUserToUserChat()">Kirim</button></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- Guest Chat Modal -->
+<div class="modal-overlay" id="guestChatModal"><div class="modal-content">
+  <div class="modal-header"><h3>💬 Hubungi Super Admin</h3><button class="modal-close" onclick="closeModal('guestChatModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="chat-box" id="guestChatMessages" style="max-height:300px;overflow-y:auto;background:var(--bg-tertiary);padding:10px;border-radius:8px;margin-bottom:10px;"></div>
+    <div class="flex"><input type="text" id="guestChatInput" placeholder="Ketik..."><button class="btn btn-primary" onclick="sendGuestChat()">Kirim</button></div>
+  </div>
+</div></div>
+
+<!-- Super Admin Modal -->
+<div class="modal-overlay" id="superAdminModal"><div class="modal-content wide">
+  <div class="modal-header"><h3>👑 Panel Super Admin</h3><button class="modal-close" onclick="closeModal('superAdminModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="admin-tabs">
+      <div class="admin-tab active" onclick="switchAdminTab('codes')">Kode</div>
+      <div class="admin-tab" onclick="switchAdminTab('users')">User</div>
+      <div class="admin-tab" onclick="switchAdminTab('packages')">Paket</div>
+      <div class="admin-tab" onclick="switchAdminTab('chat')">💬 Chat</div>
+      <div class="admin-tab" onclick="switchAdminTab('masschat')">📢 Chat Massal</div>
+      <div class="admin-tab" onclick="switchAdminTab('iklan')">📢 Iklan</div>
+      <div class="admin-tab" onclick="switchAdminTab('settings')">Setelan</div>
+      <div class="admin-tab" onclick="switchAdminTab('backup')">💾 Backup</div>
+    </div>
+    <div id="adminTabContent"></div>
+  </div>
+</div></div>
+
+<!-- Forgot Password Modal -->
+<div class="modal-overlay" id="forgotPasswordModal"><div class="modal-content">
+  <div class="modal-header"><h3>Lupa Password</h3><button class="modal-close" onclick="closeModal('forgotPasswordModal')">✕</button></div>
+  <div class="modal-body">
+    <input type="text" id="forgotNama" placeholder="Nama" class="mb-2">
+    <input type="email" id="forgotEmail" placeholder="Email" class="mb-2">
+    <input type="text" id="forgotHp" placeholder="No HP" class="mb-2">
+    <button class="btn btn-warning btn-block" onclick="handleForgotPassword()">Reset via Chat</button>
+  </div>
+</div></div>
+
+<!-- ==================== AKHIR BLOK 3 ==================== -->
 <script>
 // ================================================================
-// AI CODE BUILDER PRO v11.0 - CORE JAVASCRIPT (BLOK 2)
+// AI CODE BUILDER PRO v12.0 - FULL JAVASCRIPT (Blok 5/5)
 // ================================================================
 
 // ---------- ENKRIPSI & DATA DEFAULT ----------
@@ -197,49 +907,49 @@ const DEFAULT_PACKAGES = [
 
 // ---------- LOCAL STORAGE HELPERS ----------
 function getStorageItem(key, def) {
-  try { const v = localStorage.getItem('ai_' + key); return v ? JSON.parse(v) : def; }
+  try { const value = localStorage.getItem('ai_' + key); return value ? JSON.parse(value) : def; }
   catch (e) { return def; }
 }
 function setStorageItem(key, value) { localStorage.setItem('ai_' + key, JSON.stringify(value)); }
 function removeStorageItem(key) { localStorage.removeItem('ai_' + key); }
 
 function getAllUsers() { return getStorageItem('users', []); }
-function saveAllUsers(u) { setStorageItem('users', u); }
+function saveAllUsers(users) { setStorageItem('users', users); }
 function getAllApplications() { return getStorageItem('applications', {}); }
-function saveAllApplications(a) { setStorageItem('applications', a); }
+function saveAllApplications(apps) { setStorageItem('applications', apps); }
 function getSession() { return getStorageItem('session', null); }
-function saveSession(s) { setStorageItem('session', s); }
+function saveSession(session) { setStorageItem('session', session); }
 function clearSession() { removeStorageItem('session'); }
 function getValidCodes() { return getStorageItem('validCodes', {}); }
-function saveValidCodes(c) { setStorageItem('validCodes', c); }
+function saveValidCodes(codes) { setStorageItem('validCodes', codes); }
 function getChatMessages() { return getStorageItem('chatMessages', []); }
-function saveChatMessages(m) { setStorageItem('chatMessages', m); }
+function saveChatMessages(msgs) { setStorageItem('chatMessages', msgs); }
 function getPackages() { return getStorageItem('packages', DEFAULT_PACKAGES); }
-function savePackages(p) { setStorageItem('packages', p); }
+function savePackages(pkg) { setStorageItem('packages', pkg); }
 function getSecurityLogs() { return getStorageItem('securityLogs', []); }
-function saveSecurityLogs(l) { setStorageItem('securityLogs', l); }
+function saveSecurityLogs(logs) { setStorageItem('securityLogs', logs); }
 function getAllKnowledge() { return getStorageItem('knowledge', []); }
-function saveAllKnowledge(k) { setStorageItem('knowledge', k); }
+function saveAllKnowledge(knowledge) { setStorageItem('knowledge', knowledge); }
 
 // ---------- UI HELPERS ----------
 function updateWhatsappDisplay() {
   const n = whatsappNumber;
-  const f = n.startsWith('0') ? '+62' + n.substring(1) : (n.startsWith('62') ? '+' + n : '+62' + n);
-  const el = document.getElementById('whatsappNumberLanding');
-  if (el) el.textContent = f;
+  const formatted = n.startsWith('0') ? '+62' + n.substring(1) : (n.startsWith('62') ? '+' + n : '+62' + n);
+  const landingEl = document.getElementById('whatsappNumberLanding');
+  if (landingEl) landingEl.textContent = formatted;
 }
-function showToast(msg, type) {
+function showToast(message, type) {
   const container = document.getElementById('toastContainer');
   if (!container) return;
-  const t = document.createElement('div');
-  t.className = 'toast toast-' + (type || 'info');
-  t.textContent = msg;
-  container.appendChild(t);
-  requestAnimationFrame(() => t.classList.add('show'));
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => { if (t.parentNode) t.parentNode.removeChild(t); }, 300); }, 3000);
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + (type || 'info');
+  toast.textContent = message;
+  container.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300); }, 3000);
 }
-function openModal(id) { const m = document.getElementById(id); if (m) m.classList.add('show'); }
-function closeModal(id) { const m = document.getElementById(id); if (m) m.classList.remove('show'); clearModalErrors(); }
+function openModal(id) { const modal = document.getElementById(id); if (modal) modal.classList.add('show'); }
+function closeModal(id) { const modal = document.getElementById(id); if (modal) modal.classList.remove('show'); clearModalErrors(); }
 function clearModalErrors() { document.querySelectorAll('.form-error, .form-success').forEach(el => { el.textContent = ''; el.classList.remove('show'); }); }
 
 function toggleTheme() {
@@ -398,8 +1108,8 @@ function showAddAppModal() {
   openModal('appModal');
 }
 function editApp(id) {
-  const s = getSession(); const applist = getAllApplications()[s.id] || [];
-  const app = applist.find(a => a.id === id); if (!app) return;
+  const s = getSession(); const apps = getAllApplications()[s.id] || [];
+  const app = apps.find(a => a.id === id); if (!app) return;
   document.getElementById('appModalTitle').textContent = 'Edit Aplikasi';
   document.getElementById('editAppId').value = id; document.getElementById('appNameInput').value = app.name;
   document.getElementById('appDescInput').value = app.desc || ''; openModal('appModal');
@@ -411,21 +1121,21 @@ function saveApplication() {
   const desc = document.getElementById('appDescInput').value.trim();
   const err = document.getElementById('appError'); if (err) err.classList.remove('show');
   if (!name) { if (err) { err.textContent = 'Nama aplikasi wajib!'; err.classList.add('show'); } return; }
-  const all = getAllApplications(); const myApps = all[s.id] || [];
+  const all = getAllApplications(); const apps = all[s.id] || [];
   if (editId) {
-    const idx = myApps.findIndex(a => a.id === editId);
-    if (idx !== -1) { myApps[idx].name = name; myApps[idx].desc = desc; }
-  } else { myApps.push({ id: Date.now().toString(), name, desc, codes: [], createdAt: new Date().toISOString() }); }
-  all[s.id] = myApps; saveAllApplications(all); closeModal('appModal'); refreshAppUI(); updateStats(); showToast('Aplikasi disimpan!', 'success');
+    const idx = apps.findIndex(a => a.id === editId);
+    if (idx !== -1) { apps[idx].name = name; apps[idx].desc = desc; }
+  } else { apps.push({ id: Date.now().toString(), name: name, desc: desc, codes: [], createdAt: new Date().toISOString() }); }
+  all[s.id] = apps; saveAllApplications(all); closeModal('appModal'); refreshAppUI(); updateStats(); showToast('Aplikasi disimpan!', 'success');
 }
 function deleteApp(appId) {
-  showConfirm('Hapus Aplikasi?', 'Semua kode di dalamnya akan dihapus.', () => {
+  showConfirm('Hapus Aplikasi?', 'Semua kode di dalamnya juga akan dihapus.', () => {
     const s = getSession(); const all = getAllApplications();
     all[s.id] = (all[s.id] || []).filter(a => a.id !== appId); saveAllApplications(all);
     refreshAppUI(); updateStats(); showToast('Aplikasi dihapus.', 'warning');
   });
 }
-function toggleAppCodes(appId) { document.getElementById('codes-' + appId)?.classList.toggle('open'); }
+function toggleAppCodes(appId) { const el = document.getElementById('codes-' + appId); if (el) el.classList.toggle('open'); }
 function showAddCodeModal(appId) {
   document.getElementById('codeModalTitle').textContent = 'Tambah Code';
   document.getElementById('editCodeId').value = ''; document.getElementById('codeAppId').value = appId;
@@ -453,7 +1163,7 @@ function saveCode() {
   if (editId) {
     const code = app.codes.find(c => c.id === editId);
     if (code) { code.name = name; code.content = content; }
-  } else { app.codes.push({ id: Date.now().toString(), name, content, createdAt: new Date().toISOString() }); }
+  } else { app.codes.push({ id: Date.now().toString(), name: name, content: content, createdAt: new Date().toISOString() }); }
   all[s.id] = apps; saveAllApplications(all); closeModal('codeModal'); refreshAppUI(); updateStats(); showToast('Kode disimpan!', 'success');
 }
 function deleteCode(appId, codeId) {
@@ -464,20 +1174,23 @@ function deleteCode(appId, codeId) {
     all[s.id] = apps; saveAllApplications(all); refreshAppUI(); updateStats(); showToast('Kode dihapus.', 'warning');
   });
 }
-function toggleCodePreview(codeId) { document.getElementById('preview-' + codeId)?.classList.toggle('show'); }
-function escapeHTML(str) { return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]); }
+function toggleCodePreview(codeId) { const el = document.getElementById('preview-' + codeId); if (el) el.classList.toggle('show'); }
+function escapeHTML(str) {
+  if (!str) return '';
+  return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+}
 
 function refreshAppUI() {
-  const s = getSession(); const myApps = s ? (getAllApplications()[s.id] || []) : [];
+  const s = getSession(); const apps = s ? (getAllApplications()[s.id] || []) : [];
   const container = document.getElementById('appListContainer');
   const empty = document.getElementById('emptyState');
   if (!container) return;
-  if (myApps.length === 0) { container.innerHTML = ''; if (empty) empty.classList.remove('hidden'); return; }
+  if (apps.length === 0) { container.innerHTML = ''; if (empty) empty.classList.remove('hidden'); return; }
   if (empty) empty.classList.add('hidden');
-  container.innerHTML = myApps.map(app => {
-    let html = `<div class="app-item"><div class="app-header" onclick="toggleAppCodes('${app.id}')"><div class="app-name">📁 ${escapeHTML(app.name)} <span class="app-code-count">${app.codes.length} kode</span></div><div class="flex gap-sm"><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showAddCodeModal('${app.id}')">+ Code</button><button class="btn btn-warning btn-sm" onclick="event.stopPropagation(); editApp('${app.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteApp('${app.id}')">Hapus</button></div></div><div class="app-codes-container" id="codes-${app.id}">`;
+  container.innerHTML = apps.map(app => {
+    let html = '<div class="app-item"><div class="app-header" onclick="toggleAppCodes(\'' + app.id + '\')"><div class="app-name">📁 ' + escapeHTML(app.name) + ' <span class="app-code-count">' + app.codes.length + ' kode</span></div><div class="flex gap-sm"><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showAddCodeModal(\'' + app.id + '\')">+ Code</button><button class="btn btn-warning btn-sm" onclick="event.stopPropagation(); editApp(\'' + app.id + '\')">Edit</button><button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteApp(\'' + app.id + '\')">Hapus</button></div></div><div class="app-codes-container" id="codes-' + app.id + '">';
     if (app.codes.length === 0) { html += '<p style="color:var(--text-muted);padding:8px;">Belum ada kode.</p>'; }
-    else { html += app.codes.map(code => `<div class="code-item"><div class="code-header"><span class="code-name">📄 ${escapeHTML(code.name)}</span><div class="flex gap-sm"><button class="btn btn-gray btn-sm" onclick="toggleCodePreview('${code.id}')">Preview</button><button class="btn btn-warning btn-sm" onclick="editCode('${app.id}','${code.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteCode('${app.id}','${code.id}')">Hapus</button></div></div><div class="code-content-preview" id="preview-${code.id}"><pre>${escapeHTML(code.content)}</pre></div></div>`).join(''); }
+    else { html += app.codes.map(code => '<div class="code-item"><div class="code-header"><span class="code-name">📄 ' + escapeHTML(code.name) + '</span><div class="flex gap-sm"><button class="btn btn-gray btn-sm" onclick="toggleCodePreview(\'' + code.id + '\')">Preview</button><button class="btn btn-warning btn-sm" onclick="editCode(\'' + app.id + '\',\'' + code.id + '\')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteCode(\'' + app.id + '\',\'' + code.id + '\')">Hapus</button></div></div><div class="code-content-preview" id="preview-' + code.id + '"><pre>' + escapeHTML(code.content) + '</pre></div></div>').join(''); }
     html += '</div></div>'; return html;
   }).join('');
 }
@@ -485,19 +1198,18 @@ function updateStats() {
   const s = getSession(); const apps = s ? (getAllApplications()[s.id] || []) : [];
   let totalCodes = 0, totalSize = 0;
   apps.forEach(app => { totalCodes += app.codes.length; app.codes.forEach(c => { totalSize += new Blob([c.content]).size; }); });
-  const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  setVal('statTotalApps', apps.length);
-  setVal('statTotalCodes', totalCodes);
-  setVal('statStorage', (totalSize / 1024).toFixed(1) + ' KB');
-  setVal('statTotalUsers', getAllUsers().length);
-  setVal('statPremiumStatus', (s && (s.premium || s.role === 'superadmin')) ? 'Premium' : 'Free');
+  document.getElementById('statTotalApps').textContent = apps.length;
+  document.getElementById('statTotalCodes').textContent = totalCodes;
+  document.getElementById('statStorage').textContent = (totalSize / 1024).toFixed(1) + ' KB';
+  document.getElementById('statTotalUsers').textContent = getAllUsers().length;
+  document.getElementById('statPremiumStatus').textContent = (s && (s.premium || s.role === 'superadmin')) ? 'Premium' : 'Free';
 }
 
 // ---------- MERGE ----------
 function showMergeModal() {
   const s = getSession(); if (!s || (!s.premium && s.role !== 'superadmin')) { showToast('Fitur Premium!', 'error'); return; }
   const apps = getAllApplications()[s.id] || [];
-  document.getElementById('mergeAppList').innerHTML = apps.map(a => `<label class="flex gap-sm"><input type="checkbox" checked value="${a.id}"> ${a.name}</label>`).join('');
+  document.getElementById('mergeAppList').innerHTML = apps.map(a => '<label class="flex gap-sm"><input type="checkbox" checked value="' + a.id + '"> ' + a.name + '</label>').join('');
   document.getElementById('mergeResult').classList.add('hidden');
   document.getElementById('mergeOutput').value = '';
   openModal('mergeModal');
@@ -524,7 +1236,8 @@ function backupAllData() {
   const data = {}; for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); data[key] = localStorage.getItem(key); }
   const json = JSON.stringify(data, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'aicode_full_backup_' + new Date().toISOString().slice(0,10) + '.json'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'aicode_full_backup_' + new Date().toISOString().slice(0,10) + '.json'; a.click();
   showToast('✅ Backup JSON berhasil!', 'success');
 }
 function restoreAllData(input) {
@@ -545,7 +1258,8 @@ function restoreAllData(input) {
 function downloadOfflinePage() {
   const html = document.documentElement.outerHTML;
   const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ai_code_builder_pro_v11.html'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'ai_code_builder_pro_v12.html'; a.click();
   showToast('⬇ HTML berhasil didownload!', 'success');
 }
 function restoreFromHTML(input) {
@@ -587,8 +1301,8 @@ async function callAI(userMessage) {
   }
   const all = getAllKnowledge();
   if (all.length > 0) {
-    let summary = '📚 **Tidak ada hasil spesifik.**\n\nRingkasan:\n';
-    all.forEach(item => summary += '📄 ' + item.filename + ' (' + item.content.length + ' karakter)\n');
+    let summary = '📚 **Tidak ada hasil spesifik.**\n\nRingkasan pengetahuan:\n\n';
+    all.forEach(item => { summary += '📄 ' + item.filename + ' (' + item.content.length + ' karakter)\n'; });
     return summary;
   }
   return '📚 **Belum ada pengetahuan.** Silakan tambahkan di menu 📚 Pengetahuan.';
@@ -604,11 +1318,10 @@ async function generateCode() {
   else if (type === 'css') fullPrompt = 'Buat CSS: ' + prompt;
   else if (type === 'js') fullPrompt = 'Buat JavaScript: ' + prompt;
   else fullPrompt = 'Buat HTML+CSS+JS: ' + prompt;
-  const output = document.getElementById('generateOutput');
-  output.textContent = '⏳ Mencari di pengetahuan...';
+  document.getElementById('generateOutput').textContent = '⏳ Mencari di pengetahuan...';
   document.getElementById('generateOutputContainer').classList.remove('hidden');
   const result = await callAI(fullPrompt);
-  output.textContent = result;
+  document.getElementById('generateOutput').textContent = result;
 }
 function copyGeneratedCode() {
   const code = document.getElementById('generateOutput').textContent;
@@ -624,11 +1337,10 @@ async function rekayasaCode() {
   const instruction = document.getElementById('rekayasaInstruction').value.trim();
   if (!code) { showToast('Tempel kode yang ingin direkayasa!', 'error'); return; }
   const fullPrompt = 'Rekayasa kode berikut:\n```\n' + code + '\n```\nInstruksi: ' + (instruction || 'Sempurnakan');
-  const output = document.getElementById('rekayasaOutput');
-  output.textContent = '⏳ Mencari solusi...';
+  document.getElementById('rekayasaOutput').textContent = '⏳ Mencari solusi...';
   document.getElementById('rekayasaOutputContainer').classList.remove('hidden');
   const result = await callAI(fullPrompt);
-  output.textContent = result;
+  document.getElementById('rekayasaOutput').textContent = result;
 }
 function copyRekayasaCode() {
   const code = document.getElementById('rekayasaOutput').textContent;
@@ -657,7 +1369,7 @@ function loadUserChatWithAdmin() {
   const session = getSession(); if (!session) return;
   const msgs = getChatMessages().filter(m => (m.from === session.username && m.to === 'admin') || (m.from === 'admin' && m.to === session.username) || (m.from === 'admin' && m.to === 'all'));
   const box = document.getElementById('userChatMessages'); if (!box) return;
-  box.innerHTML = msgs.map((m, i) => `<div class="chat-msg ${m.from === 'admin' ? 'admin' : 'user'}"><div class="chat-sender">${m.from === 'admin' ? 'Admin' : 'Anda'}</div>${m.text}<div class="chat-time">${new Date(m.time).toLocaleString()}</div><button class="chat-delete-btn" onclick="deleteChatMessage(${i}, 'admin')">×</button></div>`).join('');
+  box.innerHTML = msgs.map((m, i) => '<div class="chat-msg ' + (m.from === 'admin' ? 'admin' : 'user') + '"><div class="chat-sender">' + (m.from === 'admin' ? 'Admin' : 'Anda') + '</div>' + m.text + '<div class="chat-time">' + new Date(m.time).toLocaleString() + '</div><button class="chat-delete-btn" onclick="deleteChatMessage(' + i + ', \'admin\')">×</button></div>').join('');
   box.scrollTop = box.scrollHeight;
 }
 function sendUserChatToAdmin() {
@@ -670,7 +1382,7 @@ function loadUserListForChat() {
   const session = getSession(); if (!session) return;
   const users = getAllUsers().filter(u => u.id !== session.id && u.role !== 'superadmin');
   const select = document.getElementById('userChatSelectUser'); if (!select) return;
-  select.innerHTML = '<option value="">-- Pilih User --</option>' + users.map(u => `<option value="${u.username}">${u.username} (${u.nama})</option>`).join('');
+  select.innerHTML = '<option value="">-- Pilih User --</option>' + users.map(u => '<option value="' + u.username + '">' + u.username + ' (' + u.nama + ')</option>').join('');
 }
 function loadUserToUserChat() {
   const session = getSession(); if (!session) return;
@@ -678,7 +1390,7 @@ function loadUserToUserChat() {
   const box = document.getElementById('userToUserChatMessages'); if (!box) return;
   if (!target) { box.innerHTML = '<p class="text-muted text-center">Pilih user untuk melihat chat.</p>'; return; }
   const msgs = getChatMessages().filter(m => (m.from === session.username && m.to === target) || (m.from === target && m.to === session.username));
-  box.innerHTML = msgs.map((m, i) => `<div class="chat-msg ${m.from === session.username ? 'user' : 'admin'}"><div class="chat-sender">${m.from === session.username ? 'Anda' : m.from}</div>${m.text}<div class="chat-time">${new Date(m.time).toLocaleString()}</div><button class="chat-delete-btn" onclick="deleteChatMessage(${i}, 'user')">×</button></div>`).join('');
+  box.innerHTML = msgs.map((m, i) => '<div class="chat-msg ' + (m.from === session.username ? 'user' : 'admin') + '"><div class="chat-sender">' + (m.from === session.username ? 'Anda' : m.from) + '</div>' + m.text + '<div class="chat-time">' + new Date(m.time).toLocaleString() + '</div><button class="chat-delete-btn" onclick="deleteChatMessage(' + i + ', \'user\')">×</button></div>').join('');
   box.scrollTop = box.scrollHeight;
 }
 function sendUserToUserChat() {
@@ -719,41 +1431,173 @@ function deleteChatMessage(index, tab) {
 // ---------- SUPER ADMIN PANEL ----------
 function showSuperAdminPanel() { openModal('superAdminModal'); switchAdminTab('codes'); }
 function switchAdminTab(tab) {
-  const content = document.getElementById('adminTabContent'); if (!content) return;
+  const content = document.getElementById('adminTabContent');
+  if (!content) return;
   if (tab === 'codes') {
-    content.innerHTML = `<h4>Buat Kode Aktivasi</h4><input id="adminActUser" placeholder="Username/email" class="mb-2"><select id="adminActPackage" class="mb-2">${getPackages().map(p => `<option value="${p.id}">${p.name} - Rp ${p.price} (${p.label})</option>`).join('')}</select><button class="btn btn-success btn-block" onclick="adminCreateCode()">Buat Kode</button><div id="adminCodeResult"></div><h4 class="mt-3">Kode Aktif</h4><div id="activeCodesList"></div>`;
+    content.innerHTML = '<h4>Buat Kode Aktivasi</h4><input id="adminActUser" placeholder="Username/email" class="mb-2"><select id="adminActPackage" class="mb-2">' + getPackages().map(p => '<option value="' + p.id + '">' + p.name + ' - Rp ' + p.price + ' (' + p.label + ')</option>').join('') + '</select><button class="btn btn-success btn-block" onclick="adminCreateCode()">Buat Kode</button><div id="adminCodeResult"></div><h4 class="mt-3">Kode Aktif</h4><div id="activeCodesList"></div>';
     renderActiveCodes();
   } else if (tab === 'users') {
-    content.innerHTML = `<table class="admin-table"><tr><th>Nama</th><th>Username</th><th>Email</th><th>Premium</th><th>Aksi</th></tr>${getAllUsers().map(u => `<tr><td>${u.nama}</td><td>${u.username}</td><td>${u.email}</td><td>${u.premium?'Ya':'Tidak'}</td><td><button class="btn btn-sm btn-warning" onclick="toggleLockUser('${u.id}')">${u.locked?'Buka':'Kunci'}</button> <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')">Hapus</button></td></tr>`).join('')}</table>`;
+    content.innerHTML = '<table class="admin-table"><tr><th>Nama</th><th>Username</th><th>Email</th><th>Premium</th><th>Aksi</th></tr>' + getAllUsers().map(u => '<tr><td>' + u.nama + '</td><td>' + u.username + '</td><td>' + u.email + '</td><td>' + (u.premium ? 'Ya' : 'Tidak') + '</td><td><button class="btn btn-sm btn-warning" onclick="toggleLockUser(\'' + u.id + '\')">' + (u.locked ? 'Buka' : 'Kunci') + '</button> <button class="btn btn-sm btn-danger" onclick="deleteUser(\'' + u.id + '\')">Hapus</button></td></tr>').join('') + '</table>';
   } else if (tab === 'packages') {
-    content.innerHTML = `<div id="packageEditList"></div><button class="btn btn-sm btn-primary mt-2" onclick="addNewPackage()">+ Tambah Paket</button>`;
+    content.innerHTML = '<div id="packageEditList"></div><button class="btn btn-sm btn-primary mt-2" onclick="addNewPackage()">+ Tambah Paket</button>';
     renderPackageList();
   } else if (tab === 'chat') {
     const users = getAllUsers().filter(u => u.role !== 'superadmin');
-    content.innerHTML = `<h4>Chat dengan User</h4><select id="adminChatUserSelect"><option value="all">Semua User</option>${users.map(u => `<option value="${u.username}">${u.username} (${u.nama})</option>`).join('')}</select><button class="btn btn-sm" onclick="loadAdminChatForUser()">Muat</button><div class="chat-box" id="adminChatMessages"></div><div class="flex"><input id="adminChatInput" placeholder="Balas..."><button class="btn btn-primary" onclick="sendAdminChat()">Kirim</button></div><button class="btn btn-sm btn-danger mt-2" onclick="clearAllAdminChats()">🗑 Hapus Semua Chat</button>`;
+    content.innerHTML = '<h4>Chat dengan User</h4><div class="flex gap-sm mb-2"><select id="adminChatUserSelect"><option value="all">Semua User</option>' + users.map(u => '<option value="' + u.username + '">' + u.username + ' (' + u.nama + ')</option>').join('') + '</select><button class="btn btn-sm" onclick="loadAdminChatForUser()">Muat</button></div><div class="chat-box" id="adminChatMessages" style="max-height:300px;overflow-y:auto;background:var(--bg-tertiary);padding:10px;border-radius:8px;margin-bottom:10px;"></div><div class="flex"><input type="text" id="adminChatInput" placeholder="Balas..."><button class="btn btn-primary" onclick="sendAdminChat()">Kirim</button></div><button class="btn btn-sm btn-danger mt-2" onclick="clearAllAdminChats()">🗑 Hapus Semua Chat</button>';
     loadAdminChatForUser();
   } else if (tab === 'masschat') {
-    content.innerHTML = `<h4>📢 Chat Massal</h4><textarea id="massChatMessage" rows="4" placeholder="Tulis pesan..."></textarea><button class="btn btn-warning btn-block mt-2" onclick="sendMassChat()">Kirim ke Semua User</button>`;
-  } else if (tab === 'settings') {
-    content.innerHTML = `<label>Nomor WhatsApp</label><input id="adminWA" value="${whatsappNumber}" class="mb-2"><button class="btn btn-success btn-block" onclick="saveAdminWA()">Simpan WA</button><hr><input type="password" id="adminNewPass" placeholder="Password Baru" class="mb-2"><button class="btn btn-warning btn-block" onclick="changeAdminPass()">Ganti Password</button><input id="adminNewName" value="${SUPER_ADMIN.nama}" class="mb-2 mt-2"><button class="btn btn-info btn-block" onclick="changeAdminName()">Ganti Nama</button><hr><button class="btn btn-danger btn-block" onclick="resetAllData()">Reset Semua Data</button>`;
-  } else if (tab === 'backup') {
-    content.innerHTML = `<h4>💾 Backup & Restore</h4><button class="btn btn-primary btn-block mb-2" onclick="backupAllData()">⬇ Backup JSON</button><label class="btn btn-warning btn-block mb-2" style="cursor:pointer;">📤 Restore JSON<input type="file" accept=".json" onchange="restoreAllData(this)" hidden></label><hr><button class="btn btn-success btn-block mb-2" onclick="downloadOfflinePage()">⬇ Download HTML</button><label class="btn btn-warning btn-block" style="cursor:pointer;">📤 Restore HTML<input type="file" accept=".html" onchange="restoreFromHTML(this)" hidden></label>`;
+    content.innerHTML = '<h4>📢 Chat Massal</h4><textarea id="massChatMessage" rows="4" placeholder="Tulis pesan..."></textarea><button class="btn btn-warning btn-block mt-2" onclick="sendMassChat()">Kirim ke Semua User</button>';
   } else if (tab === 'iklan') {
     const ad = JSON.parse(localStorage.getItem('ai_adSettings') || '{"title":"🚀 AI Code Builder Pro","description":"Generate & rekayasa kode dengan AI cerdas!","buttonText":"🔐 Daftar Sekarang - Gratis!","features":["🧠 Generate Kode AI","🔧 Rekayasa Kode","📚 Upload Pengetahuan","💬 Chat Internal"]}');
-    content.innerHTML = `<h4>📢 Edit Iklan</h4><label>Judul</label><input id="adTitle" value="${ad.title}" class="mb-2"><label>Deskripsi</label><textarea id="adDescription" rows="3" class="mb-2">${ad.description}</textarea><label>Tombol Teks</label><input id="adButtonText" value="${ad.buttonText}" class="mb-2"><label>Fitur (koma)</label><input id="adFeatures" value="${ad.features.join(',')}" class="mb-2"><button class="btn btn-success btn-block" onclick="saveAdSettings()">💾 Simpan</button><button class="btn btn-warning btn-block mt-2" onclick="resetAdSettings()">🔄 Reset</button>`;
+    content.innerHTML = '<h4>📢 Edit Iklan</h4><label>Judul</label><input id="adTitle" value="' + ad.title + '" class="mb-2"><label>Deskripsi</label><textarea id="adDescription" rows="3" class="mb-2">' + ad.description + '</textarea><label>Tombol Teks</label><input id="adButtonText" value="' + ad.buttonText + '" class="mb-2"><label>Fitur (koma)</label><input id="adFeatures" value="' + ad.features.join(',') + '" class="mb-2"><button class="btn btn-success btn-block" onclick="saveAdSettings()">💾 Simpan</button><button class="btn btn-warning btn-block mt-2" onclick="resetAdSettings()">🔄 Reset</button>';
+  } else if (tab === 'settings') {
+    content.innerHTML = '<label>Nomor WhatsApp</label><input id="adminWA" value="' + whatsappNumber + '" class="mb-2"><button class="btn btn-success btn-block" onclick="saveAdminWA()">Simpan WA</button><hr><input type="password" id="adminNewPass" placeholder="Password Baru" class="mb-2"><button class="btn btn-warning btn-block" onclick="changeAdminPass()">Ganti Password</button><input id="adminNewName" value="' + SUPER_ADMIN.nama + '" class="mb-2 mt-2"><button class="btn btn-info btn-block" onclick="changeAdminName()">Ganti Nama</button><hr><button class="btn btn-danger btn-block" onclick="resetAllData()">Reset Semua Data</button>';
+  } else if (tab === 'backup') {
+    content.innerHTML = '<h4>💾 Backup & Restore</h4><button class="btn btn-primary btn-block mb-2" onclick="backupAllData()">⬇ Backup JSON</button><label class="btn btn-warning btn-block mb-2" style="cursor:pointer;">📤 Restore JSON<input type="file" accept=".json" onchange="restoreAllData(this)" hidden></label><hr><button class="btn btn-success btn-block mb-2" onclick="downloadOfflinePage()">⬇ Download HTML</button><label class="btn btn-warning btn-block" style="cursor:pointer;">📤 Restore HTML<input type="file" accept=".html" onchange="restoreFromHTML(this)" hidden></label>';
   }
   document.querySelectorAll('.admin-tab').forEach(btn => btn.classList.remove('active'));
-  event?.target?.classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
 }
-// ... (admin functions: adminCreateCode, renderActiveCodes, toggleLockUser, deleteUser, dll.)
-// (Karena batasan karakter, fungsi admin lainnya sudah include di kode final)
+
+function adminCreateCode() {
+  const userField = document.getElementById('adminActUser').value.trim();
+  const packageId = document.getElementById('adminActPackage').value;
+  if (!userField || !packageId) return;
+  const code = 'AI-' + Date.now().toString(36).toUpperCase();
+  const codes = getValidCodes(); codes[code] = { packageId: packageId, used: false, createdAt: new Date().toISOString() };
+  saveValidCodes(codes);
+  document.getElementById('adminCodeResult').innerHTML = '<p class="form-success show">✅ Kode: <strong>' + code + '</strong></p>';
+  renderActiveCodes();
+}
+function renderActiveCodes() {
+  const codes = getValidCodes(); const listEl = document.getElementById('activeCodesList');
+  if (!listEl) return;
+  const keys = Object.keys(codes);
+  if (keys.length === 0) { listEl.innerHTML = '<p class="text-muted">Belum ada kode.</p>'; return; }
+  listEl.innerHTML = keys.map(code => '<div>' + code + ' - ' + codes[code].packageId + ' ' + (codes[code].used ? '<span class="text-danger">Terpakai</span>' : '<span class="text-success">Aktif</span>') + '</div>').join('');
+}
+function toggleLockUser(userId) {
+  const users = getAllUsers(); const user = users.find(u => u.id === userId);
+  if (user) { user.locked = !user.locked; saveAllUsers(users); switchAdminTab('users'); }
+}
+function deleteUser(userId) {
+  if (confirm('Hapus user?')) { const users = getAllUsers().filter(u => u.id !== userId); saveAllUsers(users); switchAdminTab('users'); }
+}
+function renderPackageList() {
+  const packages = getPackages(); const listEl = document.getElementById('packageEditList');
+  if (!listEl) return;
+  listEl.innerHTML = packages.map(pkg => '<div class="flex-between"><span>' + pkg.name + ' - Rp ' + pkg.price + ' (' + pkg.label + ')</span><button class="btn btn-sm btn-warning" onclick="editPackage(\'' + pkg.id + '\')">Edit</button></div>').join('');
+}
+function editPackage(packageId) {
+  const pkg = getPackages().find(p => p.id === packageId); if (!pkg) return;
+  document.getElementById('editPackageId').value = pkg.id;
+  document.getElementById('editPackageName').value = pkg.name;
+  document.getElementById('editPackagePrice').value = pkg.price;
+  document.getElementById('editPackageDays').value = pkg.days;
+  document.getElementById('editPackageLabel').value = pkg.label;
+  openModal('editPackageModal');
+}
+function savePackageChanges() {
+  const id = document.getElementById('editPackageId').value;
+  const name = document.getElementById('editPackageName').value.trim();
+  const price = parseInt(document.getElementById('editPackagePrice').value);
+  const days = parseInt(document.getElementById('editPackageDays').value);
+  const label = document.getElementById('editPackageLabel').value.trim();
+  if (!name || isNaN(price) || isNaN(days) || !label) return;
+  const packages = getPackages(); const pkg = packages.find(p => p.id === id);
+  if (!pkg) return;
+  pkg.name = name; pkg.price = price; pkg.days = days; pkg.label = label;
+  savePackages(packages); closeModal('editPackageModal'); renderPackageList();
+}
+function addNewPackage() {
+  const pkg = { id: 'pkg_' + Date.now(), name: 'Paket Baru', price: 0, days: 30, label: '1 Bulan' };
+  const packages = getPackages(); packages.push(pkg); savePackages(packages); renderPackageList();
+}
+function loadAdminChatForUser() {
+  const userSelect = document.getElementById('adminChatUserSelect');
+  const chatBox = document.getElementById('adminChatMessages');
+  if (!userSelect || !chatBox) return;
+  const selectedUser = userSelect.value;
+  let msgs = getChatMessages();
+  if (selectedUser && selectedUser !== 'all') {
+    msgs = msgs.filter(m => (m.from === selectedUser && m.to === 'admin') || (m.from === 'admin' && m.to === selectedUser));
+  }
+  chatBox.innerHTML = msgs.map((m, i) => '<div class="chat-msg ' + (m.from === 'admin' ? 'admin' : 'user') + '"><strong>' + m.from + ' → ' + m.to + '</strong><br>' + m.text + '<button class="chat-delete-btn" onclick="deleteAdminChatMessage(' + i + ')">×</button></div>').join('');
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+function sendAdminChat() {
+  const input = document.getElementById('adminChatInput'); const msg = input.value.trim(); if (!msg) return;
+  const userSelect = document.getElementById('adminChatUserSelect'); const selectedUser = userSelect ? userSelect.value : null;
+  const msgs = getChatMessages();
+  if (selectedUser === 'all') { msgs.push({ from: 'admin', to: 'all', text: msg, time: new Date().toISOString() }); }
+  else if (selectedUser) { msgs.push({ from: 'admin', to: selectedUser, text: msg, time: new Date().toISOString() }); }
+  saveChatMessages(msgs); input.value = ''; loadAdminChatForUser();
+}
+function clearAllAdminChats() {
+  if (confirm('Hapus SEMUA chat?')) { saveChatMessages([]); loadAdminChatForUser(); showToast('Semua chat dihapus.', 'warning'); }
+}
+function deleteAdminChatMessage(index) {
+  const msgs = getChatMessages(); const userSelect = document.getElementById('adminChatUserSelect'); const selectedUser = userSelect ? userSelect.value : null;
+  let filtered = msgs;
+  if (selectedUser && selectedUser !== 'all') { filtered = msgs.filter(m => (m.from === selectedUser && m.to === 'admin') || (m.from === 'admin' && m.to === selectedUser)); }
+  const target = filtered[index];
+  if (target) { const idx = msgs.indexOf(target); if (idx !== -1) { msgs.splice(idx, 1); saveChatMessages(msgs); } }
+  loadAdminChatForUser();
+}
+function sendMassChat() {
+  const input = document.getElementById('massChatMessage'); const msg = input.value.trim(); if (!msg) return;
+  const msgs = getChatMessages(); const users = getAllUsers().filter(u => u.role !== 'superadmin');
+  users.forEach(u => { msgs.push({ from: 'admin', to: u.username, text: msg, time: new Date().toISOString() }); });
+  saveChatMessages(msgs); showToast('Pesan massal dikirim ke ' + users.length + ' user', 'success');
+}
+function saveAdSettings() {
+  const title = document.getElementById('adTitle').value.trim();
+  const desc = document.getElementById('adDescription').value.trim();
+  const btnText = document.getElementById('adButtonText').value.trim();
+  const features = document.getElementById('adFeatures').value.split(',').map(s => s.trim());
+  const ad = { title, description: desc, buttonText: btnText, features };
+  localStorage.setItem('ai_adSettings', JSON.stringify(ad));
+  renderLandingAd();
+  showToast('Iklan disimpan!', 'success');
+}
+function resetAdSettings() {
+  localStorage.removeItem('ai_adSettings');
+  renderLandingAd();
+  switchAdminTab('iklan');
+  showToast('Iklan direset.', 'warning');
+}
+function saveAdminWA() {
+  const value = document.getElementById('adminWA').value.trim();
+  if (value) { whatsappNumber = value; localStorage.setItem('ai_wa', value); updateWhatsappDisplay(); showToast('Nomor WA disimpan', 'success'); }
+}
+function changeAdminPass() {
+  const newPass = document.getElementById('adminNewPass').value.trim();
+  if (newPass) { SUPER_ADMIN.password = encodePassword(newPass); showToast('Password diubah', 'success'); }
+}
+function changeAdminName() {
+  const newName = document.getElementById('adminNewName').value.trim();
+  if (newName) { SUPER_ADMIN.nama = newName; const s = getSession(); if (s && s.role === 'superadmin') { s.nama = newName; saveSession(s); } updateUI(); showToast('Nama diubah', 'success'); }
+}
+function resetAllData() {
+  showConfirm('RESET SEMUA DATA?', 'Semua data akan dihapus permanen!', () => {
+    localStorage.clear();
+    saveAllUsers([SUPER_ADMIN]);
+    saveAllApplications({});
+    saveValidCodes({});
+    savePackages(DEFAULT_PACKAGES);
+    saveSecurityLogs([]);
+    updateUI();
+    closeModal('superAdminModal');
+    showToast('Data direset!', 'warning');
+  });
+}
 
 // ---------- PENGETAHUAN ----------
 function renderKnowledgeList() {
   const knowledge = getAllKnowledge();
   const list = document.getElementById('knowledgeList'); if (!list) return;
-  if (!knowledge.length) { list.innerHTML = '<p class="text-muted text-center">Belum ada pengetahuan.</p>'; return; }
-  list.innerHTML = knowledge.map((k,i) => `<div class="flex-between" style="background:var(--bg-secondary);padding:12px;border-radius:8px;margin-bottom:8px;border:1px solid var(--border-color);"><div><strong>${escapeHTML(k.filename)}</strong><br><small class="text-muted">${escapeHTML(k.content.substring(0,100))}...</small></div><div class="flex gap-sm"><button class="btn btn-sm btn-warning" onclick="editKnowledgeItem(${i})">Edit</button><button class="btn btn-sm btn-danger" onclick="deleteKnowledgeItem(${i})">Hapus</button></div></div>`).join('');
+  if (knowledge.length === 0) { list.innerHTML = '<p class="text-muted text-center">Belum ada pengetahuan. Klik <strong>+ Tambah Pengetahuan</strong>.</p>'; return; }
+  list.innerHTML = knowledge.map((k, i) => '<div class="flex-between" style="background:var(--bg-secondary);padding:12px;border-radius:8px;margin-bottom:8px;border:1px solid var(--border-color);"><div><strong>' + escapeHTML(k.filename) + '</strong><br><small class="text-muted">' + escapeHTML(k.content.substring(0, 100)) + '...</small></div><div class="flex gap-sm"><button class="btn btn-sm btn-warning" onclick="editKnowledgeItem(' + i + ')">Edit</button><button class="btn btn-sm btn-danger" onclick="deleteKnowledgeItem(' + i + ')">Hapus</button></div></div>').join('');
 }
 function openUploadKnowledgeModal() {
   document.getElementById('knowledgeFormTitle').textContent = 'Tambah Pengetahuan';
@@ -767,7 +1611,7 @@ function saveKnowledge() {
   const text = document.getElementById('knowledgeText').value.trim();
   const editIdx = document.getElementById('editKnowledgeIndex').value;
   const knowledge = getAllKnowledge();
-  if (editIdx) {
+  if (editIdx !== '') {
     knowledge[parseInt(editIdx)].content = text || knowledge[parseInt(editIdx)].content;
     saveAllKnowledge(knowledge); closeModal('uploadKnowledgeModal'); renderKnowledgeList(); showToast('Pengetahuan diperbarui!', 'success');
     return;
@@ -790,10 +1634,7 @@ function editKnowledgeItem(index) {
   openModal('uploadKnowledgeModal');
 }
 function deleteKnowledgeItem(index) {
-  if (confirm('Hapus pengetahuan ini?')) {
-    const knowledge = getAllKnowledge(); knowledge.splice(index, 1); saveAllKnowledge(knowledge);
-    renderKnowledgeList(); showToast('Pengetahuan dihapus.', 'warning');
-  }
+  if (confirm('Hapus pengetahuan ini?')) { const knowledge = getAllKnowledge(); knowledge.splice(index, 1); saveAllKnowledge(knowledge); renderKnowledgeList(); showToast('Pengetahuan dihapus.', 'warning'); }
 }
 function clearAllKnowledge() {
   if (confirm('Hapus SEMUA pengetahuan?')) { saveAllKnowledge([]); renderKnowledgeList(); showToast('Semua pengetahuan dihapus.', 'warning'); }
@@ -804,7 +1645,7 @@ function openGuestChat() { openModal('guestChatModal'); renderGuestChat(); }
 function renderGuestChat() {
   const msgs = getChatMessages().filter(m => m.to === 'admin' || m.from === 'guest');
   const box = document.getElementById('guestChatMessages'); if (!box) return;
-  box.innerHTML = msgs.map(m => `<div class="chat-msg ${m.from === 'guest' ? 'user' : 'admin'}"><div class="chat-sender">${m.from === 'guest' ? 'Anda' : 'Admin'}</div>${m.text}<div class="chat-time">${new Date(m.time).toLocaleString()}</div></div>`).join('');
+  box.innerHTML = msgs.map(m => '<div class="chat-msg ' + (m.from === 'guest' ? 'user' : 'admin') + '"><div class="chat-sender">' + (m.from === 'guest' ? 'Anda' : 'Admin') + '</div>' + m.text + '<div class="chat-time">' + new Date(m.time).toLocaleString() + '</div></div>').join('');
   box.scrollTop = box.scrollHeight;
 }
 function sendGuestChat() {
@@ -823,155 +1664,855 @@ let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('installButton')?.classList.remove('hidden'); document.getElementById('installButton2')?.classList.remove('hidden'); });
 function installPWA() {
   if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(r => { if (r.outcome === 'accepted') showToast('Instalasi berhasil!', 'success'); deferredPrompt = null; }); }
-  else if (window.matchMedia('(display-mode: standalone)').matches) { showToast('Sudah terinstall.', 'warning'); }
-  else { alert('Buka menu browser > Tambahkan ke Layar Utama.'); }
+  else if (window.matchMedia('(display-mode: standalone)').matches) { showToast('Aplikasi sudah terinstall.', 'warning'); }
+  else { alert('Buka menu browser lalu pilih "Tambahkan ke Layar Utama".'); }
 }
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    const swCode = 'var CACHE_NAME="aicode-v11";self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(["/"])));});self.addEventListener("fetch",e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});';
+    const swCode = 'var CACHE_NAME="aicode-v12";self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(["/"])));});self.addEventListener("fetch",e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});';
     const blob = new Blob([swCode], { type: 'application/javascript' });
     const url = URL.createObjectURL(blob);
     navigator.serviceWorker.register(url).catch(err => console.log('SW registration failed:', err));
   });
 }
 
+// ---------- RENDER IKLAN ----------
+function renderLandingAd() {
+  const ad = JSON.parse(localStorage.getItem('ai_adSettings') || '{"title":"🚀 AI Code Builder Pro","description":"Generate & rekayasa kode dengan AI cerdas!","buttonText":"🔐 Daftar Sekarang - Gratis!","features":["🧠 Generate Kode AI","🔧 Rekayasa Kode","📚 Upload Pengetahuan","💬 Chat Internal"]}');
+  const adEl = document.getElementById('landingAd');
+  if (!adEl) return;
+  adEl.innerHTML = '<h2>' + ad.title + '</h2><p>' + ad.description + '</p><button class="btn btn-ad" onclick="showRegisterModal()">' + ad.buttonText + '</button><div class="premium-features">' + ad.features.map(f => '<div class="premium-feature-item">' + f + '</div>').join('') + '</div>';
+}
+
 // ---------- INIT ----------
 (function() {
   const users = getAllUsers();
   if (!users.find(u => u.role === 'superadmin')) { users.push(SUPER_ADMIN); saveAllUsers(users); }
-  updateWhatsappDisplay(); updateUI();
-  const session = getSession(); if (session) { refreshAppUI(); updateStats(); }
+  updateWhatsappDisplay();
+  updateUI();
   const grid = document.getElementById('landingPriceGrid');
-  if (grid) { grid.innerHTML = getPackages().map((p, i) => `<div class="price-card${i===1?' featured':''}" onclick="showRegisterModal()">${i===1?'<div class="featured-badge">POPULER</div>':''}<div class="price-icon">💎</div><div class="price-name">${p.name}</div><div class="price-value">Rp ${p.price.toLocaleString('id-ID')}</div><div class="price-duration">${p.label}</div></div>`).join(''); }
-  // Inisialisasi pengetahuan default jika kosong
-  if (getAllKnowledge().length === 0) {
-    if (typeof DEFAULT_KNOWLEDGE_SNIPPETS !== 'undefined') {
-      saveAllKnowledge(DEFAULT_KNOWLEDGE_SNIPPETS);
-    }
+  if (grid) {
+    grid.innerHTML = getPackages().map((p, i) => '<div class="price-card' + (i === 1 ? ' featured' : '') + '" onclick="showRegisterModal()">' + (i === 1 ? '<div class="featured-badge">POPULER</div>' : '') + '<div class="price-icon">💎</div><div class="price-name">' + p.name + '</div><div class="price-value">Rp ' + p.price.toLocaleString('id-ID') + '</div><div class="price-duration">' + p.label + '</div></div>').join('');
   }
+  if (getAllKnowledge().length === 0 && typeof DEFAULT_KNOWLEDGE_SNIPPETS !== 'undefined') {
+    saveAllKnowledge(DEFAULT_KNOWLEDGE_SNIPPETS);
+  }
+  renderLandingAd();
 })();
 </script>
-<script>
+  <script>
 // ================================================================
-// DEFAULT KNOWLEDGE SNIPPETS (400+ ITEMS) - TOTAL > 10000 BARIS
+// AI CODE BUILDER PRO v12.0 - FULL JAVASCRIPT (Blok 5/5)
 // ================================================================
-const DEFAULT_KNOWLEDGE_SNIPPETS = [
-  {
-    filename: "login_form_responsive.html",
-    content: `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Responsif</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Arial, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
-.card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-h2 { text-align: center; margin-bottom: 1.5rem; color: #333; }
-input { display: block; width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
-button { width: 100%; padding: 12px; background: #1877f2; color: white; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
-button:hover { background: #166fe5; }
-@media (max-width: 480px) { .card { padding: 1rem; } }
-</style>
-</head>
-<body>
-<div class="card">
-  <h2>Login</h2>
-  <input type="text" placeholder="Username">
-  <input type="password" placeholder="Password">
-  <button>Masuk</button>
-</div>
-</body>
-</html>`
-  },
-  // ... (398 snippet lainnya dengan konten yang semakin panjang, seperti komponen dashboard, form validasi, kalkulator, galeri, dll.)
-  // Untuk memastikan total baris > 10000, di sini akan di-generate secara dinamis
+
+// ---------- ENKRIPSI & DATA DEFAULT ----------
+function encodePassword(pw) { return btoa(pw); }
+function decodePassword(hash) { return atob(hash); }
+
+const SUPER_ADMIN = {
+  id: 'sa', username: 'superadmin', password: encodePassword('admin123'),
+  nama: 'Super Admin', email: 'admin@aicodebuilder.com', hp: '081220285226',
+  role: 'superadmin', premium: true, premiumExpiry: null, locked: false
+};
+let whatsappNumber = localStorage.getItem('ai_wa') || '081220285226';
+const DEFAULT_PACKAGES = [
+  { id: '1bulan', name: 'Basic', price: 25000, days: 30, label: '1 Bulan' },
+  { id: '3bulan', name: 'Premium', price: 50000, days: 90, label: '3 Bulan' },
+  { id: '6bulan', name: 'Enterprise', price: 75000, days: 180, label: '6 Bulan' }
 ];
-// Generate sisanya agar total > 400 item, masing-masing ~25 baris -> > 10000 baris
-(function() {
-  const templates = [
-    { name: "navbar_sticky", code: `<nav class="sticky-nav">...</nav>` }, // (isi panjang)
-    // ... (banyak template)
-  ];
-  for (let i = 1; i <= 398; i++) {
-    DEFAULT_KNOWLEDGE_SNIPPETS.push({
-      filename: `snippet_${String(i).padStart(3,'0')}.html`,
-      content: `<!-- Komponen ke-${i} -->\n` + templates[i % templates.length].code
-    });
-  }
-})();
-// Simpan jika localStorage kosong
-if (typeof getAllKnowledge === 'function' && getAllKnowledge().length === 0) {
-  saveAllKnowledge(DEFAULT_KNOWLEDGE_SNIPPETS);
+
+// ---------- LOCAL STORAGE HELPERS ----------
+function getStorageItem(key, def) {
+  try { const value = localStorage.getItem('ai_' + key); return value ? JSON.parse(value) : def; }
+  catch (e) { return def; }
 }
-</script>
-</head>
-<body>
-<div id="toastContainer" class="toast-container"></div>
+function setStorageItem(key, value) { localStorage.setItem('ai_' + key, JSON.stringify(value)); }
+function removeStorageItem(key) { localStorage.removeItem('ai_' + key); }
 
-<!-- ==================== LANDING PAGE ==================== -->
-<div class="container" id="landingPage">
-  <header class="header">
-    <div class="logo"><span class="logo-icon">🧠</span><span class="logo-text">AI Code Builder Pro v11.0</span></div>
-    <div class="header-buttons">
-      <button class="btn btn-sm" onclick="toggleTheme()">🌓 Tema</button>
-      <button class="btn btn-outline btn-sm" onclick="showLoginModal()">Login</button>
-      <button class="btn btn-primary btn-sm" onclick="showRegisterModal()">Daftar</button>
-      <button class="btn btn-success btn-sm hidden" id="installButton" onclick="installPWA()">📲 Install</button>
-    </div>
-  </header>
+function getAllUsers() { return getStorageItem('users', []); }
+function saveAllUsers(users) { setStorageItem('users', users); }
+function getAllApplications() { return getStorageItem('applications', {}); }
+function saveAllApplications(apps) { setStorageItem('applications', apps); }
+function getSession() { return getStorageItem('session', null); }
+function saveSession(session) { setStorageItem('session', session); }
+function clearSession() { removeStorageItem('session'); }
+function getValidCodes() { return getStorageItem('validCodes', {}); }
+function saveValidCodes(codes) { setStorageItem('validCodes', codes); }
+function getChatMessages() { return getStorageItem('chatMessages', []); }
+function saveChatMessages(msgs) { setStorageItem('chatMessages', msgs); }
+function getPackages() { return getStorageItem('packages', DEFAULT_PACKAGES); }
+function savePackages(pkg) { setStorageItem('packages', pkg); }
+function getSecurityLogs() { return getStorageItem('securityLogs', []); }
+function saveSecurityLogs(logs) { setStorageItem('securityLogs', logs); }
+function getAllKnowledge() { return getStorageItem('knowledge', []); }
+function saveAllKnowledge(knowledge) { setStorageItem('knowledge', knowledge); }
 
-  <!-- IKLAN -->
-  <div class="premium-ad" id="landingAd">
-    <h2>🚀 AI Code Builder Pro</h2>
-    <p>Generate & rekayasa kode HTML, CSS, JavaScript dengan <strong>AI cerdas</strong> yang belajar dari pengetahuan Anda!</p>
-    <button class="btn btn-ad" onclick="showRegisterModal()">🔐 Daftar Sekarang - Gratis!</button>
-    <div class="premium-features">
-      <div class="premium-feature-item">🧠 Generate Kode AI</div>
-      <div class="premium-feature-item">🔧 Rekayasa Kode</div>
-      <div class="premium-feature-item">📚 Upload Pengetahuan</div>
-      <div class="premium-feature-item">💬 Chat Internal</div>
-    </div>
-  </div>
+// ---------- UI HELPERS ----------
+function updateWhatsappDisplay() {
+  const n = whatsappNumber;
+  const formatted = n.startsWith('0') ? '+62' + n.substring(1) : (n.startsWith('62') ? '+' + n : '+62' + n);
+  const landingEl = document.getElementById('whatsappNumberLanding');
+  if (landingEl) landingEl.textContent = formatted;
+}
+function showToast(message, type) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + (type || 'info');
+  toast.textContent = message;
+  container.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 300); }, 3000);
+}
+function openModal(id) { const modal = document.getElementById(id); if (modal) modal.classList.add('show'); }
+function closeModal(id) { const modal = document.getElementById(id); if (modal) modal.classList.remove('show'); clearModalErrors(); }
+function clearModalErrors() { document.querySelectorAll('.form-error, .form-success').forEach(el => { el.textContent = ''; el.classList.remove('show'); }); }
 
-  <section class="hero">
-    <div class="hero-icon">🧠</div>
-    <h1 class="gradient-text">AI Code Builder Pro</h1>
-    <p class="hero-description">Asisten pemrograman web paling cerdas. Generate, rekayasa, dan pelajari HTML, CSS, JavaScript.</p>
-    <div class="hero-buttons">
-      <button class="btn btn-primary btn-lg" onclick="showLoginModal()">🔐 Mulai Sekarang</button>
-      <button class="btn btn-outline btn-lg" onclick="showRegisterModal()">📝 Daftar Akun</button>
-    </div>
-  </section>
+function toggleTheme() {
+  document.body.classList.toggle('light-theme');
+  localStorage.setItem('ai_theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+}
+(function() { if (localStorage.getItem('ai_theme') === 'light') document.body.classList.add('light-theme'); })();
 
-  <div class="whatsapp-banner" onclick="openGuestChat()">
-    <div class="whatsapp-banner-left"><span class="whatsapp-banner-icon">💬</span><div><strong>Hubungi Super Admin</strong><br><small>Chat langsung</small></div></div>
-    <div class="whatsapp-banner-right"><span>📱 <span id="whatsappNumberLanding"></span></span><span>👉</span></div>
-  </div>
+function updateUI() {
+  const s = getSession();
+  document.getElementById('landingPage').classList.toggle('hidden', !!s);
+  document.getElementById('dashboardPage').classList.toggle('hidden', !s);
+  if (!s) return;
+  document.getElementById('profileButton').classList.remove('hidden');
+  document.getElementById('adminButton').classList.toggle('hidden', s.role !== 'superadmin');
+  document.getElementById('logoutButton').classList.remove('hidden');
+  const badge = document.getElementById('userBadge'); badge.classList.remove('hidden');
+  document.getElementById('userAvatar').textContent = s.nama.charAt(0).toUpperCase();
+  document.getElementById('userNameDisplay').textContent = s.nama;
+  const isPremium = s.premium || s.role === 'superadmin';
+  document.getElementById('mergeButton').classList.toggle('hidden', !isPremium);
+  document.getElementById('activationButton').classList.toggle('hidden', isPremium);
+  document.getElementById('premiumBanner').classList.toggle('hidden', isPremium);
+  document.getElementById('contactBanner').classList.toggle('hidden', s.role === 'superadmin');
+  const isSuperAdmin = (s.role === 'superadmin');
+  document.getElementById('downloadHTMLButton').classList.toggle('hidden', !isSuperAdmin);
+  document.getElementById('backupJSONButton').classList.toggle('hidden', !isSuperAdmin);
+  document.getElementById('restoreJSONButton').classList.toggle('hidden', !isSuperAdmin);
+  refreshAppUI(); updateStats();
+}
 
-  <h3 class="section-title">Fitur Unggulan</h3>
-  <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon">🧠</div><h4>Generate Kode AI</h4><p>Dari deskripsi langsung jadi kode HTML/CSS/JS lengkap.</p></div>
-    <div class="feature-card"><div class="feature-icon">🔧</div><h4>Rekayasa Kode</h4><p>Perbaiki & sempurnakan kode lama dengan AI.</p></div>
-    <div class="feature-card"><div class="feature-icon">📚</div><h4>Pengetahuan Pribadi</h4><p>Upload file atau tulis langsung pengetahuan coding Anda.</p></div>
-    <div class="feature-card"><div class="feature-icon">👥</div><h4>Multi User</h4><p>Setiap pengguna memiliki akun dan data masing‑masing.</p></div>
-    <div class="feature-card"><div class="feature-icon">💬</div><h4>Chat Internal</h4><p>Hubungi admin & sesama user langsung dari aplikasi.</p></div>
-    <div class="feature-card"><div class="feature-icon">💾</div><h4>Backup & Restore</h4><p>Simpan dan pulihkan semua data dengan mudah.</p></div>
-  </div>
+// ---------- AUTH ----------
+function showLoginModal() { openModal('loginModal'); }
+function showRegisterModal() { openModal('registerModal'); }
+function showProfileModal() { openModal('profileModal'); loadProfile(); }
+function showActivationModal() { openModal('activationModal'); }
+function showKnowledgeModal() { openModal('knowledgeModal'); renderKnowledgeList(); }
+function showGenerateCodeModal() { openModal('generateCodeModal'); }
+function showRekayasaCodeModal() { openModal('rekayasaCodeModal'); }
 
-  <h3 class="section-title">Paket Aktivasi Premium</h3>
-  <div class="price-grid" id="landingPriceGrid"></div>
-  <div class="text-center mb-3"><button class="btn btn-primary" onclick="showRegisterModal()">Daftar & Coba Premium</button></div>
-</div>
+function handleLogin() {
+  const u = document.getElementById('loginUsername').value.trim();
+  const p = document.getElementById('loginPassword').value;
+  const err = document.getElementById('loginError');
+  if (err) err.textContent = '';
+  if (!u || !p) { if (err) err.textContent = 'Isi semua field!'; return; }
+  if (u === SUPER_ADMIN.username && p === decodePassword(SUPER_ADMIN.password)) {
+    saveSession(SUPER_ADMIN); closeModal('loginModal'); updateUI(); showToast('Login Super Admin!', 'success'); return;
+  }
+  const user = getAllUsers().find(x => (x.username === u || x.email === u) && p === decodePassword(x.password));
+  if (!user) { if (err) err.textContent = 'Username/password salah!'; return; }
+  if (user.locked) { if (err) err.textContent = 'Akun terkunci!'; return; }
+  saveSession(user); closeModal('loginModal'); updateUI(); showToast('Login berhasil!', 'success');
+}
+function handleRegister() {
+  const n = document.getElementById('registerNama').value.trim();
+  const e = document.getElementById('registerEmail').value.trim();
+  const hp = document.getElementById('registerHp').value.trim();
+  const un = document.getElementById('registerUsername').value.trim();
+  const pw = document.getElementById('registerPassword').value;
+  const cp = document.getElementById('registerPasswordConfirm').value;
+  const err = document.getElementById('registerError');
+  const suc = document.getElementById('registerSuccess');
+  if (err) err.textContent = ''; if (suc) suc.textContent = '';
+  if (!n || !e || !hp || !un || !pw || !cp) { if (err) err.textContent = 'Semua field wajib!'; return; }
+  if (pw !== cp) { if (err) err.textContent = 'Password tidak cocok!'; return; }
+  if (pw.length < 6) { if (err) err.textContent = 'Password min 6 karakter!'; return; }
+  const users = getAllUsers();
+  if (users.find(x => x.username === un)) { if (err) err.textContent = 'Username sudah dipakai!'; return; }
+  if (users.find(x => x.email === e)) { if (err) err.textContent = 'Email sudah dipakai!'; return; }
+  const nu = { id: Date.now().toString(), nama: n, email: e, hp: hp, username: un, password: encodePassword(pw), role: 'user', premium: false, premiumExpiry: null, locked: false, createdAt: new Date().toISOString() };
+  users.push(nu); saveAllUsers(users);
+  if (suc) suc.textContent = 'Pendaftaran berhasil! Silakan login.';
+  setTimeout(() => { closeModal('registerModal'); showLoginModal(); }, 2000);
+}
+function handleLogout() { clearSession(); updateUI(); showToast('Logout', 'info'); }
 
-<!-- ==================== DASHBOARD ==================== -->
-<div class="container hidden" id="dashboardPage">
-  <!-- (struktur dashboard sama seperti sebelumnya, sudah include di blok ini) -->
-</div>
+// ---------- PREMIUM ----------
+function activatePremiumFromModal() {
+  const code = document.getElementById('activationCodeInputMain').value.trim();
+  activatePremium(code, 'activationModalError', 'activationModalSuccess');
+}
+function activatePremium(code, errId, sucId) {
+  const err = document.getElementById(errId);
+  const suc = document.getElementById(sucId);
+  if (err) { err.textContent = ''; err.classList.remove('show'); }
+  if (suc) { suc.textContent = ''; suc.classList.remove('show'); }
+  if (!code) { if (err) { err.textContent = 'Masukkan kode!'; err.classList.add('show'); } return; }
+  const s = getSession(); if (!s) { if (err) { err.textContent = 'Login dulu!'; err.classList.add('show'); } return; }
+  const codes = getValidCodes(); const cd = codes[code];
+  if (!cd || cd.used) { if (err) { err.textContent = 'Kode tidak valid!'; err.classList.add('show'); } return; }
+  const users = getAllUsers(); const idx = users.findIndex(x => x.id === s.id);
+  if (idx === -1) { if (err) { err.textContent = 'User tidak ditemukan!'; err.classList.add('show'); } return; }
+  const pkg = getPackages().find(p => p.id === cd.packageId) || getPackages()[0];
+  const exp = new Date(Date.now() + pkg.days * 86400000);
+  users[idx].premium = true; users[idx].premiumExpiry = exp.toISOString(); saveAllUsers(users);
+  cd.used = true; cd.usedBy = s.username; cd.usedAt = new Date().toISOString(); codes[code] = cd; saveValidCodes(codes);
+  saveSession({...users[idx]});
+  if (suc) { suc.textContent = 'Premium aktif hingga ' + exp.toLocaleDateString(); suc.classList.add('show'); }
+  updateUI();
+  setTimeout(() => { if (document.getElementById('activationModal').classList.contains('show')) closeModal('activationModal'); }, 2000);
+}
 
-<!-- ==================== MODALS ==================== -->
-<!-- (semua modal yang diperlukan, seperti login, register, appModal, codeModal, dll.) -->
+// ---------- PROFILE ----------
+function loadProfile() {
+  const s = getSession(); if (!s) return;
+  document.getElementById('profileAvatarBig').textContent = s.nama.charAt(0).toUpperCase();
+  document.getElementById('profileName').textContent = s.nama;
+  document.getElementById('profileRole').textContent = s.role === 'superadmin' ? 'Super Admin' : (s.premium ? 'User Premium' : 'User Biasa');
+  document.getElementById('editProfileNama').value = s.nama || '';
+  document.getElementById('editProfileEmail').value = s.email || '';
+  document.getElementById('editProfileHp').value = s.hp || '';
+  document.getElementById('deleteAccountButton').style.display = s.role === 'superadmin' ? 'none' : 'block';
+}
+function saveProfile() {
+  const s = getSession(); if (!s) return;
+  const n = document.getElementById('editProfileNama').value.trim();
+  const e = document.getElementById('editProfileEmail').value.trim();
+  const hp = document.getElementById('editProfileHp').value.trim();
+  const err = document.getElementById('profileError');
+  const suc = document.getElementById('profileSuccess');
+  if (err) { err.textContent = ''; err.classList.remove('show'); }
+  if (suc) { suc.textContent = ''; suc.classList.remove('show'); }
+  if (!n || !e || !hp) { if (err) { err.textContent = 'Semua field wajib!'; err.classList.add('show'); } return; }
+  s.nama = n; s.email = e; s.hp = hp; saveSession(s);
+  const users = getAllUsers(); const idx = users.findIndex(x => x.id === s.id);
+  if (idx !== -1) { users[idx].nama = n; users[idx].email = e; users[idx].hp = hp; saveAllUsers(users); }
+  if (suc) { suc.textContent = 'Profil tersimpan!'; suc.classList.add('show'); }
+  document.getElementById('userNameDisplay').textContent = n;
+  document.getElementById('profileName').textContent = n;
+  setTimeout(() => closeModal('profileModal'), 1500);
+}
+function deleteAccount() {
+  const s = getSession(); if (!s || s.role === 'superadmin') return;
+  showConfirm('Hapus Akun?', 'Semua data Anda akan dihapus permanen.', () => {
+    const users = getAllUsers().filter(x => x.id !== s.id); saveAllUsers(users);
+    const apps = getAllApplications(); delete apps[s.id]; saveAllApplications(apps);
+    clearSession(); closeModal('profileModal'); updateUI(); showToast('Akun dihapus', 'warning');
+  });
+}
 
-</body>
-</html>
+// ---------- CONFIRM ----------
+let confirmCallback = null;
+function showConfirm(title, msg, cb) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMessage').textContent = msg;
+  confirmCallback = cb; openModal('confirmModal');
+}
+function executeConfirmAction() { if (confirmCallback) { confirmCallback(); confirmCallback = null; } closeModal('confirmModal'); }
+
+// ---------- APPS & CODES ----------
+function showAddAppModal() {
+  document.getElementById('appModalTitle').textContent = 'Tambah Aplikasi';
+  document.getElementById('editAppId').value = ''; document.getElementById('appNameInput').value = '';
+  document.getElementById('appDescInput').value = ''; document.getElementById('appError').classList.remove('show');
+  openModal('appModal');
+}
+function editApp(id) {
+  const s = getSession(); const apps = getAllApplications()[s.id] || [];
+  const app = apps.find(a => a.id === id); if (!app) return;
+  document.getElementById('appModalTitle').textContent = 'Edit Aplikasi';
+  document.getElementById('editAppId').value = id; document.getElementById('appNameInput').value = app.name;
+  document.getElementById('appDescInput').value = app.desc || ''; openModal('appModal');
+}
+function saveApplication() {
+  const s = getSession(); if (!s) return showToast('Login dulu!', 'error');
+  const editId = document.getElementById('editAppId').value;
+  const name = document.getElementById('appNameInput').value.trim();
+  const desc = document.getElementById('appDescInput').value.trim();
+  const err = document.getElementById('appError'); if (err) err.classList.remove('show');
+  if (!name) { if (err) { err.textContent = 'Nama aplikasi wajib!'; err.classList.add('show'); } return; }
+  const all = getAllApplications(); const apps = all[s.id] || [];
+  if (editId) {
+    const idx = apps.findIndex(a => a.id === editId);
+    if (idx !== -1) { apps[idx].name = name; apps[idx].desc = desc; }
+  } else { apps.push({ id: Date.now().toString(), name: name, desc: desc, codes: [], createdAt: new Date().toISOString() }); }
+  all[s.id] = apps; saveAllApplications(all); closeModal('appModal'); refreshAppUI(); updateStats(); showToast('Aplikasi disimpan!', 'success');
+}
+function deleteApp(appId) {
+  showConfirm('Hapus Aplikasi?', 'Semua kode di dalamnya juga akan dihapus.', () => {
+    const s = getSession(); const all = getAllApplications();
+    all[s.id] = (all[s.id] || []).filter(a => a.id !== appId); saveAllApplications(all);
+    refreshAppUI(); updateStats(); showToast('Aplikasi dihapus.', 'warning');
+  });
+}
+function toggleAppCodes(appId) { const el = document.getElementById('codes-' + appId); if (el) el.classList.toggle('open'); }
+function showAddCodeModal(appId) {
+  document.getElementById('codeModalTitle').textContent = 'Tambah Code';
+  document.getElementById('editCodeId').value = ''; document.getElementById('codeAppId').value = appId;
+  document.getElementById('codeNameInput').value = ''; document.getElementById('codeContentInput').value = '';
+  openModal('codeModal');
+}
+function editCode(appId, codeId) {
+  const s = getSession(); const apps = getAllApplications()[s.id] || [];
+  const app = apps.find(a => a.id === appId); if (!app) return;
+  const code = app.codes.find(c => c.id === codeId); if (!code) return;
+  document.getElementById('codeModalTitle').textContent = 'Edit Code';
+  document.getElementById('editCodeId').value = codeId; document.getElementById('codeAppId').value = appId;
+  document.getElementById('codeNameInput').value = code.name; document.getElementById('codeContentInput').value = code.content;
+  openModal('codeModal');
+}
+function saveCode() {
+  const s = getSession(); const appId = document.getElementById('codeAppId').value;
+  const editId = document.getElementById('editCodeId').value;
+  const name = document.getElementById('codeNameInput').value.trim();
+  const content = document.getElementById('codeContentInput').value;
+  const err = document.getElementById('codeError'); if (err) err.classList.remove('show');
+  if (!name || !content) { if (err) { err.textContent = 'Nama dan kode wajib!'; err.classList.add('show'); } return; }
+  const all = getAllApplications(); const apps = all[s.id] || [];
+  const app = apps.find(a => a.id === appId); if (!app) return;
+  if (editId) {
+    const code = app.codes.find(c => c.id === editId);
+    if (code) { code.name = name; code.content = content; }
+  } else { app.codes.push({ id: Date.now().toString(), name: name, content: content, createdAt: new Date().toISOString() }); }
+  all[s.id] = apps; saveAllApplications(all); closeModal('codeModal'); refreshAppUI(); updateStats(); showToast('Kode disimpan!', 'success');
+}
+function deleteCode(appId, codeId) {
+  showConfirm('Hapus Kode?', 'Kode akan dihapus permanen.', () => {
+    const s = getSession(); const all = getAllApplications(); const apps = all[s.id] || [];
+    const app = apps.find(a => a.id === appId);
+    if (app) app.codes = app.codes.filter(c => c.id !== codeId);
+    all[s.id] = apps; saveAllApplications(all); refreshAppUI(); updateStats(); showToast('Kode dihapus.', 'warning');
+  });
+}
+function toggleCodePreview(codeId) { const el = document.getElementById('preview-' + codeId); if (el) el.classList.toggle('show'); }
+function escapeHTML(str) {
+  if (!str) return '';
+  return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+}
+
+function refreshAppUI() {
+  const s = getSession(); const apps = s ? (getAllApplications()[s.id] || []) : [];
+  const container = document.getElementById('appListContainer');
+  const empty = document.getElementById('emptyState');
+  if (!container) return;
+  if (apps.length === 0) { container.innerHTML = ''; if (empty) empty.classList.remove('hidden'); return; }
+  if (empty) empty.classList.add('hidden');
+  container.innerHTML = apps.map(app => {
+    let html = '<div class="app-item"><div class="app-header" onclick="toggleAppCodes(\'' + app.id + '\')"><div class="app-name">📁 ' + escapeHTML(app.name) + ' <span class="app-code-count">' + app.codes.length + ' kode</span></div><div class="flex gap-sm"><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showAddCodeModal(\'' + app.id + '\')">+ Code</button><button class="btn btn-warning btn-sm" onclick="event.stopPropagation(); editApp(\'' + app.id + '\')">Edit</button><button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteApp(\'' + app.id + '\')">Hapus</button></div></div><div class="app-codes-container" id="codes-' + app.id + '">';
+    if (app.codes.length === 0) { html += '<p style="color:var(--text-muted);padding:8px;">Belum ada kode.</p>'; }
+    else { html += app.codes.map(code => '<div class="code-item"><div class="code-header"><span class="code-name">📄 ' + escapeHTML(code.name) + '</span><div class="flex gap-sm"><button class="btn btn-gray btn-sm" onclick="toggleCodePreview(\'' + code.id + '\')">Preview</button><button class="btn btn-warning btn-sm" onclick="editCode(\'' + app.id + '\',\'' + code.id + '\')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteCode(\'' + app.id + '\',\'' + code.id + '\')">Hapus</button></div></div><div class="code-content-preview" id="preview-' + code.id + '"><pre>' + escapeHTML(code.content) + '</pre></div></div>').join(''); }
+    html += '</div></div>'; return html;
+  }).join('');
+}
+function updateStats() {
+  const s = getSession(); const apps = s ? (getAllApplications()[s.id] || []) : [];
+  let totalCodes = 0, totalSize = 0;
+  apps.forEach(app => { totalCodes += app.codes.length; app.codes.forEach(c => { totalSize += new Blob([c.content]).size; }); });
+  document.getElementById('statTotalApps').textContent = apps.length;
+  document.getElementById('statTotalCodes').textContent = totalCodes;
+  document.getElementById('statStorage').textContent = (totalSize / 1024).toFixed(1) + ' KB';
+  document.getElementById('statTotalUsers').textContent = getAllUsers().length;
+  document.getElementById('statPremiumStatus').textContent = (s && (s.premium || s.role === 'superadmin')) ? 'Premium' : 'Free';
+}
+
+// ---------- MERGE ----------
+function showMergeModal() {
+  const s = getSession(); if (!s || (!s.premium && s.role !== 'superadmin')) { showToast('Fitur Premium!', 'error'); return; }
+  const apps = getAllApplications()[s.id] || [];
+  document.getElementById('mergeAppList').innerHTML = apps.map(a => '<label class="flex gap-sm"><input type="checkbox" checked value="' + a.id + '"> ' + a.name + '</label>').join('');
+  document.getElementById('mergeResult').classList.add('hidden');
+  document.getElementById('mergeOutput').value = '';
+  openModal('mergeModal');
+}
+function performMerge() {
+  const s = getSession(); const apps = getAllApplications()[s.id] || [];
+  const checked = Array.from(document.querySelectorAll('#mergeAppList input:checked')).map(i => i.value);
+  const merged = apps.filter(a => checked.includes(a.id)).flatMap(a => a.codes).map(c => c.content).join('\n\n');
+  document.getElementById('mergeOutput').value = merged;
+  document.getElementById('mergeResult').classList.remove('hidden');
+}
+function copyMergeResult() {
+  const ta = document.getElementById('mergeOutput'); ta.select();
+  navigator.clipboard.writeText(ta.value).then(() => showToast('Disalin!', 'success'));
+}
+function downloadMergeResult() {
+  const code = document.getElementById('mergeOutput').value;
+  const blob = new Blob([code], { type: 'text/html' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'index.html'; a.click();
+}
+
+// ---------- BACKUP & RESTORE ----------
+function backupAllData() {
+  const data = {}; for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); data[key] = localStorage.getItem(key); }
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'aicode_full_backup_' + new Date().toISOString().slice(0,10) + '.json'; a.click();
+  showToast('✅ Backup JSON berhasil!', 'success');
+}
+function restoreAllData(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!confirm('⚠️ SEMUA data saat ini akan ditimpa. Lanjutkan?')) return;
+      localStorage.clear();
+      Object.keys(data).forEach(key => localStorage.setItem(key, data[key]));
+      showToast('✅ Data JSON berhasil di-restore! Refresh halaman.', 'success');
+      setTimeout(() => location.reload(), 2000);
+    } catch (err) { showToast('❌ File JSON tidak valid.', 'error'); }
+  };
+  reader.readAsText(file);
+}
+function downloadOfflinePage() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'ai_code_builder_pro_v12.html'; a.click();
+  showToast('⬇ HTML berhasil didownload!', 'success');
+}
+function restoreFromHTML(input) {
+  const file = input.files[0]; if (!file) return;
+  if (!confirm('⚠️ Halaman akan diganti dengan file HTML ini. Lanjutkan?')) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.open(); document.write(e.target.result); document.close();
+    showToast('✅ Halaman dipulihkan! Memuat ulang...', 'success');
+    setTimeout(() => location.reload(), 1500);
+  };
+  reader.readAsText(file);
+}
+
+// ---------- AI ENGINE ----------
+function searchKnowledge(query) {
+  const knowledge = getAllKnowledge();
+  if (!knowledge.length) return [];
+  const words = query.toLowerCase().replace(/[.,?!;:'"(){}[\]<>/\\\`~@#$%^&*+=|_-]/g, ' ').split(/\s+/).filter(w => w.length > 2);
+  const scored = knowledge.map(item => {
+    const content = item.content.toLowerCase();
+    let score = 0;
+    words.forEach(word => {
+      const matches = content.match(new RegExp(word, 'gi'));
+      if (matches) score += matches.length;
+      if (item.filename.toLowerCase().includes(word)) score += 2;
+    });
+    return { item, score };
+  });
+  return scored.filter(s => s.score > 0).sort((a,b) => b.score - a.score).slice(0, 5).map(s => s.item);
+}
+async function callAI(userMessage) {
+  const relevant = searchKnowledge(userMessage);
+  if (relevant.length > 0) {
+    let answer = '📖 **Berdasarkan pengetahuan yang tersedia:**\n\n';
+    relevant.forEach(item => { answer += '--- ' + item.filename + ' ---\n' + item.content + '\n\n'; });
+    if (answer.length > 4000) answer = answer.substring(0, 4000) + '\n\n... (diringkas)';
+    return answer;
+  }
+  const all = getAllKnowledge();
+  if (all.length > 0) {
+    let summary = '📚 **Tidak ada hasil spesifik.**\n\nRingkasan pengetahuan:\n\n';
+    all.forEach(item => { summary += '📄 ' + item.filename + ' (' + item.content.length + ' karakter)\n'; });
+    return summary;
+  }
+  return '📚 **Belum ada pengetahuan.** Silakan tambahkan di menu 📚 Pengetahuan.';
+}
+
+// ---------- GENERATE & REKAYASA ----------
+async function generateCode() {
+  const prompt = document.getElementById('generatePrompt').value.trim();
+  const type = document.getElementById('generateType').value;
+  if (!prompt) { showToast('Masukkan deskripsi kode!', 'error'); return; }
+  let fullPrompt = prompt;
+  if (type === 'html') fullPrompt = 'Buat HTML: ' + prompt;
+  else if (type === 'css') fullPrompt = 'Buat CSS: ' + prompt;
+  else if (type === 'js') fullPrompt = 'Buat JavaScript: ' + prompt;
+  else fullPrompt = 'Buat HTML+CSS+JS: ' + prompt;
+  document.getElementById('generateOutput').textContent = '⏳ Mencari di pengetahuan...';
+  document.getElementById('generateOutputContainer').classList.remove('hidden');
+  const result = await callAI(fullPrompt);
+  document.getElementById('generateOutput').textContent = result;
+}
+function copyGeneratedCode() {
+  const code = document.getElementById('generateOutput').textContent;
+  navigator.clipboard.writeText(code).then(() => showToast('✅ Disalin!', 'success'));
+}
+function downloadGeneratedCode() {
+  const code = document.getElementById('generateOutput').textContent;
+  const blob = new Blob([code], { type: 'text/html' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'generated.html'; a.click();
+}
+async function rekayasaCode() {
+  const code = document.getElementById('rekayasaInput').value.trim();
+  const instruction = document.getElementById('rekayasaInstruction').value.trim();
+  if (!code) { showToast('Tempel kode yang ingin direkayasa!', 'error'); return; }
+  const fullPrompt = 'Rekayasa kode berikut:\n```\n' + code + '\n```\nInstruksi: ' + (instruction || 'Sempurnakan');
+  document.getElementById('rekayasaOutput').textContent = '⏳ Mencari solusi...';
+  document.getElementById('rekayasaOutputContainer').classList.remove('hidden');
+  const result = await callAI(fullPrompt);
+  document.getElementById('rekayasaOutput').textContent = result;
+}
+function copyRekayasaCode() {
+  const code = document.getElementById('rekayasaOutput').textContent;
+  navigator.clipboard.writeText(code).then(() => showToast('✅ Disalin!', 'success'));
+}
+function downloadRekayasaCode() {
+  const code = document.getElementById('rekayasaOutput').textContent;
+  const blob = new Blob([code], { type: 'text/html' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'rekayasa.html'; a.click();
+}
+
+// ---------- CHAT USER ----------
+let currentUserChatTab = 'admin';
+function showUserChatModal() { openModal('userChatModal'); switchUserChatTab('admin'); loadUserListForChat(); }
+function switchUserChatTab(tab) {
+  currentUserChatTab = tab;
+  document.getElementById('userChatTabAdmin').classList.toggle('hidden', tab !== 'admin');
+  document.getElementById('userChatTabUsers').classList.toggle('hidden', tab !== 'users');
+  document.getElementById('tabChatAdminBtn').classList.toggle('btn-primary', tab === 'admin');
+  document.getElementById('tabChatAdminBtn').classList.toggle('btn-outline', tab !== 'admin');
+  document.getElementById('tabChatUsersBtn').classList.toggle('btn-primary', tab === 'users');
+  document.getElementById('tabChatUsersBtn').classList.toggle('btn-outline', tab !== 'users');
+  if (tab === 'admin') loadUserChatWithAdmin(); else { loadUserListForChat(); loadUserToUserChat(); }
+}
+function loadUserChatWithAdmin() {
+  const session = getSession(); if (!session) return;
+  const msgs = getChatMessages().filter(m => (m.from === session.username && m.to === 'admin') || (m.from === 'admin' && m.to === session.username) || (m.from === 'admin' && m.to === 'all'));
+  const box = document.getElementById('userChatMessages'); if (!box) return;
+  box.innerHTML = msgs.map((m, i) => '<div class="chat-msg ' + (m.from === 'admin' ? 'admin' : 'user') + '"><div class="chat-sender">' + (m.from === 'admin' ? 'Admin' : 'Anda') + '</div>' + m.text + '<div class="chat-time">' + new Date(m.time).toLocaleString() + '</div><button class="chat-delete-btn" onclick="deleteChatMessage(' + i + ', \'admin\')">×</button></div>').join('');
+  box.scrollTop = box.scrollHeight;
+}
+function sendUserChatToAdmin() {
+  const input = document.getElementById('userChatInput'); const msg = input.value.trim(); if (!msg) return;
+  const session = getSession(); if (!session) return;
+  const msgs = getChatMessages(); msgs.push({ from: session.username, to: 'admin', text: msg, time: new Date().toISOString() });
+  saveChatMessages(msgs); input.value = ''; loadUserChatWithAdmin();
+}
+function loadUserListForChat() {
+  const session = getSession(); if (!session) return;
+  const users = getAllUsers().filter(u => u.id !== session.id && u.role !== 'superadmin');
+  const select = document.getElementById('userChatSelectUser'); if (!select) return;
+  select.innerHTML = '<option value="">-- Pilih User --</option>' + users.map(u => '<option value="' + u.username + '">' + u.username + ' (' + u.nama + ')</option>').join('');
+}
+function loadUserToUserChat() {
+  const session = getSession(); if (!session) return;
+  const target = document.getElementById('userChatSelectUser').value;
+  const box = document.getElementById('userToUserChatMessages'); if (!box) return;
+  if (!target) { box.innerHTML = '<p class="text-muted text-center">Pilih user untuk melihat chat.</p>'; return; }
+  const msgs = getChatMessages().filter(m => (m.from === session.username && m.to === target) || (m.from === target && m.to === session.username));
+  box.innerHTML = msgs.map((m, i) => '<div class="chat-msg ' + (m.from === session.username ? 'user' : 'admin') + '"><div class="chat-sender">' + (m.from === session.username ? 'Anda' : m.from) + '</div>' + m.text + '<div class="chat-time">' + new Date(m.time).toLocaleString() + '</div><button class="chat-delete-btn" onclick="deleteChatMessage(' + i + ', \'user\')">×</button></div>').join('');
+  box.scrollTop = box.scrollHeight;
+}
+function sendUserToUserChat() {
+  const input = document.getElementById('userToUserChatInput'); const msg = input.value.trim(); if (!msg) return;
+  const session = getSession(); if (!session) return;
+  const target = document.getElementById('userChatSelectUser').value;
+  if (!target) { showToast('Pilih user tujuan!', 'error'); return; }
+  const msgs = getChatMessages(); msgs.push({ from: session.username, to: target, text: msg, time: new Date().toISOString() });
+  saveChatMessages(msgs); input.value = ''; loadUserToUserChat();
+}
+function clearAllUserChats() {
+  if (confirm('Hapus SEMUA chat Anda?')) {
+    const session = getSession(); if (!session) return;
+    const msgs = getChatMessages().filter(m => m.from !== session.username && m.to !== session.username);
+    saveChatMessages(msgs);
+    if (currentUserChatTab === 'admin') loadUserChatWithAdmin(); else loadUserToUserChat();
+    showToast('Semua chat Anda telah dihapus.', 'warning');
+  }
+}
+function deleteChatMessage(index, tab) {
+  const session = getSession(); if (!session) return;
+  const msgs = getChatMessages();
+  let filtered;
+  if (tab === 'admin') {
+    filtered = msgs.filter(m => (m.from === session.username && m.to === 'admin') || (m.from === 'admin' && m.to === session.username) || (m.from === 'admin' && m.to === 'all'));
+    const target = filtered[index];
+    if (target) { const idx = msgs.indexOf(target); if (idx !== -1) { msgs.splice(idx, 1); saveChatMessages(msgs); } }
+    loadUserChatWithAdmin();
+  } else if (tab === 'user') {
+    const targetUser = document.getElementById('userChatSelectUser').value;
+    filtered = msgs.filter(m => (m.from === session.username && m.to === targetUser) || (m.from === targetUser && m.to === session.username));
+    const target = filtered[index];
+    if (target) { const idx = msgs.indexOf(target); if (idx !== -1) { msgs.splice(idx, 1); saveChatMessages(msgs); } }
+    loadUserToUserChat();
+  }
+}
+
+// ---------- SUPER ADMIN PANEL ----------
+function showSuperAdminPanel() { openModal('superAdminModal'); switchAdminTab('codes'); }
+function switchAdminTab(tab) {
+  const content = document.getElementById('adminTabContent');
+  if (!content) return;
+  if (tab === 'codes') {
+    content.innerHTML = '<h4>Buat Kode Aktivasi</h4><input id="adminActUser" placeholder="Username/email" class="mb-2"><select id="adminActPackage" class="mb-2">' + getPackages().map(p => '<option value="' + p.id + '">' + p.name + ' - Rp ' + p.price + ' (' + p.label + ')</option>').join('') + '</select><button class="btn btn-success btn-block" onclick="adminCreateCode()">Buat Kode</button><div id="adminCodeResult"></div><h4 class="mt-3">Kode Aktif</h4><div id="activeCodesList"></div>';
+    renderActiveCodes();
+  } else if (tab === 'users') {
+    content.innerHTML = '<table class="admin-table"><tr><th>Nama</th><th>Username</th><th>Email</th><th>Premium</th><th>Aksi</th></tr>' + getAllUsers().map(u => '<tr><td>' + u.nama + '</td><td>' + u.username + '</td><td>' + u.email + '</td><td>' + (u.premium ? 'Ya' : 'Tidak') + '</td><td><button class="btn btn-sm btn-warning" onclick="toggleLockUser(\'' + u.id + '\')">' + (u.locked ? 'Buka' : 'Kunci') + '</button> <button class="btn btn-sm btn-danger" onclick="deleteUser(\'' + u.id + '\')">Hapus</button></td></tr>').join('') + '</table>';
+  } else if (tab === 'packages') {
+    content.innerHTML = '<div id="packageEditList"></div><button class="btn btn-sm btn-primary mt-2" onclick="addNewPackage()">+ Tambah Paket</button>';
+    renderPackageList();
+  } else if (tab === 'chat') {
+    const users = getAllUsers().filter(u => u.role !== 'superadmin');
+    content.innerHTML = '<h4>Chat dengan User</h4><div class="flex gap-sm mb-2"><select id="adminChatUserSelect"><option value="all">Semua User</option>' + users.map(u => '<option value="' + u.username + '">' + u.username + ' (' + u.nama + ')</option>').join('') + '</select><button class="btn btn-sm" onclick="loadAdminChatForUser()">Muat</button></div><div class="chat-box" id="adminChatMessages" style="max-height:300px;overflow-y:auto;background:var(--bg-tertiary);padding:10px;border-radius:8px;margin-bottom:10px;"></div><div class="flex"><input type="text" id="adminChatInput" placeholder="Balas..."><button class="btn btn-primary" onclick="sendAdminChat()">Kirim</button></div><button class="btn btn-sm btn-danger mt-2" onclick="clearAllAdminChats()">🗑 Hapus Semua Chat</button>';
+    loadAdminChatForUser();
+  } else if (tab === 'masschat') {
+    content.innerHTML = '<h4>📢 Chat Massal</h4><textarea id="massChatMessage" rows="4" placeholder="Tulis pesan..."></textarea><button class="btn btn-warning btn-block mt-2" onclick="sendMassChat()">Kirim ke Semua User</button>';
+  } else if (tab === 'iklan') {
+    const ad = JSON.parse(localStorage.getItem('ai_adSettings') || '{"title":"🚀 AI Code Builder Pro","description":"Generate & rekayasa kode dengan AI cerdas!","buttonText":"🔐 Daftar Sekarang - Gratis!","features":["🧠 Generate Kode AI","🔧 Rekayasa Kode","📚 Upload Pengetahuan","💬 Chat Internal"]}');
+    content.innerHTML = '<h4>📢 Edit Iklan</h4><label>Judul</label><input id="adTitle" value="' + ad.title + '" class="mb-2"><label>Deskripsi</label><textarea id="adDescription" rows="3" class="mb-2">' + ad.description + '</textarea><label>Tombol Teks</label><input id="adButtonText" value="' + ad.buttonText + '" class="mb-2"><label>Fitur (koma)</label><input id="adFeatures" value="' + ad.features.join(',') + '" class="mb-2"><button class="btn btn-success btn-block" onclick="saveAdSettings()">💾 Simpan</button><button class="btn btn-warning btn-block mt-2" onclick="resetAdSettings()">🔄 Reset</button>';
+  } else if (tab === 'settings') {
+    content.innerHTML = '<label>Nomor WhatsApp</label><input id="adminWA" value="' + whatsappNumber + '" class="mb-2"><button class="btn btn-success btn-block" onclick="saveAdminWA()">Simpan WA</button><hr><input type="password" id="adminNewPass" placeholder="Password Baru" class="mb-2"><button class="btn btn-warning btn-block" onclick="changeAdminPass()">Ganti Password</button><input id="adminNewName" value="' + SUPER_ADMIN.nama + '" class="mb-2 mt-2"><button class="btn btn-info btn-block" onclick="changeAdminName()">Ganti Nama</button><hr><button class="btn btn-danger btn-block" onclick="resetAllData()">Reset Semua Data</button>';
+  } else if (tab === 'backup') {
+    content.innerHTML = '<h4>💾 Backup & Restore</h4><button class="btn btn-primary btn-block mb-2" onclick="backupAllData()">⬇ Backup JSON</button><label class="btn btn-warning btn-block mb-2" style="cursor:pointer;">📤 Restore JSON<input type="file" accept=".json" onchange="restoreAllData(this)" hidden></label><hr><button class="btn btn-success btn-block mb-2" onclick="downloadOfflinePage()">⬇ Download HTML</button><label class="btn btn-warning btn-block" style="cursor:pointer;">📤 Restore HTML<input type="file" accept=".html" onchange="restoreFromHTML(this)" hidden></label>';
+  }
+  document.querySelectorAll('.admin-tab').forEach(btn => btn.classList.remove('active'));
+  if (event && event.target) event.target.classList.add('active');
+}
+
+function adminCreateCode() {
+  const userField = document.getElementById('adminActUser').value.trim();
+  const packageId = document.getElementById('adminActPackage').value;
+  if (!userField || !packageId) return;
+  const code = 'AI-' + Date.now().toString(36).toUpperCase();
+  const codes = getValidCodes(); codes[code] = { packageId: packageId, used: false, createdAt: new Date().toISOString() };
+  saveValidCodes(codes);
+  document.getElementById('adminCodeResult').innerHTML = '<p class="form-success show">✅ Kode: <strong>' + code + '</strong></p>';
+  renderActiveCodes();
+}
+function renderActiveCodes() {
+  const codes = getValidCodes(); const listEl = document.getElementById('activeCodesList');
+  if (!listEl) return;
+  const keys = Object.keys(codes);
+  if (keys.length === 0) { listEl.innerHTML = '<p class="text-muted">Belum ada kode.</p>'; return; }
+  listEl.innerHTML = keys.map(code => '<div>' + code + ' - ' + codes[code].packageId + ' ' + (codes[code].used ? '<span class="text-danger">Terpakai</span>' : '<span class="text-success">Aktif</span>') + '</div>').join('');
+}
+function toggleLockUser(userId) {
+  const users = getAllUsers(); const user = users.find(u => u.id === userId);
+  if (user) { user.locked = !user.locked; saveAllUsers(users); switchAdminTab('users'); }
+}
+function deleteUser(userId) {
+  if (confirm('Hapus user?')) { const users = getAllUsers().filter(u => u.id !== userId); saveAllUsers(users); switchAdminTab('users'); }
+}
+function renderPackageList() {
+  const packages = getPackages(); const listEl = document.getElementById('packageEditList');
+  if (!listEl) return;
+  listEl.innerHTML = packages.map(pkg => '<div class="flex-between"><span>' + pkg.name + ' - Rp ' + pkg.price + ' (' + pkg.label + ')</span><button class="btn btn-sm btn-warning" onclick="editPackage(\'' + pkg.id + '\')">Edit</button></div>').join('');
+}
+function editPackage(packageId) {
+  const pkg = getPackages().find(p => p.id === packageId); if (!pkg) return;
+  document.getElementById('editPackageId').value = pkg.id;
+  document.getElementById('editPackageName').value = pkg.name;
+  document.getElementById('editPackagePrice').value = pkg.price;
+  document.getElementById('editPackageDays').value = pkg.days;
+  document.getElementById('editPackageLabel').value = pkg.label;
+  openModal('editPackageModal');
+}
+function savePackageChanges() {
+  const id = document.getElementById('editPackageId').value;
+  const name = document.getElementById('editPackageName').value.trim();
+  const price = parseInt(document.getElementById('editPackagePrice').value);
+  const days = parseInt(document.getElementById('editPackageDays').value);
+  const label = document.getElementById('editPackageLabel').value.trim();
+  if (!name || isNaN(price) || isNaN(days) || !label) return;
+  const packages = getPackages(); const pkg = packages.find(p => p.id === id);
+  if (!pkg) return;
+  pkg.name = name; pkg.price = price; pkg.days = days; pkg.label = label;
+  savePackages(packages); closeModal('editPackageModal'); renderPackageList();
+}
+function addNewPackage() {
+  const pkg = { id: 'pkg_' + Date.now(), name: 'Paket Baru', price: 0, days: 30, label: '1 Bulan' };
+  const packages = getPackages(); packages.push(pkg); savePackages(packages); renderPackageList();
+}
+function loadAdminChatForUser() {
+  const userSelect = document.getElementById('adminChatUserSelect');
+  const chatBox = document.getElementById('adminChatMessages');
+  if (!userSelect || !chatBox) return;
+  const selectedUser = userSelect.value;
+  let msgs = getChatMessages();
+  if (selectedUser && selectedUser !== 'all') {
+    msgs = msgs.filter(m => (m.from === selectedUser && m.to === 'admin') || (m.from === 'admin' && m.to === selectedUser));
+  }
+  chatBox.innerHTML = msgs.map((m, i) => '<div class="chat-msg ' + (m.from === 'admin' ? 'admin' : 'user') + '"><strong>' + m.from + ' → ' + m.to + '</strong><br>' + m.text + '<button class="chat-delete-btn" onclick="deleteAdminChatMessage(' + i + ')">×</button></div>').join('');
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+function sendAdminChat() {
+  const input = document.getElementById('adminChatInput'); const msg = input.value.trim(); if (!msg) return;
+  const userSelect = document.getElementById('adminChatUserSelect'); const selectedUser = userSelect ? userSelect.value : null;
+  const msgs = getChatMessages();
+  if (selectedUser === 'all') { msgs.push({ from: 'admin', to: 'all', text: msg, time: new Date().toISOString() }); }
+  else if (selectedUser) { msgs.push({ from: 'admin', to: selectedUser, text: msg, time: new Date().toISOString() }); }
+  saveChatMessages(msgs); input.value = ''; loadAdminChatForUser();
+}
+function clearAllAdminChats() {
+  if (confirm('Hapus SEMUA chat?')) { saveChatMessages([]); loadAdminChatForUser(); showToast('Semua chat dihapus.', 'warning'); }
+}
+function deleteAdminChatMessage(index) {
+  const msgs = getChatMessages(); const userSelect = document.getElementById('adminChatUserSelect'); const selectedUser = userSelect ? userSelect.value : null;
+  let filtered = msgs;
+  if (selectedUser && selectedUser !== 'all') { filtered = msgs.filter(m => (m.from === selectedUser && m.to === 'admin') || (m.from === 'admin' && m.to === selectedUser)); }
+  const target = filtered[index];
+  if (target) { const idx = msgs.indexOf(target); if (idx !== -1) { msgs.splice(idx, 1); saveChatMessages(msgs); } }
+  loadAdminChatForUser();
+}
+function sendMassChat() {
+  const input = document.getElementById('massChatMessage'); const msg = input.value.trim(); if (!msg) return;
+  const msgs = getChatMessages(); const users = getAllUsers().filter(u => u.role !== 'superadmin');
+  users.forEach(u => { msgs.push({ from: 'admin', to: u.username, text: msg, time: new Date().toISOString() }); });
+  saveChatMessages(msgs); showToast('Pesan massal dikirim ke ' + users.length + ' user', 'success');
+}
+function saveAdSettings() {
+  const title = document.getElementById('adTitle').value.trim();
+  const desc = document.getElementById('adDescription').value.trim();
+  const btnText = document.getElementById('adButtonText').value.trim();
+  const features = document.getElementById('adFeatures').value.split(',').map(s => s.trim());
+  const ad = { title, description: desc, buttonText: btnText, features };
+  localStorage.setItem('ai_adSettings', JSON.stringify(ad));
+  renderLandingAd();
+  showToast('Iklan disimpan!', 'success');
+}
+function resetAdSettings() {
+  localStorage.removeItem('ai_adSettings');
+  renderLandingAd();
+  switchAdminTab('iklan');
+  showToast('Iklan direset.', 'warning');
+}
+function saveAdminWA() {
+  const value = document.getElementById('adminWA').value.trim();
+  if (value) { whatsappNumber = value; localStorage.setItem('ai_wa', value); updateWhatsappDisplay(); showToast('Nomor WA disimpan', 'success'); }
+}
+function changeAdminPass() {
+  const newPass = document.getElementById('adminNewPass').value.trim();
+  if (newPass) { SUPER_ADMIN.password = encodePassword(newPass); showToast('Password diubah', 'success'); }
+}
+function changeAdminName() {
+  const newName = document.getElementById('adminNewName').value.trim();
+  if (newName) { SUPER_ADMIN.nama = newName; const s = getSession(); if (s && s.role === 'superadmin') { s.nama = newName; saveSession(s); } updateUI(); showToast('Nama diubah', 'success'); }
+}
+function resetAllData() {
+  showConfirm('RESET SEMUA DATA?', 'Semua data akan dihapus permanen!', () => {
+    localStorage.clear();
+    saveAllUsers([SUPER_ADMIN]);
+    saveAllApplications({});
+    saveValidCodes({});
+    savePackages(DEFAULT_PACKAGES);
+    saveSecurityLogs([]);
+    updateUI();
+    closeModal('superAdminModal');
+    showToast('Data direset!', 'warning');
+  });
+}
+
+// ---------- PENGETAHUAN ----------
+function renderKnowledgeList() {
+  const knowledge = getAllKnowledge();
+  const list = document.getElementById('knowledgeList'); if (!list) return;
+  if (knowledge.length === 0) { list.innerHTML = '<p class="text-muted text-center">Belum ada pengetahuan. Klik <strong>+ Tambah Pengetahuan</strong>.</p>'; return; }
+  list.innerHTML = knowledge.map((k, i) => '<div class="flex-between" style="background:var(--bg-secondary);padding:12px;border-radius:8px;margin-bottom:8px;border:1px solid var(--border-color);"><div><strong>' + escapeHTML(k.filename) + '</strong><br><small class="text-muted">' + escapeHTML(k.content.substring(0, 100)) + '...</small></div><div class="flex gap-sm"><button class="btn btn-sm btn-warning" onclick="editKnowledgeItem(' + i + ')">Edit</button><button class="btn btn-sm btn-danger" onclick="deleteKnowledgeItem(' + i + ')">Hapus</button></div></div>').join('');
+}
+function openUploadKnowledgeModal() {
+  document.getElementById('knowledgeFormTitle').textContent = 'Tambah Pengetahuan';
+  document.getElementById('editKnowledgeIndex').value = '';
+  document.getElementById('knowledgeText').value = '';
+  document.getElementById('knowledgeFile').value = '';
+  openModal('uploadKnowledgeModal');
+}
+function saveKnowledge() {
+  const files = document.getElementById('knowledgeFile').files;
+  const text = document.getElementById('knowledgeText').value.trim();
+  const editIdx = document.getElementById('editKnowledgeIndex').value;
+  const knowledge = getAllKnowledge();
+  if (editIdx !== '') {
+    knowledge[parseInt(editIdx)].content = text || knowledge[parseInt(editIdx)].content;
+    saveAllKnowledge(knowledge); closeModal('uploadKnowledgeModal'); renderKnowledgeList(); showToast('Pengetahuan diperbarui!', 'success');
+    return;
+  }
+  for (let i = 0; i < files.length; i++) {
+    const reader = new FileReader();
+    reader.onload = (function(file) { return function(e) { knowledge.push({ filename: file.name, content: e.target.result }); saveAllKnowledge(knowledge); renderKnowledgeList(); }; })(files[i]);
+    reader.readAsText(files[i]);
+  }
+  if (text) { knowledge.push({ filename: 'manual_' + Date.now() + '.txt', content: text }); saveAllKnowledge(knowledge); }
+  if (files.length === 0 && !text) { showToast('Upload file atau tulis pengetahuan!', 'error'); return; }
+  closeModal('uploadKnowledgeModal'); renderKnowledgeList(); showToast('Pengetahuan disimpan!', 'success');
+}
+function editKnowledgeItem(index) {
+  const knowledge = getAllKnowledge();
+  const item = knowledge[index];
+  document.getElementById('knowledgeFormTitle').textContent = 'Edit Pengetahuan';
+  document.getElementById('editKnowledgeIndex').value = index;
+  document.getElementById('knowledgeText').value = item.content;
+  openModal('uploadKnowledgeModal');
+}
+function deleteKnowledgeItem(index) {
+  if (confirm('Hapus pengetahuan ini?')) { const knowledge = getAllKnowledge(); knowledge.splice(index, 1); saveAllKnowledge(knowledge); renderKnowledgeList(); showToast('Pengetahuan dihapus.', 'warning'); }
+}
+function clearAllKnowledge() {
+  if (confirm('Hapus SEMUA pengetahuan?')) { saveAllKnowledge([]); renderKnowledgeList(); showToast('Semua pengetahuan dihapus.', 'warning'); }
+}
+
+// ---------- GUEST CHAT ----------
+function openGuestChat() { openModal('guestChatModal'); renderGuestChat(); }
+function renderGuestChat() {
+  const msgs = getChatMessages().filter(m => m.to === 'admin' || m.from === 'guest');
+  const box = document.getElementById('guestChatMessages'); if (!box) return;
+  box.innerHTML = msgs.map(m => '<div class="chat-msg ' + (m.from === 'guest' ? 'user' : 'admin') + '"><div class="chat-sender">' + (m.from === 'guest' ? 'Anda' : 'Admin') + '</div>' + m.text + '<div class="chat-time">' + new Date(m.time).toLocaleString() + '</div></div>').join('');
+  box.scrollTop = box.scrollHeight;
+}
+function sendGuestChat() {
+  const input = document.getElementById('guestChatInput'); const msg = input.value.trim(); if (!msg) return;
+  const msgs = getChatMessages(); msgs.push({ from: 'guest', to: 'admin', text: msg, time: new Date().toISOString() });
+  saveChatMessages(msgs); input.value = ''; renderGuestChat();
+}
+function handleForgotPassword() {
+  const nama = document.getElementById('forgotNama').value.trim(); if (!nama) return;
+  const msgs = getChatMessages(); msgs.push({ from: 'guest', to: 'admin', text: 'Permintaan reset password dari: ' + nama, time: new Date().toISOString() });
+  saveChatMessages(msgs); closeModal('forgotPasswordModal'); showToast('Pesan reset dikirim ke admin', 'success');
+}
+
+// ---------- PWA ----------
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('installButton')?.classList.remove('hidden'); document.getElementById('installButton2')?.classList.remove('hidden'); });
+function installPWA() {
+  if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(r => { if (r.outcome === 'accepted') showToast('Instalasi berhasil!', 'success'); deferredPrompt = null; }); }
+  else if (window.matchMedia('(display-mode: standalone)').matches) { showToast('Aplikasi sudah terinstall.', 'warning'); }
+  else { alert('Buka menu browser lalu pilih "Tambahkan ke Layar Utama".'); }
+}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    const swCode = 'var CACHE_NAME="aicode-v12";self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(["/"])));});self.addEventListener("fetch",e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});';
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    const url = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(url).catch(err => console.log('SW registration failed:', err));
+  });
+}
+
+// ---------- RENDER IKLAN ----------
+function renderLandingAd() {
+  const ad = JSON.parse(localStorage.getItem('ai_adSettings') || '{"title":"🚀 AI Code Builder Pro","description":"Generate & rekayasa kode dengan AI cerdas!","buttonText":"🔐 Daftar Sekarang - Gratis!","features":["🧠 Generate Kode AI","🔧 Rekayasa Kode","📚 Upload Pengetahuan","💬 Chat Internal"]}');
+  const adEl = document.getElementById('landingAd');
+  if (!adEl) return;
+  adEl.innerHTML = '<h2>' + ad.title + '</h2><p>' + ad.description + '</p><button class="btn btn-ad" onclick="showRegisterModal()">' + ad.buttonText + '</button><div class="premium-features">' + ad.features.map(f => '<div class="premium-feature-item">' + f + '</div>').join('') + '</div>';
+}
+
+// ---------- INIT ----------
+(function() {
+  const users = getAllUsers();
+  if (!users.find(u => u.role === 'superadmin')) { users.push(SUPER_ADMIN); saveAllUsers(users); }
+  updateWhatsappDisplay();
+  updateUI();
+  const grid = document.getElementById('landingPriceGrid');
+  if (grid) {
+    grid.innerHTML = getPackages().map((p, i) => '<div class="price-card' + (i === 1 ? ' featured' : '') + '" onclick="showRegisterModal()">' + (i === 1 ? '<div class="featured-badge">POPULER</div>' : '') + '<div class="price-icon">💎</div><div class="price-name">' + p.name + '</div><div class="price-value">Rp ' + p.price.toLocaleString('id-ID') + '</div><div class="price-duration">' + p.label + '</div></div>').join('');
+  }
+  if (getAllKnowledge().length === 0 && typeof DEFAULT_KNOWLEDGE_SNIPPETS !== 'undefined') {
+    saveAllKnowledge(DEFAULT_KNOWLEDGE_SNIPPETS);
+  }
+  renderLandingAd();
+})();
+</script>                                                           
